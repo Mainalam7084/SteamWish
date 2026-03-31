@@ -1,22 +1,22 @@
 <?php
 
-use App\Http\Controllers\IndexController;
+use App\Http\Controllers\GameController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Pagina Principal
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+// Paginas de Juego
+Route::get('/search', [GameController::class, 'index'])->name('search');
+Route::get('/game', [GameController::class, 'show'])->name('game');
 
-Route::get('/game', function() {
-    return view('game');
-});
-
-Route::get('/index', [IndexController::class, 'index']);
-
+// API
 Route::get('/api/search', [SearchController::class, 'index']);
 
+// Autenticación
+// Route::get('/login', [AuthController::class, 'login'])->name('login');
+// Route::get('/auth/steam', [AuthController::class, 'redirectToSteam'])->name('auth.steam');
+// Route::get('/auth/steam/callback', [AuthController::class, 'handleSteamCallback'])->name('auth.steam.callback');
+// Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
