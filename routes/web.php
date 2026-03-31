@@ -10,4 +10,9 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
+Route::get('/game', function() {
+    return view('game');
+});
+
 Route::get('/api/search', [SearchController::class, 'index']);
+
