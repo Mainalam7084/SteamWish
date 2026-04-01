@@ -5,7 +5,201 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'Space Mono', monospace;
+
+    /* ── SteamWish Brand Palette ── */
+    --color-primary: #5DA9D6;
+    --color-secondary: #0F3A52;
+    --color-accent: #FACC15;
+    --color-background: #F5F5F5;
+    --color-surface: #FFFFFF;
+
+    /* Aliases internos */
+    --color-nb-yellow: #FACC15;
+    --color-nb-blue: #5DA9D6;
+    --color-nb-dark: #0F3A52;
+    --color-nb-bg: #F5F5F5;
+    --color-nb-surface: #FFFFFF;
+    --color-nb-card: #FFFFFF;
+    --color-nb-border: #000000;
+    --color-nb-white: #FFFFFF;
+
+    /* Semánticos de estado */
+    --color-up: #16A34A;
+    --color-down: #DC2626;
+}
+
+/* Base */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #F5F5F5;
+    color: #0F3A52;
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
+}
+
+/* ── Neo Brutalism Shadow Utilities ── */
+.nb-shadow {
+    box-shadow: 4px 4px 0px #000000;
+}
+
+.nb-shadow-lg {
+    box-shadow: 6px 6px 0px #000000;
+}
+
+.nb-shadow-sm {
+    box-shadow: 2px 2px 0px #000000;
+}
+
+.nb-shadow-accent {
+    box-shadow: 4px 4px 0px #FACC15;
+}
+
+.nb-shadow-primary {
+    box-shadow: 4px 4px 0px #5DA9D6;
+}
+
+.nb-shadow-dark {
+    box-shadow: 4px 4px 0px #0F3A52;
+}
+
+/* Aliases de compatibilidad (mantienen el HTML sin tocar) */
+.nb-shadow-yellow {
+    box-shadow: 4px 4px 0px #FACC15;
+}
+
+.nb-shadow-blue {
+    box-shadow: 4px 4px 0px #5DA9D6;
+}
+
+.nb-shadow-pink {
+    box-shadow: 4px 4px 0px #DC2626;
+}
+
+.nb-shadow-green {
+    box-shadow: 4px 4px 0px #16A34A;
+}
+
+/* ── Hover interacciones ── */
+.nb-hover {
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.nb-hover:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #000000;
+}
+
+.nb-hover-yellow:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #FACC15;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #E5E7EB;
+    border-left: 2px solid #000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #5DA9D6;
+    border: 2px solid #000;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #0F3A52;
+}
+
+/* ── Carousel ── */
+.carousel-container {
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #5DA9D6 #E5E7EB;
+    padding-bottom: 8px;
+}
+
+/* ── Sparkline (primary blue) ── */
+.sparkline-bar {
+    display: inline-block;
+    width: 4px;
+    background: #5DA9D6;
+    border-radius: 1px;
+    margin: 0 1px;
+    animation: pulse-bar 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-bar {
+    from {
+        opacity: 0.4;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* ── Ticker marquee ── */
+@keyframes marquee {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+.marquee-inner {
+    animation: marquee 20s linear infinite;
+    display: flex;
+    width: max-content;
+}
+
+/* ── Heart beat ── */
+@keyframes heartbeat {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+.heart-active {
+    animation: heartbeat 0.3s ease;
+}
+
+/* ── Badge pulse ── */
+@keyframes badge-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+}
+
+.badge-pulse {
+    animation: badge-pulse 2s ease infinite;
 }
