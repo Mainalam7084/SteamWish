@@ -32,16 +32,11 @@ function getAppDetails($appid, $contentCountry = "us") {
 
 //Gets a url formatted like so: 'http://api.steampowered.com/<interfaceName>/<method>/v<version>/?args
 function getSteamworksUrl($interfaceName, $method, $version=1, $args=[]) {
-	return STEAMWORKS_URL . $interfaceName . "/" . $method . "/v" . $version . "/?" . formatArgs($args);
+	return STEAMWORKS_URL . $interfaceName . "/" . $method . "/v" . $version . "/?" . http_build_query($args);
 }
 
 //Gets a url formatted like so: http://store.steampowered.com/api/<endpoint>/?args
 function getWebApiUrl($endpoint, $args=[]) {
-	return WEBAPI_URL . $endpoint . "/?" . formatArgs($args);
+	return WEBAPI_URL . $endpoint . "/?" . http_build_query($args);
 }
-
-function formatArgs($args) {
-	return http_build_query($args);
-}
-
 ?>

@@ -1,5 +1,6 @@
 <?php
-require app_path() . '/Includes/steam_wrapper.php';
+require(app_path() . '/Includes/steam_wrapper.php');
+require(app_path() . '/Includes/isthereanydeal_wrapper.php');
 
 $appid = $_GET['appid'] ?? null;
 if ($appid == null) {
@@ -18,7 +19,8 @@ $app_detailed_desc = $details['detailed_description'] ?? '';
 $discount_percent = $details['price_overview']['discount_percent'] ?? 0;
 $discount_formatted = $discount_percent > 0 ? "(-$discount_percent%)" : '';
 
-$screenshots = $details['screenshots'];
+$screenshots = $details["screenshots"];
+
 ?>
 <!DOCTYPE html>
 <html>
