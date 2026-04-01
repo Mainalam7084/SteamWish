@@ -11,11 +11,11 @@ class GameController
      */
     public function index()
     {
-        $query = 'counter';
+        $query = $_GET['q'];
         $controller = new SearchController;
         $results = $controller->search($query);
 
-        return view('index', compact('results', 'query'));
+        return view('search', compact('results', 'query'));
     }
 
     /**
