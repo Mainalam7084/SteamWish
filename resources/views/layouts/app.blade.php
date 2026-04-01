@@ -26,7 +26,7 @@
     <div class="bg-[#0F3A52] border-b-4 border-black overflow-hidden py-1.5">
         <div class="marquee-inner text-[#FACC15] font-bold text-sm uppercase tracking-widest">
             @php
-                $tickerItems = ['Main Alam', 'David Rollon', 'Geovanny Rodriguez'];
+                $tickerItems = ['Main Alam', 'David Rollon', 'Geovanny Jimenez'];
             @endphp
 
             @for ($i = 0; $i < 4; $i++)
