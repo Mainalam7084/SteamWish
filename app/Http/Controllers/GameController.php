@@ -15,7 +15,7 @@ class GameController
         $controller = new SearchController;
         $results = $controller->search($query);
 
-        return view('search', compact('results', 'query'));
+        return view('pages.search', compact('results', 'query'));
     }
 
     /**
@@ -39,7 +39,7 @@ class GameController
      */
     public function show() // recibira un id del juego string $id
     {
-        return view('game');
+        return view('pages.game');
     }
 
     /**
