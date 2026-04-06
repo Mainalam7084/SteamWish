@@ -17,7 +17,7 @@
     {{-- Lucide Icons --}}
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/animateMosaico.js'])
 </head>
 
 <body class="bg-[#F5F5F5] text-[#0F3A52] font-sans antialiased">

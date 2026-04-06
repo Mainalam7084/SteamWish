@@ -1,9 +1,12 @@
+console.log("¡El archivo JS de Vite está conectado!");
 document.addEventListener('DOMContentLoaded', () => {
     const contenedores = document.querySelectorAll(".imagen-grid-animada");
 
     contenedores.forEach(container => {
      
         const imageUrl = container.dataset.imagen; 
+        container.style.backgroundImage = `url('${imageUrl}')`;
+        container.style.backgroundSize = '100% 100%';
         const rows = 10;
         const cols = 10;
         const tiles = [];

@@ -23,16 +23,16 @@
 
            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
                 
-                <div class="border-4 border-black shadow-[8px_8px_0_0_#0F3A52] aspect-[3/4]">
-                    <div class="imagen-grid-animada w-full h-full" data-imagen="{{ asset('img/animacion.png') }}"></div>
+                <div class="border-4 border-black shadow-[8px_8px_0_0_#0F3A52] aspect-[3/4] relative">
+                    <div class="imagen-grid-animada absolute inset-0" data-imagen="{{ asset('img/animacion.png') }}"></div>
                 </div>
                 
-                <div class="border-4 border-black shadow-[8px_8px_0_0_#0F3A52] aspect-[3/4]">
-                    <div class="imagen-grid-animada w-full h-full" data-imagen="{{ asset('img/animacion.png') }}"></div>
+                <div class="border-4 border-black shadow-[8px_8px_0_0_#0F3A52] aspect-[3/4] relative">
+                    <div class="imagen-grid-animada absolute inset-0" data-imagen="{{ asset('img/animacion.png') }}"></div>
                 </div>
                 
-                <div class="border-4 border-black shadow-[8px_8px_0_0_#0F3A52] aspect-[3/4]">
-                    <div class="imagen-grid-animada w-full h-full" data-imagen="{{ asset('img/animacion.png') }}"></div>
+                <div class="border-4 border-black shadow-[8px_8px_0_0_#0F3A52] aspect-[3/4] relative">
+                    <div class="imagen-grid-animada absolute inset-0" data-imagen="{{ asset('img/animacion.png') }}"></div>
                 </div>
 
             </div>
