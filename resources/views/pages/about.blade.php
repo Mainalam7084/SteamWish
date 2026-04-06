@@ -14,15 +14,29 @@
             <div class="space-y-6">
                 <p class="text-sm font-black uppercase tracking-widest text-[#0F3A52]">EL EQUIPO / LOS CREADORES</p>
                 <p class="text-xl leading-relaxed font-bold border-l-4 border-black pl-6">
-                    En el año 2024, un grupo apasionado de desarrolladores se unió para dar vida a SteamWish. Nuestra misión es simple: crear la mejor plataforma para gestionar y descubrir tus deseos de juego.
+                    En el año 2026, un grupo apasionado de desarrolladores se unió para dar vida a SteamWish. Nuestra misión es simple: crear la mejor plataforma para gestionar y descubrir tus deseos de juego.
                 </p>
                 <p class="text-lg leading-relaxed text-gray-700">
                     Nacimos de la frustración de perder el rastro de esos juegos increíbles que queríamos jugar algún día. Combinando nuestra pasión por el gaming y el desarrollo web, diseñamos una herramienta brutalista, directa y fácil de usar para gamers de todo el mundo.
                 </p>
             </div>
 
-            <div class="max-w-sm ml-auto md:ml-0 border-4 border-black shadow-[8px_8px_0_0_#0F3A52]">
-                <img src="{{ asset('img/portrait_team.jpg') }}" alt="El Equipo Creador" class="w-full object-cover aspect-[3/4]">
+            <div class="grid grid-cols-3 gap-6 mt-8">
+                
+                <div class="border-4 border-black shadow-[8px_8px_0_0_#0F3A52]">
+                    <img src="{{ asset('img/animacion.png') }}" alt="El Equipo Creador - Foto 1" class="w-full object-cover aspect-[3/4]">
+                </div>
+
+            </div>
+                
+                <div class="border-4 border-black shadow-[8px_8px_0_0_#0F3A52]">
+                    <img src="{{ asset('img/animacion.png') }}" alt="El Equipo Creador - Foto 2" class="w-full object-cover aspect-[3/4]">
+                </div>
+                
+                <div class="border-4 border-black shadow-[8px_8px_0_0_#0F3A52]">
+                    <img src="{{ asset('img/animacion.png') }}" alt="El Equipo Creador - Foto 3" class="w-full object-cover aspect-[3/4]">
+                </div>
+
             </div>
 
         </div>
@@ -32,10 +46,6 @@
             <h2 class="text-6xl md:text-8xl font-black uppercase tracking-tighter text-[#0F3A52] leading-none">
                 PASIÓN POR EL DESARROLLO
             </h2>
-
-            <div class="relative max-w-xl ml-auto md:ml-0 border-4 border-black shadow-[8px_8px_0_0_#0F3A52]">
-                <img src="{{ asset('img/detail_code.jpg') }}" alt="Detalle artístico de programación" class="w-full object-cover aspect-square">
-            </div>
 
         </div>
 
