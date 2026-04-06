@@ -203,3 +203,19 @@ body {
 .badge-pulse {
     animation: badge-pulse 2s ease infinite;
 }
+
+/* intento de animar las imagenes*/
+.imagen-grid-animada {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    perspective: 1000px;
+}
+
+.tile {
+    background-size: 1000% 1000%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0px 0px rgba(0,0,0,0);
+    transform-style: preserve-3d;
+    cursor: pointer;
+}

@@ -21,20 +21,18 @@
                 </p>
             </div>
 
-            <div class="grid grid-cols-3 gap-6 mt-8">
+           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
                 
-                <div class="border-4 border-black shadow-[8px_8px_0_0_#0F3A52]">
-                    <img src="{{ asset('img/animacion.png') }}" alt="El Equipo Creador - Foto 1" class="w-full object-cover aspect-[3/4]">
-                </div>
-
-            </div>
-                
-                <div class="border-4 border-black shadow-[8px_8px_0_0_#0F3A52]">
-                    <img src="{{ asset('img/animacion.png') }}" alt="El Equipo Creador - Foto 2" class="w-full object-cover aspect-[3/4]">
+                <div class="border-4 border-black shadow-[8px_8px_0_0_#0F3A52] aspect-[3/4]">
+                    <div class="imagen-grid-animada w-full h-full" data-imagen="{{ asset('img/animacion.png') }}"></div>
                 </div>
                 
-                <div class="border-4 border-black shadow-[8px_8px_0_0_#0F3A52]">
-                    <img src="{{ asset('img/animacion.png') }}" alt="El Equipo Creador - Foto 3" class="w-full object-cover aspect-[3/4]">
+                <div class="border-4 border-black shadow-[8px_8px_0_0_#0F3A52] aspect-[3/4]">
+                    <div class="imagen-grid-animada w-full h-full" data-imagen="{{ asset('img/animacion.png') }}"></div>
+                </div>
+                
+                <div class="border-4 border-black shadow-[8px_8px_0_0_#0F3A52] aspect-[3/4]">
+                    <div class="imagen-grid-animada w-full h-full" data-imagen="{{ asset('img/animacion.png') }}"></div>
                 </div>
 
             </div>
