@@ -55,6 +55,7 @@ class GameController
         $app_short_desc = $details['short_description'];
         $app_header_img = $details['header_image'];
         $app_price = $details['price_overview']['final_formatted'] ?? 'Free';
+        $app_price_numeric = ($details['price_overview']['final'] ?? 0) / 100;
         $app_publisher = $details['publishers'][0] ?? 'Unknown';
         $app_developer = $details['developers'][0] ?? 'Unknown';
         $app_detailed_desc = $details['detailed_description'] ?? '';
@@ -71,6 +72,10 @@ class GameController
             $price_history_timestamps[] = (new DateTime($entry["timestamp"]))->format("d/m/Y");
             $price_history_prices[] = $entry["deal"]["price"]["amount"];
         }
+
+        // Añadimos el precio de la fecha actual
+        $price_history_timestamps[] = (new DateTime())->format("d/m/Y");
+        $price_history_prices[] = $app_price_numeric;
 
         return view('pages.game', compact('app_name', 'app_short_desc', 'app_header_img', 
         'app_price', 'app_publisher', 'app_developer', 'app_detailed_desc',
