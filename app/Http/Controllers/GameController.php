@@ -65,12 +65,33 @@ class GameController
 
         $screenshots = $details["screenshots"];
 
+
+        // TODO: Conseguir mas de solo 3 meses de historial
+
         $price_history = getPriceHistory($itad_api_key, $appid, "es");
+
+        // Hay que ordenar por fecha
+        usort($price_history, function($a, $b) {
+            return $a["timestamp"] > $b["timestamp"];
+        });
+
         $price_history_timestamps = [];
         $price_history_prices = [];
+
+        $last_price = null;
         foreach($price_history as $entry) {
-            $price_history_timestamps[] = (new DateTime($entry["timestamp"]))->format("d/m/Y");
-            $price_history_prices[] = $entry["deal"]["price"]["amount"];
+            $timestamp = (new DateTime($entry["timestamp"]))->format("d/m/Y");
+            $price = $entry["deal"]["price"]["amount"];
+
+            // Saltarse precios repetidos, solo interesa el cambio
+            if($last_price != null && $last_price == $price){
+                continue;
+            }
+
+            $price_history_timestamps[] = $timestamp;
+            $price_history_prices[] = $price;
+
+            $last_price = $price;
         }
 
         // Añadimos el precio de la fecha actual
