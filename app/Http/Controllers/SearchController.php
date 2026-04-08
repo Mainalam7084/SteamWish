@@ -16,7 +16,7 @@ class SearchController
 
     public function search($query)
     {
-        $api_key = Config::get('app.api_key');
+        $api_key = config('app.api_key');
 
         $clean_query = trim(strtolower($query));
         $found = [];

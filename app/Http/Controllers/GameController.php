@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
 use Illuminate\Http\Request;
 
 require_once app_path() . '/Includes/steam_wrapper.php';
@@ -42,6 +43,8 @@ class GameController
      */
     public function show()
     {
+        $itad_api_key = config('app.itad_api_key');
+
         $appid = $_GET['appid'] ?? null;
         if ($appid == null) {
             die('No appid'); // Mejor redirigir a página de error
@@ -61,9 +64,18 @@ class GameController
 
         $screenshots = $details["screenshots"];
 
+        $price_history = getPriceHistory($itad_api_key, $appid, "es");
+        $price_history_timestamps = [];
+        $price_history_prices = [];
+        foreach($price_history as $entry) {
+            $price_history_timestamps[] = (new DateTime($entry["timestamp"]))->format("d/m/Y");
+            $price_history_prices[] = $entry["deal"]["price"]["amount"];
+        }
+
         return view('pages.game', compact('app_name', 'app_short_desc', 'app_header_img', 
         'app_price', 'app_publisher', 'app_developer', 'app_detailed_desc',
-        'discount_percent','discount_formatted', 'screenshots'));
+        'discount_percent','discount_formatted', 'screenshots', 
+        'price_history_timestamps', 'price_history_prices'));
     }
 
     /**

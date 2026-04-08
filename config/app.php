@@ -2,6 +2,7 @@
 
 return [
 	'api_key' => env("API_KEY"),
+    'itad_api_key' => env("ITAD_API_KEY"),
     /*
     |--------------------------------------------------------------------------
     | Application Name
