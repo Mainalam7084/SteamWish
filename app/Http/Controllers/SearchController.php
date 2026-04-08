@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Config;
 
-require app_path().'/Includes/steam_wrapper.php';
+require_once app_path().'/Includes/steam_wrapper.php';
 
 class SearchController
 {

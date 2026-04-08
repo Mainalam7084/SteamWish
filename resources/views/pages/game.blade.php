@@ -1,26 +1,3 @@
-<?php
-require(app_path() . '/Includes/steam_wrapper.php');
-require(app_path() . '/Includes/isthereanydeal_wrapper.php');
-
-$appid = $_GET['appid'] ?? null;
-if ($appid == null) {
-    die('No appid');
-}
-
-$details = getAppDetails($appid, 'es')[$appid]['data'];
-$app_name = $details['name'];
-$app_short_desc = $details['short_description'];
-$app_header_img = $details['header_image'];
-$app_price = $details['price_overview']['final_formatted'] ?? 'Free';
-$app_publisher = $details['publishers'][0] ?? 'Unknown';
-$app_developer = $details['developers'][0] ?? 'Unknown';
-$app_detailed_desc = $details['detailed_description'] ?? '';
-
-$discount_percent = $details['price_overview']['discount_percent'] ?? 0;
-$discount_formatted = $discount_percent > 0 ? "(-$discount_percent%)" : '';
-
-$screenshots = $details["screenshots"];
-?>
 @extends('layouts.app')
 
 @section('title', $app_name . ' - SteamWish')
