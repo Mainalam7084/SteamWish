@@ -6,6 +6,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 // Pagina Principal
@@ -30,3 +31,13 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact');
 
 // ruta para About Us
 Route::get('/about', [AboutController::class, 'about'])->name('about');
+
+// Protected Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('pages.dashboard'); // We will create this view
+    })->name('dashboard');
+
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+    Route::post('/wishlist/toggle', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+});

@@ -4,12 +4,18 @@
 
 @php
     $name = $game['name'] ?? 'Unknown Game';
+    $appid = $game['appid'] ?? null;
     $image = $game['image'] ?? 'https://placehold.co/300x180/0F3A52/5DA9D6?text=GAME';
     $price = $game['price'] ?? '29.99';
     $oldPrice = $game['old_price'] ?? null;
     $discount = $game['discount'] ?? null;
     $genre = $game['genre'] ?? '';
     $id = 'game-card-' . Str::slug($name);
+
+    $inWishlist = false;
+    if (Auth::check() && $appid) {
+        $inWishlist = Auth::user()->wishlists->contains('appid', (string)$appid);
+    }
 @endphp
 
 <article id="{{ $id }}"
@@ -36,8 +42,8 @@
         @endif
 
         <!-- Wishlist Heart Button -->
-        <button id="{{ $id }}-heart" data-heart aria-label="Agregar a wishlist"
-            class="absolute bottom-2 right-2 w-9 h-9 bg-white border-2 border-black flex items-center justify-center text-[#0F3A52] nb-shadow-sm hover:bg-[#5DA9D6] hover:text-white hover:border-black transition-all duration-150">
+        <button id="{{ $id }}-heart" data-heart aria-label="Agregar a wishlist" data-appid="{{ $appid }}"
+            class="wishlist-btn absolute bottom-2 right-2 w-9 h-9 border-2 border-black flex items-center justify-center nb-shadow-sm transition-all duration-150 {{ $inWishlist ? 'bg-[#FACC15] text-black' : 'bg-white text-[#0F3A52] hover:bg-[#5DA9D6] hover:text-white' }}">
             <i data-lucide="heart" class="w-4 h-4"></i>
         </button>
     </div>
@@ -60,8 +66,8 @@
             </div>
 
             <!-- Add to Wishlist button — accent yellow -->
-            <button id="{{ $id }}-cart"
-                class="bg-[#FACC15] border-2 border-black text-black font-black text-[10px] uppercase tracking-wider px-3 py-1.5 nb-shadow-sm hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_black] transition-all duration-100">
+            <button id="{{ $id }}-wishlist" data-appid="{{ $appid }}"
+                class="wishlist-btn border-2 border-black font-black text-[10px] uppercase tracking-wider px-3 py-1.5 nb-shadow-sm hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_black] transition-all duration-100 {{ $inWishlist ? 'bg-[#FACC15] text-black' : 'bg-white text-[#0F3A52]' }}">
                 + Wishlist
             </button>
         </div>

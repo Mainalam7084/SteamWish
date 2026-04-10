@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="SteamWish – Tu plataforma de videojuegos para wishlist, ofertas y trending games.">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'SteamWish – Gaming Wishlist & Deals')</title>
 
     {{-- Fonts --}}
@@ -65,6 +66,49 @@
     </script>
 
     @stack('scripts')
+    <script>
+        document.addEventListener('click', function(e) {
+            const wishlistBtn = e.target.closest('.wishlist-btn');
+            if (wishlistBtn) {
+                e.preventDefault();
+
+                // Si no está registrado, reenviarlo a login de Steam
+                @guest
+                window.location.href = "{{ route('auth.steam') }}";
+                return;
+            @endguest
+
+            const appid = wishlistBtn.dataset.appid;
+            if (!appid) return;
+
+            fetch("{{ route('wishlist.toggle') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content')
+                    },
+                    body: JSON.stringify({
+                        appid: appid
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    // Lógica visual: Si fue añadido cambiar color a Amarillo, de lo contrario a Blanco/Azul
+                    const btns = document.querySelectorAll(`.wishlist-btn[data-appid="${appid}"]`);
+                    btns.forEach(btn => {
+                        if (data.status === 'added') {
+                            // Pon lógica visual de guardado / icono de llenado
+                            btn.classList.add('bg-[#FACC15]', 'text-black');
+                        } else {
+                            // Pon lógica visual de vacío
+                            btn.classList.remove('bg-[#FACC15]', 'text-black');
+                        }
+                    });
+                });
+        }
+        });
+    </script>
 </body>
 
 </html>

@@ -59,21 +59,40 @@
 
                 {{-- Login / User --}}
                 @auth
-                    <form method="POST" action="{{ route('logout') }}" class="inline">
-                        @csrf
-                        <button type="submit" id="nav-logout"
-                            class="flex items-center gap-2 bg-[#FACC15] border-2 border-black text-black font-black text-xs sm:text-sm uppercase tracking-wider px-3 py-2 nb-shadow nb-hover nb-hover-yellow transition-all duration-100">
-                            <i data-lucide="log-out" class="w-4 h-4 hidden sm:block"></i>
-                            <span class="hidden sm:block">Logout</span>
-                            <i data-lucide="log-out" class="w-4 h-4 sm:hidden"></i>
+                    <div class="relative group">
+                        <button
+                            class="flex items-center gap-2 bg-[#FACC15] border-2 border-black text-black font-black text-xs sm:text-sm tracking-wider px-2 py-1 nb-shadow nb-hover nb-hover-yellow transition-all duration-100 h-full">
+                            <img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->username }}"
+                                class="w-6 h-6 border border-black">
+                            <span class="hidden sm:block truncate max-w-[100px]">{{ Auth::user()->username }}</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4"></i>
                         </button>
-                    </form>
+
+                        {{-- Invisible bridge wrapper for hover --}}
+                        <div class="absolute right-0 top-full pt-2 hidden group-hover:block z-50">
+                            <div class="w-48 bg-white border-4 border-black nb-shadow flex flex-col">
+                                <a href="{{ Auth::user()->profile_url }}" target="_blank"
+                                    class="block px-4 py-2 text-[#0F3A52] font-bold hover:bg-[#FACC15] border-b-2 border-black transition-colors">Steam
+                                    Profile</a>
+                                <a href="{{ route('wishlist.index') }}"
+                                    class="block px-4 py-2 text-[#0F3A52] font-bold hover:bg-[#FACC15] border-b-2 border-black transition-colors">My
+                                    Wishlist</a>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit"
+                                        class="w-full text-left block px-4 py-2 text-red-600 font-black hover:bg-black hover:text-white transition-colors">
+                                        Logout
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 @else
-                    <a href="{{ route('login') }}" id="nav-signin"
-                        class="flex items-center gap-2 bg-[#FACC15] border-2 border-black text-black font-black text-xs sm:text-sm uppercase tracking-wider px-3 py-2 nb-shadow nb-hover nb-hover-yellow transition-all duration-100">
-                        <i data-lucide="log-in" class="w-4 h-4 hidden sm:block"></i>
-                        <span class="hidden sm:block">Sign in</span>
-                        <i data-lucide="log-in" class="w-4 h-4 sm:hidden"></i>
+                    <a href="{{ route('auth.steam') }}" id="nav-signin"
+                        class="flex items-center gap-2 bg-[#FACC15] text-black font-black text-xs sm:text-base uppercase tracking-wider px-4 py-2 border-2 border-black shadow-[4px_4px_0px_0px_black] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_black] active:translate-x-1 active:translate-y-1 active:shadow-[0px_0px_0px_0px_black] transition-all duration-150">
+                        <i data-lucide="gamepad-2" class="w-5 h-5 hidden sm:block"></i>
+                        <span class="hidden sm:block">Login con Steam</span>
+                        <i data-lucide="log-in" class="w-5 h-5 sm:hidden"></i>
                     </a>
                 @endauth
 
