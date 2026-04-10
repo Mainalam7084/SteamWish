@@ -10,9 +10,9 @@ class AuthController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function login()
     {
-        //
+        return view('pages.login');
     }
 
     /**
