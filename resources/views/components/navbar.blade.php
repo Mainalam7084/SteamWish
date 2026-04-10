@@ -34,14 +34,14 @@
                         class="px-3 py-1.5 text-white/80 hover:text-[#FACC15] text-xs font-bold uppercase tracking-wider transition-colors duration-100 {{ request()->routeIs('home') ? 'text-[#FACC15]' : '' }}">
                         Home
                     </a>
-                    {{-- <a href="{{ route('about') }}"
+                    <a href="{{ route('about') }}"
                         class="px-3 py-1.5 text-white/80 hover:text-[#FACC15] text-xs font-bold uppercase tracking-wider transition-colors duration-100 {{ request()->routeIs('about') ? 'text-[#FACC15]' : '' }}">
                         About
                     </a>
                     <a href="{{ route('contact') }}"
                         class="px-3 py-1.5 text-white/80 hover:text-[#FACC15] text-xs font-bold uppercase tracking-wider transition-colors duration-100 {{ request()->routeIs('contact') ? 'text-[#FACC15]' : '' }}">
                         Contact
-                    </a> --}}
+                    </a>
                 </nav>
 
                 {{-- Wishlist icon --}}
@@ -58,7 +58,7 @@
                 </a>
 
                 {{-- Login / User --}}
-                {{-- @auth
+                @auth
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
                         <button type="submit" id="nav-logout"
@@ -75,7 +75,7 @@
                         <span class="hidden sm:block">Sign in</span>
                         <i data-lucide="log-in" class="w-4 h-4 sm:hidden"></i>
                     </a>
-                @endauth --}}
+                @endauth
 
             </div>
         </div>
