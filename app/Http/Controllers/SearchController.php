@@ -21,19 +21,15 @@ class SearchController
         $clean_query = trim(strtolower($query));
         $queryArray = explode(' ', $clean_query);
 
-        $searchQuery = Game::query();
-        foreach($queryArray as $q) {
-            $searchQuery->where('name', 'LIKE', '%'.$q.'%');
-        }
-        $games = $searchQuery->get()->toArray();
-        
+        $games = getSearch($clean_query);
+
         // Problem: If there is only one match from our db, only that game will be returned
         // This shouldn't happen since we're storing more than one game every search,
         // but it's still something to consider
-        if(count($games) === 0) {
-            $games = self::searchOnSteam($queryArray);
-        }
-        
+        // if(count($games) === 0) {
+        //     $games = self::searchOnSteam($queryArray);
+        // }
+
         $games = array_slice($games, 0, 10);
 
         // Fetch more details
@@ -44,6 +40,14 @@ class SearchController
         
 
         return $games;
+    }
+
+    private function searchOnDatabase($queryArray) {
+        $searchQuery = Game::query();
+        foreach($queryArray as $q) {
+            $searchQuery->where('name', 'LIKE', '%'.$q.'%');
+        }
+        return $searchQuery->get()->toArray();
     }
 
     private function searchOnSteam($queryArray) {
@@ -65,17 +69,13 @@ class SearchController
             foreach ($applist['apps'] as $app) {
                 $clean_name = trim(strtolower($app['name']));
                 $appid = $app['appid'];
-
-                // Normalize date
-                $app['last_modified'] = date('Y-m-d H:i:s', 1774958057);
-
-                // Update/Insert the game in our database
-                Game::upsert($app, 'appid', ['name','last_modified','price_change_number']);
-
+                
                 if (
                     array_all($queryArray, fn ($q) => str_contains($clean_name, $q)) ||
                     $queryArray[0] === strval($appid)
-                ) {
+                    ) {
+                    // Normalize date
+                    $app['last_modified'] = date('Y-m-d H:i:s', 1774958057);
                     $found[] = $app;
                 }
 
