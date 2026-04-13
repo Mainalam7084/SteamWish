@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Game;
 use Illuminate\Support\Facades\Config;
 
 require_once app_path().'/Includes/steam_wrapper.php';
@@ -16,19 +17,46 @@ class SearchController
 
     public function search($query)
     {
-        $api_key = config('app.api_key');
 
         $clean_query = trim(strtolower($query));
-        $found = [];
-        $details_cache = self::getCache(self::LAST_RESULTS_CACHE) ?? [];
+        $queryArray = explode(' ', $clean_query);
 
+        $searchQuery = Game::query();
+        foreach($queryArray as $q) {
+            $searchQuery->where('name', 'LIKE', '%'.$q.'%');
+        }
+        $games = $searchQuery->get()->toArray();
+        
+        // Problem: If there is only one match from our db, only that game will be returned
+        // This shouldn't happen since we're storing more than one game every search,
+        // but it's still something to consider
+        if(count($games) === 0) {
+            $games = self::searchOnSteam($queryArray);
+        }
+        
+        $games = array_slice($games, 0, 10);
+
+        // Fetch more details
+        for($i = 0; $i < count($games); $i++) {
+            $appid = $games[$i]['appid'];
+            $games[$i] = getAppDetails($appid, "es")[$appid];
+        }
+        
+
+        return $games;
+    }
+
+    private function searchOnSteam($queryArray) {
+        $api_key = config('app.api_key');
+
+        $found = [];
         $last_appid = 0;
 
-        for ($i = 0; $i < self::MAX_PAGES; $i++) {
-            $applist = self::getOrCache("applist_$last_appid", fn () => getAppList($api_key, self::MAX_RESULTS, $last_appid)
-            );
 
-            if (! $applist) {
+        for ($i = 0; $i < self::MAX_PAGES; $i++) {
+            $applist = getAppList($api_key, self::MAX_RESULTS, $last_appid);
+
+            if (!$applist) {
                 return [];
             }
 
@@ -38,18 +66,17 @@ class SearchController
                 $clean_name = trim(strtolower($app['name']));
                 $appid = $app['appid'];
 
-                $queries = explode(' ', $clean_query);
+                // Normalize date
+                $app['last_modified'] = date('Y-m-d H:i:s', 1774958057);
+
+                // Update/Insert the game in our database
+                Game::upsert($app, 'appid', ['name','last_modified','price_change_number']);
 
                 if (
-                    array_all($queries, fn ($q) => str_contains($clean_name, $q)) ||
-                    $clean_query === strval($appid)
+                    array_all($queryArray, fn ($q) => str_contains($clean_name, $q)) ||
+                    $queryArray[0] === strval($appid)
                 ) {
-                    $details = array_find($details_cache, fn ($d) => $d['data']['steam_appid'] === $appid)
-                        ?? getAppDetails($appid)[$appid];
-
-                    if ($details) {
-                        $found[] = $details;
-                    }
+                    $found[] = $app;
                 }
 
                 if (count($found) >= 10) {
@@ -62,8 +89,6 @@ class SearchController
             }
         }
 
-        self::saveCache(self::LAST_RESULTS_CACHE, $found);
-
         return $found;
     }
 
@@ -74,39 +99,5 @@ class SearchController
         return response()->json([
             'results' => $this->search($query),
         ]);
-    }
-
-    // TODO: Add proper cache
-    public function getCachePath($cache_name)
-    {
-        return '';
-    }
-
-    // Try to get from the cache, or cache the getFunc result
-    public function getOrCache($cache_name, $getFunc)
-    {
-        $result = SearchController::getCache($cache_name);
-        if ($result == null) {
-            $result = $getFunc();
-            SearchController::saveCache($cache_name, $result);
-        }
-
-        return $result;
-    }
-
-    public function getCache($cache_name)
-    {
-        $cache_file = SearchController::getCachePath($cache_name);
-        $result = null;
-        if (file_exists($cache_file)) {
-            $result = json_decode(file_get_contents($cache_file), true);
-        }
-
-        return $result;
-    }
-
-    public function saveCache($cache_name, $content)
-    {
-        // TEMP
     }
 }
