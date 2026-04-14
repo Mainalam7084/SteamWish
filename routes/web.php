@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
@@ -26,11 +24,11 @@ Route::get('/auth/steam/callback', [AuthController::class, 'handleSteamCallback'
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Rutas para get y post de contacto
-Route::get('/contact', [ContactController::class, 'index'])->name('contact');
-Route::post('/contact', [ContactController::class, 'store'])->name('contact');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+Route::post('/contact', [HomeController::class, 'contactStore'])->name('contact.store');
 
 // Ruta para About Us
-Route::get('/about', [AboutController::class, 'about'])->name('about');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
 
 // Routas protegidas -> Rutas para perfil de usuario
 Route::middleware(['auth'])->group(function () {
