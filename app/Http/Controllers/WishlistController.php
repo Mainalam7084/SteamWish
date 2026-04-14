@@ -27,6 +27,51 @@ class WishlistController
     }
 
     // ==========================================
+    // GET /api/wishlist-preview  — for JS navbar
+    // ==========================================
+
+    public function preview()
+    {
+        if (!Auth::check()) {
+            return response()->json([]);
+        }
+
+        $appids = Auth::user()
+            ->wishlists()
+            ->latest()
+            ->take(3)
+            ->pluck('appid')
+            ->map(fn ($id) => (int) $id)
+            ->toArray();
+
+        // 1. Pull from DB
+        $dbGames = Game::whereIn('appid', $appids)
+            ->get()
+            ->keyBy('appid');
+
+        $games = [];
+        foreach ($appids as $appid) {
+            if (isset($dbGames[$appid]) && $dbGames[$appid]->name) {
+                $g = $dbGames[$appid];
+                $games[] = [
+                    'appid' => $g->appid,
+                    'name'  => $g->name,
+                    'image' => $g->image ?? "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/{$appid}/header.jpg",
+                ];
+            } else {
+                $steamData = getAppDetails($appid, "es")[$appid]['data'] ?? null;
+                $games[] = [
+                    'appid' => $appid,
+                    'name'  => $steamData['name'] ?? "Game #{$appid}",
+                    'image' => $steamData['header_image'] ?? "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/{$appid}/header.jpg",
+                ];
+            }
+        }
+
+        return response()->json($games);
+    }
+
+    // ==========================================
     // GET /wishlist  — show saved games
     // ==========================================
 

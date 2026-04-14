@@ -115,6 +115,51 @@
         }
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navWishlistContainer = document.getElementById('nav-wishlist-container');
+            const navWishlistItems = document.getElementById('nav-wishlist-items');
+            
+            if (navWishlistContainer && navWishlistItems) {
+                let previewLoaded = false;
+
+                navWishlistContainer.addEventListener('mouseenter', () => {
+                    if (previewLoaded) return;
+                    previewLoaded = true; // Solo cargar una vez por sesión de pagina
+
+                    fetch('{{ route("api.wishlist-preview") }}')
+                        .then(res => res.ok ? res.json() : [])
+                        .then(games => {
+                            if (games.length === 0) {
+                                navWishlistItems.innerHTML = `
+                                    <div class="p-4 text-center">
+                                        <i data-lucide="ghost" class="w-8 h-8 mx-auto mb-2 text-gray-300"></i>
+                                        <p class="text-xs font-bold text-gray-400">Aún no has guardado ningún juego.</p>
+                                    </div>
+                                `;
+                            } else {
+                                navWishlistItems.innerHTML = games.map(g => `
+                                    <a href="/game?appid=${g.appid}" class="flex items-center gap-3 p-3 border-b-2 border-black hover:bg-[#FACC15] group transition-colors">
+                                        <img src="${g.image}" alt="${g.name}" class="w-16 h-8 object-cover border-2 border-black shrink-0">
+                                        <h4 class="font-black text-[10px] uppercase text-[#0F3A52] line-clamp-2">${g.name}</h4>
+                                    </a>
+                                `).join('');
+                            }
+                            if (window.lucide) {
+                                lucide.createIcons();
+                            }
+                        })
+                        .catch(err => {
+                            navWishlistItems.innerHTML = `
+                                <div class="p-4 text-center">
+                                    <p class="text-xs font-bold text-red-500">Error al cargar.</p>
+                                </div>
+                            `;
+                        });
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

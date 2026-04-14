@@ -44,12 +44,36 @@
                     </a>
                 </nav>
 
-                {{-- Wishlist icon --}}
-                <a href="{{ route('wishlist.index') }}" id="nav-wishlist"
-                    class="hidden sm:flex relative w-9 h-9 bg-[#0F3A52] border-2 border-white/30 items-center justify-center nb-shadow-sm nb-hover group"
-                    title="Mi Wishlist">
-                    <i data-lucide="heart" class="w-4 h-4 text-[#FACC15]"></i>
-                </a>
+                {{-- Wishlist icon & Dropdown --}}
+                @auth
+                <div class="relative group hidden sm:flex h-full items-center" id="nav-wishlist-container">
+                    <a href="{{ route('wishlist.index') }}" id="nav-wishlist"
+                        class="relative w-9 h-9 bg-[#0F3A52] border-2 border-white/30 flex items-center justify-center nb-shadow-sm transition-colors duration-100 group-hover:bg-[#FACC15] group-hover:border-black"
+                        title="Mi Wishlist">
+                        <i data-lucide="heart" class="w-4 h-4 text-[#FACC15] group-hover:text-black"></i>
+                    </a>
+
+                    {{-- Invisible bridge wrapper for hover --}}
+                    <div class="absolute right-0 top-full pt-4 hidden group-hover:block z-50">
+                        <div class="w-72 bg-white border-4 border-black shadow-[4px_4px_0_0_#0F3A52] flex flex-col pt-2" id="nav-wishlist-dropdown">
+                            <div class="px-4 pb-2 border-b-2 border-black flex items-center justify-between">
+                                <span class="font-black uppercase text-[#0F3A52] text-sm">Agregados Recién</span>
+                            </div>
+                            
+                            <div id="nav-wishlist-items" class="flex flex-col">
+                                <div class="p-4 text-center text-xs font-bold text-gray-400" id="nav-wishlist-loading">
+                                    Cargando...
+                                </div>
+                            </div>
+
+                            <a href="{{ route('wishlist.index') }}"
+                                class="block px-4 py-3 bg-[#F5F5F5] text-center text-[#0F3A52] font-black hover:bg-[#FACC15] border-t-2 border-black transition-colors uppercase text-xs">
+                                Ver toda la lista
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                @endauth
 
                 <a href="#" id="nav-notifications"
                     class="hidden sm:flex relative w-9 h-9 bg-[#0F3A52] border-2 border-white/30 items-center justify-center nb-shadow-sm nb-hover group"
