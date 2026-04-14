@@ -94,15 +94,21 @@
                 })
                 .then(res => res.json())
                 .then(data => {
-                    // Lógica visual: Si fue añadido cambiar color a Amarillo, de lo contrario a Blanco/Azul
+                    // Update ALL wishlist buttons with this appid (heart + text buttons)
                     const btns = document.querySelectorAll(`.wishlist-btn[data-appid="${appid}"]`);
                     btns.forEach(btn => {
+                        const textSpan = btn.querySelector('span');
+
                         if (data.status === 'added') {
-                            // Pon lógica visual de guardado / icono de llenado
                             btn.classList.add('bg-[#FACC15]', 'text-black');
+                            btn.classList.remove('bg-white', 'text-[#0F3A52]', 'hover:bg-[#5DA9D6]', 'hover:text-white');
+                            if (textSpan) textSpan.textContent = 'Saved';
                         } else {
-                            // Pon lógica visual de vacío
                             btn.classList.remove('bg-[#FACC15]', 'text-black');
+                            btn.classList.add('bg-white', 'text-[#0F3A52]');
+                            if (textSpan) textSpan.textContent = 'Add to Wishlist';
+                            // Notify wishlist page to remove the card
+                            btn.dispatchEvent(new CustomEvent('wishlist:removed', { bubbles: true }));
                         }
                     });
                 });

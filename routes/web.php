@@ -17,6 +17,7 @@ Route::get('/game', [GameController::class, 'show'])->name('game');
 // Rutas de API
 Route::get('/api/search', [SearchController::class, 'index']);
 Route::get('/api/home-data', [HomeController::class, 'homeData'])->name('api.home-data');
+Route::get('/api/wishlist-ids', [WishlistController::class, 'ids'])->name('api.wishlist-ids');
 
 // Rutas de Autenticación
 Route::get('/login', [AuthController::class, 'login'])->name('login');

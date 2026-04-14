@@ -37,7 +37,16 @@ class SearchController
             $appid = $games[$i]['appid'];
             $games[$i] = getAppDetails($appid, "es")[$appid];
         }
-        
+
+        $wishlists = [];
+        if (\Illuminate\Support\Facades\Auth::check()) {
+            $wishlists = \Illuminate\Support\Facades\Auth::user()->wishlists()->pluck('appid')->toArray();
+        }
+        foreach($games as &$g) {
+            if (isset($g['data'])) {
+                $g['in_wishlist'] = in_array((string) $g['data']['steam_appid'], $wishlists);
+            }
+        }
 
         return $games;
     }

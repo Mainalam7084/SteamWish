@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 require_once app_path() . '/Includes/steam_wrapper.php';
 require_once app_path() . '/Includes/isthereanydeal_wrapper.php';
@@ -98,10 +99,23 @@ class GameController
         $price_history_timestamps[] = (new DateTime())->format("d/m/Y");
         $price_history_prices[] = $app_price_numeric;
 
-        return view('pages.game', compact('app_name', 'app_short_desc', 'app_header_img', 
-        'app_price', 'app_publisher', 'app_developer', 'app_detailed_desc',
-        'discount_percent','discount_formatted', 'screenshots', 
-        'price_history_timestamps', 'price_history_prices'));
+        // Wishlist state for the logged-in user
+        $inWishlist = false;
+        if (Auth::check()) {
+            $inWishlist = Auth::user()
+                ->wishlists()
+                ->where('appid', (string) $appid)
+                ->exists();
+        }
+
+        return view('pages.game', compact(
+            'appid',
+            'app_name', 'app_short_desc', 'app_header_img',
+            'app_price', 'app_publisher', 'app_developer', 'app_detailed_desc',
+            'discount_percent', 'discount_formatted', 'screenshots',
+            'price_history_timestamps', 'price_history_prices',
+            'inWishlist'
+        ));
     }
 
     /**

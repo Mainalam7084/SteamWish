@@ -37,11 +37,19 @@
                         $headerImage =
                             $data['header_image'] ?? 'https://placehold.co/460x215/F5F5F5/0F3A52?text=No+Image';
                         $price = $data['price_overview']['final_formatted'] ?? 'Free';
+                        $inWishlist = $game['in_wishlist'] ?? false;
                     @endphp
                     <a href="/game?appid={{ $appid }}"
-                        class="group block bg-white border-4 border-black shadow-[4px_4px_0_0_#0F3A52] hover:shadow-[8px_8px_0_0_#5DA9D6] hover:-translate-y-2 hover:-translate-x-2 transition-all duration-200 flex flex-col h-full bg-[#F5F5F5]">
+                        class="relative group block bg-white border-4 border-black shadow-[4px_4px_0_0_#0F3A52] hover:shadow-[8px_8px_0_0_#5DA9D6] hover:-translate-y-2 hover:-translate-x-2 transition-all duration-200 flex flex-col h-full bg-[#F5F5F5]">
                         <img src="{{ $headerImage }}" alt="{{ $name }}"
                             class="w-full aspect-[460/215] object-cover border-b-4 border-black bg-gray-200">
+                        
+                        <button
+                            data-appid="{{ $appid }}"
+                            class="wishlist-btn absolute top-2 right-2 shrink-0 w-8 h-8 border-2 border-black flex items-center justify-center shadow-[2px_2px_0_0_#000] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all {{ $inWishlist ? 'bg-[#FACC15] text-black' : 'bg-white text-[#0F3A52] hover:bg-[#5DA9D6] hover:text-white' }}"
+                            aria-label="Toggle wishlist">
+                            <i data-lucide="heart" class="w-3.5 h-3.5"></i>
+                        </button>
                         <div class="p-5 flex flex-col flex-grow justify-between bg-white border-t-2 border-transparent">
                             <h3
                                 class="text-xl font-black uppercase text-[#0F3A52] mb-4 line-clamp-2 group-hover:text-[#5DA9D6] transition-colors">

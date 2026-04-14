@@ -13,7 +13,21 @@
         </div>
 
         <article class="bg-white border-4 border-black shadow-[8px_8px_0_0_#0F3A52] p-6 md:p-10">
-            <h1 class="text-4xl md:text-6xl font-black uppercase text-[#0F3A52] mb-6">{{ $app_name }}</h1>
+            <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
+                <h1 class="text-4xl md:text-6xl font-black uppercase text-[#0F3A52]">{{ $app_name }}</h1>
+
+                {{-- Wishlist Button --}}
+                <button
+                    id="game-detail-wishlist-btn"
+                    data-appid="{{ $appid }}"
+                    class="wishlist-btn flex items-center gap-3 px-6 py-3 border-4 border-black font-black uppercase text-sm
+                           shadow-[4px_4px_0_0_#000] hover:shadow-[2px_2px_0_0_#000] hover:translate-x-[2px] hover:translate-y-[2px]
+                           transition-all {{ $inWishlist ? 'bg-[#FACC15] text-black' : 'bg-white text-[#0F3A52] hover:bg-[#5DA9D6] hover:text-white' }}"
+                    aria-label="Toggle wishlist">
+                    <i data-lucide="heart" class="w-5 h-5"></i>
+                    <span>{{ $inWishlist ? 'Saved' : 'Add to Wishlist' }}</span>
+                </button>
+            </div>
 
             <img src="{{ $app_header_img }}" alt="{{ $app_name }}" class="w-full h-auto border-4 border-black shadow-[4px_4px_0_0_#0F3A52] object-cover mb-8">
 

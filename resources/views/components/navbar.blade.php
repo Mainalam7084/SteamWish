@@ -45,7 +45,7 @@
                 </nav>
 
                 {{-- Wishlist icon --}}
-                <a href="#" id="nav-wishlist"
+                <a href="{{ route('wishlist.index') }}" id="nav-wishlist"
                     class="hidden sm:flex relative w-9 h-9 bg-[#0F3A52] border-2 border-white/30 items-center justify-center nb-shadow-sm nb-hover group"
                     title="Mi Wishlist">
                     <i data-lucide="heart" class="w-4 h-4 text-[#FACC15]"></i>
