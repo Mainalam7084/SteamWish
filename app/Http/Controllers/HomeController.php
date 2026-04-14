@@ -16,10 +16,10 @@ class HomeController
     public function index()
     {
         return view('pages.home', [
-            'featuredGame' => null,
-            'trendingGames' => [],
-            'newReleases' => [],
-            'topPlayed' => [],
+            'featuredGame'    => null,
+            'trendingGames'   => [],
+            'mostPlayedGames' => [],
+            'upcomingGames'   => [],
         ]);
     }
 
