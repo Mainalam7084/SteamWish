@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game;
+use App\Services\GameService;
 use Illuminate\Support\Facades\Config;
 
 require_once app_path().'/Includes/steam_wrapper.php';
@@ -14,6 +15,13 @@ class SearchController
     const MAX_PAGES = 7; // Max pages to look through when searching game
 
     const LAST_RESULTS_CACHE = 'lastresults';
+
+    private GameService $gameService;
+
+    public function __construct(GameService $gameService)
+    {
+        $this->gameService = $gameService;
+    }
 
     public function search($query)
     {
@@ -35,7 +43,7 @@ class SearchController
         // Fetch more details
         for($i = 0; $i < count($games); $i++) {
             $appid = $games[$i]['appid'];
-            $games[$i] = getAppDetails($appid, "es")[$appid];
+            $games[$i] = $this->gameService->GetDetails($appid);
         }
 
         $wishlists = [];

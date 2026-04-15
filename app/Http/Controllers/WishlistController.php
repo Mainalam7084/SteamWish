@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Game;
 use App\Models\Wishlist;
+use App\Services\GameService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,6 +12,13 @@ require_once app_path() . '/Includes/steam_wrapper.php';
 
 class WishlistController
 {
+    private GameService $gameService;
+
+    public function __construct(GameService $gameService)
+    {
+        $this->gameService = $gameService;
+    }
+
     // ==========================================
     // GET /api/wishlist-ids  — for JS use
     // ==========================================
@@ -59,7 +67,7 @@ class WishlistController
                     'image' => $g->image ?? "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/{$appid}/header.jpg",
                 ];
             } else {
-                $steamData = getAppDetails($appid, "es")[$appid]['data'] ?? null;
+                $steamData = $this->gameService->GetDetails($appid)['data'] ?? null;
                 $games[] = [
                     'appid' => $appid,
                     'name'  => $steamData['name'] ?? "Game #{$appid}",
@@ -104,8 +112,8 @@ class WishlistController
                 ];
             } else {
                 // 2. Fetch using Steam Wrapper
-                $steamData = getAppDetails($appid, "es");
-                $data = $steamData[$appid]['data'] ?? null;
+                $steamData = $this->gameService->GetDetails($appid);
+                $data = $steamData['data'] ?? null;
 
                 if ($data) {
                     $games[] = [

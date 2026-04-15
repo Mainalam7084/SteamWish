@@ -32,7 +32,9 @@ function getAppDetails($appid, $contentCountry = "us") {
 }
 
 function getSearch($query) {
-	return json_decode(file_get_contents(getSearchUrl($query)),true);
+	return json_decode(file_get_contents(
+		getSearchUrl($query)
+	),true);
 }
 
 //Gets a url formatted like so: 'http://api.steampowered.com/<interfaceName>/<method>/v<version>/?args
@@ -46,6 +48,6 @@ function getWebApiUrl($endpoint, $args=[]) {
 }
 
 function getSearchUrl($query) {
-	return SEARCH_URL . $query ;
+	return SEARCH_URL . urlencode($query);
 }
 ?>

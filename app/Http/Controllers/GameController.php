@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\GameService;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,14 +12,22 @@ require_once app_path() . '/Includes/isthereanydeal_wrapper.php';
 
 class GameController
 {
+    private GameService $gameService;
+    private SearchController $searchController;
+
+    public function __construct(GameService $gameService, SearchController $searchController)
+    {
+        $this->gameService = $gameService;
+        $this->searchController = $searchController;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $query = $_GET['q'];
-        $controller = new SearchController;
-        $results = $controller->search($query);
+        $results = $this->searchController->search($query);
 
         return view('pages.search', compact('results', 'query'));
     }
@@ -51,7 +60,7 @@ class GameController
             die('No appid'); // Mejor redirigir a página de error
         }
 
-        $details = getAppDetails($appid, 'es')[$appid]['data'];
+        $details = $this->gameService->GetDetails($appid)['data'];
         $app_name = $details['name'];
         $app_short_desc = $details['short_description'];
         $app_header_img = $details['header_image'];
