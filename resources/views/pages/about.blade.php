@@ -17,7 +17,7 @@
   <div class="section">
     <div class="member">
       <div class="member-img">
-        <div class="imagen-grid-animada absolute inset-0" data-imagen="{{ asset('img/animacion.png') }}"></div>
+        <div class="imagen-grid-animada absolute inset-0" data-imagen="{{ asset('img/david.jpg') }}"></div>
       </div>
       <h2>DAVID ROLLON</h2>
       <p class="role" style="color:#1D9E75;">Backend Dev</p>
@@ -29,7 +29,7 @@
   <div class="section">
     <div class="member">
       <div class="member-img">
-        <div class="imagen-grid-animada absolute inset-0" data-imagen="{{ asset('img/animacion.png') }}"></div>
+        <div class="imagen-grid-animada absolute inset-0" data-imagen="{{ asset('img/main.png') }}"></div>
       </div>
       <h2>MAIN ALAM</h2>
       <p class="role" style="color:#EF9F27;">Frontend Dev</p>
