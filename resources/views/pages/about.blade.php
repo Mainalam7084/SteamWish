@@ -17,7 +17,7 @@
   <div class="section">
     <div class="member">
       <div class="member-img">
-        <div class="imagen-grid-animada absolute inset-0" data-imagen="{{ asset('img/david.jpg') }}"></div>
+        <div class="imagen-grid-animada absolute inset-0" data-imagen="{{ asset('img/david2.png') }}"></div>
       </div>
       <h2>DAVID ROLLON</h2>
       <p class="role" style="color:#1D9E75;">Backend Dev</p>
