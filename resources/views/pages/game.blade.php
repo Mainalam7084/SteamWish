@@ -46,7 +46,12 @@
                 </div>
             </div>
 
-             <canvas id="priceHistory" style="width:100%;max-width:700px"></canvas> 
+            <div class="mb-10">
+                <h2 class="text-3xl font-black uppercase text-[#0F3A52] mb-6">Price History</h2>
+                <div class="border-4 border-black shadow-[4px_4px_0_0_#0F3A52] p-4 bg-white">
+                    <canvas id="priceHistory" style="width:100%;"></canvas> 
+                </div>
+            </div>
 
             <div class="text-lg md:text-xl font-bold border-l-8 border-[#FACC15] pl-6 py-4 mb-10 text-[#0F3A52] bg-[#F5F5F5] pr-4 shadow-[2px_2px_0_0_#0F3A52] border-y-2 border-r-2 border-black border-l-black">
                 {{ $app_short_desc }}
@@ -101,24 +106,50 @@
 
                 {{-- HISTORIAL DE PRECIOS --}}
                 <script>
+                    Chart.defaults.global.defaultFontFamily = "'Inter', 'Roboto', 'sans-serif'";
+                    Chart.defaults.global.defaultFontColor = "#0F3A52";
+                    
                     new Chart("priceHistory", {
                         type: "line",
                         data: {
                             labels: {!! json_encode($price_history_timestamps) !!},
                             datasets: [{
-                                fill: false,
+                                fill: true,
                                 steppedLine: true,
                                 lineTension: 0,
-                                backgroundColor: "rgba(0,0,255,1.0)",
-                                borderColor: "rgba(0,0,255,0.1)",
+                                backgroundColor: "rgba(250, 204, 21, 0.2)",
+                                borderColor: "#0F3A52",
+                                borderWidth: 4,
+                                pointBackgroundColor: "#FACC15",
+                                pointBorderColor: "#0F3A52",
+                                pointBorderWidth: 3,
+                                pointRadius: 5,
+                                pointHoverRadius: 7,
                                 data: {!! json_encode($price_history_prices) !!}
                             }]
                         },
                         options: {
                             legend: { display: false },
+                            layout: {
+                                padding: { top: 10, right: 10, bottom: 10, left: 10 }
+                            },
                             scales: {
+                                xAxes: [{
+                                    gridLines: {
+                                        color: "rgba(0,0,0,0)",
+                                        zeroLineColor: "#0F3A52",
+                                        zeroLineWidth: 4
+                                    },
+                                    ticks: { fontStyle: "bold" }
+                                }],
                                 yAxes: [{
+                                    gridLines: {
+                                        color: "rgba(15, 58, 82, 0.1)",
+                                        zeroLineColor: "#0F3A52",
+                                        zeroLineWidth: 4
+                                    },
                                     ticks: {
+                                        fontStyle: "bold",
                                         callback: function(value) {
                                             return value.toLocaleString('es-ES', {
                                                 style: 'currency',
@@ -127,10 +158,29 @@
                                         }
                                     }
                                 }]
+                            },
+                            tooltips: {
+                                backgroundColor: "#0F3A52",
+                                titleFontColor: "#FACC15",
+                                bodyFontColor: "#fff",
+                                bodyFontStyle: "bold",
+                                borderColor: "#000",
+                                borderWidth: 3,
+                                cornerRadius: 0,
+                                displayColors: false,
+                                callbacks: {
+                                    label: function(tooltipItem, data) {
+                                        let value = tooltipItem.yLabel;
+                                        return value.toLocaleString('es-ES', {
+                                            style: 'currency',
+                                            currency: 'EUR'
+                                        });
+                                    }
+                                }
                             }
                         }
                     });
-            </script>
+                </script>
                 @endpush
             @endif
 
