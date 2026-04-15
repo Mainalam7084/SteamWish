@@ -219,3 +219,100 @@ body {
     transform-style: preserve-3d;
     cursor: pointer;
 }
+
+/*estilos para about */
+@layer components {
+
+    .page {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* SECCIONES */
+    .section {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+        border-bottom: 2px solid #000;
+    }
+
+    /* HERO */
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .hero-title {
+        font-size: 48px;
+        font-weight: 900;
+        text-transform: uppercase;
+        color: #0F3A52;
+    }
+
+    .hero-sub {
+        max-width: 500px;
+        font-size: 14px;
+        color: #444;
+        line-height: 1.6;
+    }
+
+    /* MIEMBROS */
+    .member {
+        max-width: 600px;
+        text-align: center;
+    }
+
+    /* CONTENEDOR IMAGEN */
+    .member-img {
+        position: relative;
+        width: 250px;
+        height: 250px;
+        margin: 0 auto 20px;
+        overflow: hidden;
+    }
+
+    /* TEXTO */
+    .member h2 {
+        font-size: 28px;
+        font-weight: 900;
+        color: #0F3A52;
+    }
+
+    .role {
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+        margin: 10px 0;
+    }
+
+    .desc {
+        font-size: 14px;
+        color: #555;
+        line-height: 1.6;
+    }
+
+    /* HISTORIA */
+    .history {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .history h2 {
+        font-size: 40px;
+        font-weight: 900;
+        text-transform: uppercase;
+        color: #0F3A52;
+    }
+
+    .history p {
+        max-width: 600px;
+        font-size: 14px;
+        color: #444;
+        line-height: 1.6;
+    }
+
+}
