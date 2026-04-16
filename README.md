@@ -1,258 +1,210 @@
 # SteamWish
 
-SteamWish is a web application that lets users search for games on Steam, view prices and discounts, and save games to a personal wishlist. It connects to Steam's public APIs to get real data without requiring a Steam account from the developer.
+SteamWish es una aplicación web que permite a los usuarios buscar juegos en Steam, ver precios y descuentos, y guardar juegos en una lista de deseos personal. Se conecta a las APIs públicas de Steam para obtener datos reales sin requerir una cuenta de desarrollador de Steam.
 
 ---
 
-## What the project does
+## Qué hace el proyecto
 
-- Shows a homepage dashboard with the most played games, trending games (on sale), and upcoming releases fetched live from Steam
-- Lets users search for any game by name
-- Shows a full detail page for each game including price history from IsThereAnyDeal
-- Lets logged-in users add games to a personal wishlist
-- Has a contact form and an about page
-- Steam login is implemented using OpenID (no password required)
+- Muestra un panel en la página de inicio con los juegos más jugados, juegos en tendencia (en oferta) y próximos lanzamientos obtenidos en vivo desde Steam.
+- Permite a los usuarios buscar cualquier juego por nombre.
+- Muestra una página de detalles completa para cada juego, incluyendo el historial de precios desde IsThereAnyDeal.
+- Permite a los usuarios registrados añadir juegos a una lista de deseos personal.
+- Tiene un formulario de contacto y una página sobre nosotros.
+- El inicio de sesión de Steam está implementado usando OpenID (no se requiere contraseña).
 
 ---
 
-## Technology used
+## Tecnología utilizada
 
-| Area | Technology |
+| Área | Tecnología |
 |---|---|
 | Backend | PHP 8.2, Laravel 12 |
-| Frontend | Blade templates, Tailwind CSS, Vanilla JavaScript |
-| Database | MySQL (via XAMPP) |
-| Icons | Lucide Icons (loaded from CDN) |
-| Fonts | Space Grotesk, Space Mono (Google Fonts) |
-| Build tool | Vite |
-| Testing | Pest (PHP testing framework) |
+| Frontend | Plantillas Blade, Tailwind CSS, JavaScript Vanilla |
+| Base de Datos | MySQL (vía XAMPP) |
+| Iconos | Lucide Icons (cargados desde CDN) |
+| Fuentes | Space Grotesk, Space Mono (Google Fonts) |
+| Herramienta de construcción | Vite |
 
 ---
 
-## How to run locally
+## Cómo ejecutar localmente
 
-Requirements: PHP 8.2+, Composer, Node.js, MySQL running (XAMPP works fine)
+Requisitos: PHP 8.2+, Composer, Node.js, MySQL ejecutándose (XAMPP funciona bien)
 
 ```bash
-# 1. Install PHP dependencies
+# 1. Instalar dependencias de PHP
 composer install
 
-# 2. Install JavaScript dependencies
+# 2. Instalar dependencias de JavaScript
 npm install
 
-# 3. Copy the environment file
+# 3. Copiar el archivo de entorno
 cp .env.example .env
 
-# 4. Generate the application key
+# 4. Generar la clave de la aplicación
 php artisan key:generate
 
-# 5. Set up the database in .env (DB_DATABASE, DB_USERNAME, DB_PASSWORD)
+# 5. Configurar la base de datos en .env (DB_DATABASE, DB_USERNAME, DB_PASSWORD)
 
-# 6. Run the migrations
+# 6. Ejecutar las migraciones
 php artisan migrate
 
-# 7. Start everything (server + queue + vite)
+# 7. Iniciar todo (servidor + cola + vite)
 composer run dev
 ```
 
-The application runs at http://localhost:8000
+La aplicación se ejecuta en http://localhost:8000
 
 ---
 
-## Environment variables required
+## Variables de entorno requeridas
 
-Add these to your `.env` file:
+Añade estas a tu archivo `.env`:
 
 ```
-APP_KEY=         # Generated automatically
-DB_HOST=         # Usually 127.0.0.1
-DB_DATABASE=     # Your MySQL database name
-DB_USERNAME=     # Usually root
-DB_PASSWORD=     # Usually empty in XAMPP
+APP_KEY=         # Generada automáticamente
+DB_HOST=         # Usualmente 127.0.0.1
+DB_DATABASE=     # Nombre de tu base de datos MySQL
+DB_USERNAME=     # Usualmente root
+DB_PASSWORD=     # Usualmente vacío en XAMPP
 
-STEAM_API_KEY=   # From https://steamcommunity.com/dev/apikey
-ITAD_API_KEY=    # From https://isthereanydeal.com (for price history)
+STEAM_API_KEY=   # Desde https://steamcommunity.com/dev/apikey
+ITAD_API_KEY=    # Desde https://isthereanydeal.com (para el historial de precios)
 ```
 
 ---
 
-## Pages
+## Páginas
 
-| URL | What it shows |
+| URL | Qué muestra |
 |---|---|
-| `/` | Homepage dashboard with most played, trending and upcoming games |
-| `/search?q=...` | Search results page |
-| `/game?appid=...` | Full detail page for one game |
-| `/contact` | Contact form |
-| `/about` | About page |
-| `/login` | Login page (Steam login button) |
-| `/dashboard` | User dashboard (requires login) |
-| `/wishlist` | User's saved games (requires login) |
+| `/` | Panel de inicio con juegos más jugados, en tendencia y próximos |
+| `/search?q=...` | Página de resultados de búsqueda |
+| `/game?appid=...` | Página de detalles completa para un juego |
+| `/contact` | Formulario de contacto |
+| `/about` | Página sobre nosotros |
+| `/login` | Página de login (botón de login con Steam) |
+| `/dashboard` | Panel de usuario (requiere login) |
+| `/wishlist` | Juegos guardados del usuario (requiere login) |
 
 ---
 
-## API routes
+## Rutas de la API
 
-These routes return JSON, not HTML pages. They are called by JavaScript from the frontend.
+Estas rutas devuelven JSON, no páginas HTML. Son llamadas por JavaScript desde el frontend.
 
-| URL | What it returns |
+| URL | Qué devuelve |
 |---|---|
-| `/api/search?query=...` | List of games matching the search query |
-| `/api/home-data` | Most played, trending and upcoming games for the homepage |
+| `/api/search?query=...` | Lista de juegos que coinciden con la búsqueda |
+| `/api/home-data` | Juegos más jugados, en tendencia y próximos para la Home |
 
 ---
 
-## Controllers
+## Controladores
 
-All controllers are in `app/Http/Controllers/`.
+Todos los controladores están en `app/Http/Controllers/`.
 
 **HomeController**
-Handles all the main pages: home, about, contact. Also has the `homeData()` method that fetches from Steam's featured categories API and returns JSON for the homepage sections.
+Gestiona las páginas principales: inicio, sobre nosotros, contacto. También tiene el método `homeData()` que obtiene las categorías destacadas de la API de Steam y devuelve JSON para las secciones de la Home.
 
 **GameController**
-Handles the search results page and the game detail page. The detail page fetches full game information from Steam including screenshots, description, publisher and developer.
+Gestiona la página de resultados de búsqueda y la página de detalles del juego. La página de detalles obtiene la información completa de Steam, incluyendo capturas de pantalla, descripción, editor y desarrollador. También integra el historial de precios.
 
 **SearchController**
-Handles the JSON search endpoint used by the search bar. Delegates all logic to SearchService.
+Gestiona el endpoint JSON de búsqueda utilizado por la barra de búsqueda y la página de resultados.
 
 **AuthController**
-Handles Steam OpenID login. The user gets redirected to Steam, Steam sends them back with a verified identity, and the controller creates or finds the user in the database.
+Gestiona el login con Steam OpenID. El usuario es redirigido a Steam, Steam lo devuelve con una identidad verificada, y el controlador crea o busca al usuario en la base de datos.
 
 **WishlistController**
-Two actions: show the wishlist page, and toggle a game in the wishlist (add or remove).
+Dos acciones: mostrar la página de la lista de deseos y alternar un juego en la lista (añadir o eliminar).
 
 ---
 
-## Services
+## Servicios y APIs Externas
 
-All service classes are in `app/Services/`.
+La lógica de negocio y los wrappers se encuentran en `app/Services/` y `app/Includes/`.
 
-**SteamService**
-Wraps all calls to the Steam API. Uses Laravel's Http client instead of raw PHP functions. Methods:
-- `search(query)` - quick name search
-- `getAppDetails(appid)` - full game details
-- `getAppList()` - paginated list of all Steam apps
-- `extractGameFields(appid, data)` - cleans up a Steam API response and returns only the fields we need
+**GameService** (`app/Services/GameService.php`)
+Proporciona caché para los detalles de los juegos para minimizar las peticiones a APIs externas.
 
-**IsThereAnyDealService**
-Wraps calls to the IsThereAnyDeal API to get price history for a specific game. The price history is displayed as a chart on the game detail page.
+**Steam API Wrapper** (`app/Includes/steam_wrapper.php`)
+Contiene funciones PHP puras para obtener datos directamente de Steam, como `getAppDetails()` y `getSearch()`.
 
-**SearchService**
-The main search logic. Works in this order:
-1. Search the local database using FULLTEXT search
-2. If fewer than 5 results found, call the Steam search API
-3. Save the new results to the database
-4. If games are missing images or prices, fetch full details from Steam and update them
-5. Return up to 15 results
+**IsThereAnyDeal Wrapper** (`app/Includes/isthereanydeal_wrapper.php`)
+Proporciona `getPriceHistory()` para obtener datos históricos de precios de un juego, mostrados en la página de detalles.
 
 ---
 
-## Database
+## Cómo funciona la búsqueda
 
-The database has these tables:
-
-**users** - Standard Laravel user table with name, email, and password fields.
-
-**wishlists** - Links users to games. Each row is one game saved by one user.
-
----
-
-## How the search works
-
-1. User types in the search bar
-2. JavaScript calls `/api/search?query=...`
-3. SearchController calls SearchService
-4. SearchService searches the local database with FULLTEXT (fast, uses MySQL index)
-5. If there are fewer than 5 results, SearchService calls the Steam search API
-6. New games from Steam are saved to the local database
-7. Games that are missing images or prices get their details filled in from a second Steam API call
-8. Results are returned as JSON (max 15 games)
-9. JavaScript renders the results on the page
-
-On the second search for the same game, the data is already in the database so it is instant.
+1. El usuario escribe en la barra de búsqueda.
+2. JavaScript llama a `/api/search?query=...` o el usuario envía una petición GET estándar a `/search`.
+3. SearchController llama a `getSearch()` desde el wrapper de Steam.
+4. Para los 10 primeros resultados, obtiene información detallada usando `GameService` (que utiliza caché para optimizar la velocidad).
+5. Cruza los datos para ver si los juegos obtenidos están en la lista de deseos del usuario logueado.
+6. Los resultados se devuelven como JSON o se renderizan mediante la vista Blade.
 
 ---
 
-## How the homepage data works
+## Cómo funcionan los datos de la Home
 
-1. The page loads instantly showing animated placeholder boxes (skeleton loaders)
-2. JavaScript calls `/api/home-data`
-3. Laravel calls `https://store.steampowered.com/api/featuredcategories`
-4. This public Steam URL returns top sellers, specials (discounted games), and coming soon games
-5. Laravel cleans the data and returns only what the frontend needs
-6. JavaScript replaces the placeholder boxes with real game cards
+1. La página carga instantáneamente mostrando cajas de carga animadas (skeleton loaders).
+2. JavaScript llama a `/api/home-data`.
+3. Laravel llama a `https://store.steampowered.com/api/featuredcategories`.
+4. Esta URL pública de Steam devuelve los más vendidos, ofertas especiales y próximos juegos.
+5. Laravel limpia los datos y devuelve solo lo que el frontend necesita.
+6. JavaScript reemplaza las cajas de carga con las tarjetas de juego reales.
 
 ---
 
-## Blade components
+## Componentes Blade
 
-Reusable UI pieces in `resources/views/components/`:
+Piezas de UI reutilizables en `resources/views/components/`:
 
-| Component | Where it is used |
+| Componente | Dónde se usa |
 |---|---|
-| `navbar` | Every page (in the layout) |
-| `footer` | Every page (in the layout) |
-| `button` | Various pages for styled buttons |
-| `game-card` | Search results, game listings |
-| `game-list-item` | Homepage most played section |
-| `trending-item` | Homepage trending section |
-| `upcoming-card` | Homepage upcoming section |
-| `section-title` | Section headers with labels |
+| `navbar` | Todas las páginas (en el layout) |
+| `footer` | Todas las páginas (en el layout) |
+| `button` | Varias páginas para botones estilizados |
+| `game-card` | Resultados de búsqueda, listados de juegos |
+| `game-list-item` | Sección de más jugados de la Home |
+| `trending-item` | Sección de tendencia de la Home |
+| `upcoming-card` | Sección de próximos de la Home |
+| `section-title` | Cabeceras de sección con etiquetas |
 
 ---
 
-## Tests
-
-Tests are in the `tests/` folder and use the Pest framework.
-
-Run all tests with:
-
-```bash
-php artisan test
-```
-
-**Unit tests** (`tests/Unit/SearchSystemTest.php`):
-Tests for SteamService and SearchService. These tests do not make real API calls. They use fake HTTP responses to simulate what Steam would return.
-
-**Feature tests** (`tests/Feature/SteamWishTest.php`):
-Tests for the actual HTTP routes. Checks that each page returns the right status code, validation works on the contact form, and the search API returns the correct JSON structure.
-
-There are 23 tests total, all passing.
-
----
-
-## Folder structure overview
+## Resumen de la estructura de carpetas
 
 ```
 app/
-  Http/Controllers/   - All controllers
+  Http/Controllers/   - Todos los controladores
   Models/             - Game, User, Wishlist
-  Services/           - SteamService, IsThereAnyDealService, SearchService
+  Services/           - GameService
+  Includes/           - Wrappers de APIs externas (steam_wrapper.php, etc.)
 
 database/
-  migrations/         - Database table definitions
+  migrations/         - Definiciones de tablas de la base de datos
 
 resources/
   views/
-    layouts/          - Base HTML layout (app.blade.php)
-    components/       - Reusable UI pieces
-    pages/            - One file per page
+    layouts/          - Layout base HTML (app.blade.php)
+    components/       - Piezas de UI reutilizables
+    pages/            - Un archivo por página
 
 routes/
-  web.php             - All URL routes
-
-tests/
-  Unit/               - Service-level tests
-  Feature/            - Route-level tests
+  web.php             - Todas las rutas URL
 ```
 
 ---
 
-## What is not implemented yet
+## Qué no está implementado todavía
 
-- Redis caching for search results
-- Scheduled jobs to keep game prices updated automatically
-- Price drop notifications for wishlist games
-- Price history stored in the database (comes from ITAD API for now)
-- Full user profile page
-- The dashboard page has placeholder content
+- Caching con Redis para resultados de búsqueda.
+- Tareas programadas para mantener los precios de los juegos actualizados automáticamente.
+- Notificaciones de bajada de precio para juegos en la lista de deseos.
+- Historial de precios almacenado en la base de datos (por ahora viene de la API de ITAD).
+- Página de perfil de usuario completa.
+- La página del panel (dashboard) tiene contenido de marcador de posición.
