@@ -95,9 +95,8 @@
                         {{-- Invisible bridge wrapper for hover --}}
                         <div class="absolute right-0 top-full pt-2 hidden group-hover:block z-50">
                             <div class="w-48 bg-white border-4 border-black nb-shadow flex flex-col">
-                                <a href="{{ Auth::user()->profile_url }}" target="_blank"
-                                    class="block px-4 py-2 text-[#0F3A52] font-bold hover:bg-[#FACC15] border-b-2 border-black transition-colors">Steam
-                                    Profile</a>
+                                <a href="{{ route('dashboard') }}"
+                                    class="block px-4 py-2 text-[#0F3A52] font-bold hover:bg-[#FACC15] border-b-2 border-black transition-colors">Dashboard</a>
                                 <a href="{{ route('wishlist.index') }}"
                                     class="block px-4 py-2 text-[#0F3A52] font-bold hover:bg-[#FACC15] border-b-2 border-black transition-colors">My
                                     Wishlist</a>
