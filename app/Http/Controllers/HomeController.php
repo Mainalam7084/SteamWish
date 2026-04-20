@@ -89,6 +89,14 @@ class HomeController
     }
 
     // ==========================================
+    // Dashboard (Protected Route)
+    // ==========================================
+    public function dashboard()
+    {
+        return view('pages.dashboard');
+    }
+
+    // ==========================================
     // Private Helpers
     // ==========================================
 
