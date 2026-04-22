@@ -40,4 +40,28 @@ Route::middleware(['auth'])->group(function () {
     //Rutas de wishlist
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/wishlist/toggle', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+
+    // Error 403 - Acceso denegado
+Route::get('/test-403', function () {
+    abort(403, 'Acceso denegado');
+});
+// Error 419 - Sesión expirada
+Route::get('/test-419', function () {
+    abort(419, 'Sesión expirada');
+});
+
+// Error 429 - Demasiadas solicitudes
+Route::get('/test-429', function () {
+    abort(429, 'Demasiadas solicitudes');
+});
+
+// Error 500 - Error del servidor
+Route::get('/test-500', function () {
+    abort(500, 'Error del servidor');
+});
+
+// Error 503 - Servicio no disponible
+Route::get('/test-503', function () {
+    abort(503, 'Servicio no disponible');
+});
 });
