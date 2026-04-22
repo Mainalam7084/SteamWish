@@ -78,7 +78,7 @@ class GameController
 
         // TODO: Conseguir mas de solo 3 meses de historial
 
-        $price_history = getPriceHistory($itad_api_key, $appid, "es");
+        $price_history = getPriceHistory($itad_api_key, $appid, new DateTime("first day of this month -3 months"),"es");
 
         // Hay que ordenar por fecha
         usort($price_history, function($a, $b) {

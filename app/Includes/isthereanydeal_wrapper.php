@@ -10,7 +10,7 @@ function lookupById($apiKey, $appid) {
     ), true);
 }
 
-function getPriceHistory($apiKey, $appid, $country = "us") { 
+function getPriceHistory($apiKey, $appid, $since, $country = "us") { 
     $result = lookupById($apiKey, $appid);
 
     if($result['found'] === false)
@@ -22,7 +22,8 @@ function getPriceHistory($apiKey, $appid, $country = "us") {
         getUrl("games/history", 2,[
             "id" => $id,
             "key" => $apiKey,
-            "country" => $country
+            "country" => $country,
+            "since" => $since->format("c")
         ])
     ), true);
 }
