@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Game;
 use App\Models\Wishlist;
 use App\Services\GameService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 
 require_once app_path() . '/Includes/steam_wrapper.php';
@@ -19,11 +21,12 @@ class WishlistController
         $this->gameService = $gameService;
     }
 
-    // ==========================================
-    // GET /api/wishlist-ids  — for JS use
-    // ==========================================
-
-    public function ids()
+    /**
+     * Devuelve los IDs de los juegos en la wishlist del usuario.
+     *
+     * @return JsonResponse
+     */
+    public function ids(): JsonResponse
     {
         if (!Auth::check()) {
             return response()->json([]);
@@ -34,16 +37,18 @@ class WishlistController
         );
     }
 
-    // ==========================================
-    // GET /api/wishlist-preview  — for JS navbar
-    // ==========================================
-
-    public function preview()
+    /**
+     * Devuelve una vista previa de los últimos juegos en la wishlist.
+     *
+     * @return JsonResponse
+     */
+    public function preview(): JsonResponse
     {
         if (!Auth::check()) {
             return response()->json([]);
         }
 
+        // Obtener los últimos 3 juegos de la wishlist.
         $appids = Auth::user()
             ->wishlists()
             ->latest()
@@ -52,7 +57,7 @@ class WishlistController
             ->map(fn ($id) => (int) $id)
             ->toArray();
 
-        // 1. Pull from DB
+        // Buscar juegos en la base de datos local.
         $dbGames = Game::whereIn('appid', $appids)
             ->get()
             ->keyBy('appid');
@@ -60,6 +65,7 @@ class WishlistController
         $games = [];
         foreach ($appids as $appid) {
             if (isset($dbGames[$appid]) && $dbGames[$appid]->name) {
+                // Usar datos de la base de datos local.
                 $g = $dbGames[$appid];
                 $games[] = [
                     'appid' => $g->appid,
@@ -67,6 +73,7 @@ class WishlistController
                     'image' => $g->image ?? "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/{$appid}/header.jpg",
                 ];
             } else {
+                // Obtener datos de Steam si no están en la DB.
                 $steamData = $this->gameService->GetDetails($appid)['data'] ?? null;
                 $games[] = [
                     'appid' => $appid,
@@ -79,11 +86,12 @@ class WishlistController
         return response()->json($games);
     }
 
-    // ==========================================
-    // GET /wishlist  — show saved games
-    // ==========================================
-
-    public function index()
+    /**
+     * Muestra la lista completa de juegos en la wishlist del usuario.
+     *
+     * @return View
+     */
+    public function index(): View
     {
         $user    = Auth::user();
         $appids  = $user->wishlists()->pluck('appid')->map(fn ($id) => (int) $id)->toArray();
@@ -92,7 +100,7 @@ class WishlistController
             return view('pages.wishlist', ['games' => []]);
         }
 
-        // 1. Pull what we already have in the local DB
+        // Buscar juegos en la base de datos local.
         $dbGames = Game::whereIn('appid', $appids)
             ->get()
             ->keyBy('appid');
@@ -101,6 +109,7 @@ class WishlistController
 
         foreach ($appids as $appid) {
             if (isset($dbGames[$appid]) && $dbGames[$appid]->name) {
+                // Usar datos de la base de datos local.
                 $g = $dbGames[$appid];
                 $games[] = [
                     'appid'    => $g->appid,
@@ -111,7 +120,7 @@ class WishlistController
                     'is_free'  => $g->is_free,
                 ];
             } else {
-                // 2. Fetch using Steam Wrapper
+                // Obtener datos de Steam si no están en la DB.
                 $steamData = $this->gameService->GetDetails($appid);
                 $data = $steamData['data'] ?? null;
 
@@ -140,16 +149,19 @@ class WishlistController
         return view('pages.wishlist', compact('games'));
     }
 
-    // ==========================================
-    // POST /wishlist/toggle  — add or remove
-    // ==========================================
-
-    public function toggle(Request $request)
+    /**
+     * Agrega o elimina un juego de la wishlist del usuario.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function toggle(Request $request): JsonResponse
     {
         $request->validate(['appid' => 'required|string']);
         $user  = Auth::user();
         $appid = $request->input('appid');
 
+        // Verificar si el juego ya está en la wishlist.
         $wishlist = Wishlist::where('user_id', $user->id)
                             ->where('appid', $appid)
                             ->first();
