@@ -3,13 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
 class AuthController
 {
-    public function redirectToSteam(Request $request)
+    /**
+     * Redirige al usuario al flujo de login de Steam OpenID.
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function redirectToSteam(Request $request): RedirectResponse
     {
         $params = [
             'openid.ns' => 'http://specs.openid.net/auth/2.0',
@@ -23,13 +30,20 @@ class AuthController
         return redirect('https://steamcommunity.com/openid/login?'.http_build_query($params));
     }
 
-    public function handleSteamCallback(Request $request)
+    /**
+     * Maneja el callback de Steam y autentica al usuario en la aplicación.
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function handleSteamCallback(Request $request): RedirectResponse
     {
         if (! $request->has('openid_mode') || $request->input('openid_mode') === 'cancel') {
             return redirect('/')->with('error', 'Login cancelado.');
         }
 
         $params = [];
+        // Convertir los parámetros recibidos de OpenID al formato que espera Steam.
         foreach ($request->all() as $key => $value) {
             if (str_starts_with($key, 'openid_')) {
                 $params['openid.'.substr($key, 7)] = $value;
@@ -39,7 +53,7 @@ class AuthController
         }
         $params['openid.mode'] = 'check_authentication';
 
-        // Validar la firma con los servidores de Steam
+        // Validar la firma con los servidores de Steam.
         $response = Http::asForm()->post('https://steamcommunity.com/openid/login', $params);
 
         if (preg_match('/is_valid\s*:\s*true/i', $response->body())) {
@@ -75,7 +89,13 @@ class AuthController
         return redirect('/')->with('error', 'Fallo en la autenticación con Steam.');
     }
 
-    public function logout(Request $request)
+    /**
+     * Cierra la sesión del usuario y limpia la sesión.
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function logout(Request $request): RedirectResponse
     {
         Auth::logout();
         $request->session()->invalidate();
