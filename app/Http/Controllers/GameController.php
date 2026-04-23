@@ -6,6 +6,7 @@ use App\Services\GameService;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 require_once app_path() . '/Includes/steam_wrapper.php';
 require_once app_path() . '/Includes/isthereanydeal_wrapper.php';
@@ -22,42 +23,32 @@ class GameController
     }
 
     /**
-     * Display a listing of the resource.
+     * Muestra los resultados de búsqueda.
+     *
+     * @param Request $request
+     * @return View
      */
-    public function index()
+    public function index(Request $request): View
     {
-        $query = $_GET['q'];
+        $query = $request->query('q');
         $results = $this->searchController->search($query);
 
         return view('pages.search', compact('results', 'query'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Muestra la página de detalles de un juego.
+     *
+     * @param Request $request
+     * @return View
      */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show()
+    public function show(Request $request): View
     {
         $itad_api_key = config('app.itad_api_key');
 
-        $appid = $_GET['appid'] ?? null;
-        if ($appid == null) {
-            die('No appid'); // Mejor redirigir a página de error
+        $appid = $request->query('appid');
+        if ($appid === null) {
+            abort(404, 'No se encontró el identificador del juego.');
         }
 
         $details = $this->gameService->GetDetails($appid)['data'];
@@ -75,14 +66,12 @@ class GameController
 
         $screenshots = $details["screenshots"];
 
+        // TODO: Conseguir más de solo 3 meses de historial.
+        $price_history = getPriceHistory($itad_api_key, $appid, new DateTime("first day of this month -3 months"), "es");
 
-        // TODO: Conseguir mas de solo 3 meses de historial
-
-        $price_history = getPriceHistory($itad_api_key, $appid, new DateTime("first day of this month -3 months"),"es");
-
-        // Hay que ordenar por fecha
-        usort($price_history, function($a, $b) {
-            return $a["timestamp"] > $b["timestamp"];
+        // Ordenar historial de precios por fecha ascendente.
+        usort($price_history, function ($a, $b) {
+            return $a["timestamp"] <=> $b["timestamp"];
         });
 
         $price_history_timestamps = [];
@@ -127,27 +116,4 @@ class GameController
         ));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }
