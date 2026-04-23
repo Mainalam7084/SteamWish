@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -10,21 +13,22 @@ class HomeController
 {
     private const FEATURED_URL = 'https://store.steampowered.com/api/featuredcategories?cc=es&l=en';
 
-    // ==========================================
-    // Home Page — returns view instantly
-    // ==========================================
-
-    public function index()
+    /**
+     * Muestra la página principal.
+     *
+     * @return View
+     */
+    public function index(): View
     {
         return view('pages.home');
     }
 
-    // ==========================================
-    // API Endpoint — fetches Steam data
-    // GET /api/home-data
-    // ==========================================
-
-    public function homeData()
+    /**
+     * Devuelve datos destacados de Steam para la home.
+     *
+     * @return JsonResponse
+     */
+    public function homeData(): JsonResponse
     {
         try {
             $response = Http::timeout(10)->get(self::FEATURED_URL);
@@ -46,25 +50,33 @@ class HomeController
         }
     }
 
-    // ==========================================
-    // About Section
-    // ==========================================
-
-    public function about()
+    /**
+     * Muestra la página "About".
+     *
+     * @return View
+     */
+    public function about(): View
     {
         return view('pages.about');
     }
 
-    // ==========================================
-    // Contact Section
-    // ==========================================
-
-    public function contact()
+    /**
+     * Muestra la página de contacto.
+     *
+     * @return View
+     */
+    public function contact(): View
     {
         return view('pages.contact');
     }
 
-    public function contactStore(Request $request)
+    /**
+     * Valida y procesa el formulario de contacto.
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function contactStore(Request $request): RedirectResponse
     {
         $rules = [
             'nombre' => 'required|string|min:3|max:100',
@@ -88,20 +100,23 @@ class HomeController
         return back()->with('success', '¡Gracias por tu mensaje! Te contactaremos pronto.');
     }
 
-    // ==========================================
-    // Dashboard (Protected Route)
-    // ==========================================
-    public function dashboard()
+    /**
+     * Muestra el panel de usuario para usuarios autenticados.
+     *
+     * @return View
+     */
+    public function dashboard(): View
     {
         return view('pages.dashboard');
     }
 
-    // ==========================================
-    // Private Helpers
-    // ==========================================
 
     /**
-     * Normalise a Steam featured-categories item into a clean flat array.
+     * Normaliza los items recibidos de Steam en un array plano y usable.
+     *
+     * @param array $items
+     * @param int $limit
+     * @return array
      */
     private function parseItems(array $items, int $limit): array
     {
@@ -136,6 +151,11 @@ class HomeController
         return $result;
     }
 
+    /**
+     * Devuelve una respuesta vacía para la API cuando Steam no responde.
+     *
+     * @return array
+     */
     private function emptyPayload(): array
     {
         return ['mostPlayed' => [], 'trending' => [], 'upcoming' => []];
