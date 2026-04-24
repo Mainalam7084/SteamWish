@@ -2,33 +2,49 @@
 
 @section('title', 'SteamWish – Dashboard')
 
-    <x-home-loader />
+<x-home-loader />
 
 @section('content')
 
     {{-- ══════════════════════════════════════ --}}
-    {{--  HERO                                  --}}
+    {{--  HERO — Ofertas Trending               --}}
     {{-- ══════════════════════════════════════ --}}
-    <section id="hero" class="relative border-b-4 border-black overflow-hidden bg-[#0F3A52]"
-        style="min-height:220px;">
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col gap-4">
-            <span
-                class="bg-[#FACC15] border-2 border-black text-black font-black text-xs px-3 py-1 uppercase tracking-widest self-start">
-                🎮 Tu wishlist inteligente
-            </span>
-            <h1 class="font-black text-4xl sm:text-6xl uppercase tracking-tight leading-none text-white">
-                Domina<br><span class="text-[#FACC15]">Steam</span>
-            </h1>
-            <p class="text-blue-200 text-sm max-w-md leading-relaxed">
-                Rastrea precios, descubre ofertas y gestiona tu wishlist en un solo lugar.
-            </p>
-            <div>
-                <a href="{{ route('search') }}" id="hero-explore-btn"
-                    class="inline-flex items-center gap-2 bg-[#FACC15] border-4 border-black text-black font-black uppercase text-sm px-6 py-3
-                          shadow-[4px_4px_0_0_#000] hover:shadow-[2px_2px_0_0_#000] hover:translate-x-[2px] hover:translate-y-[2px] transition-all">
-                    <i data-lucide="search" class="w-4 h-4"></i> Explorar juegos
-                </a>
+    <section id="hero" class="relative border-b-4 border-black bg-[#0F3A52] py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            {{-- Section header --}}
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-3">
+                    <h2 class="font-black text-2xl sm:text-3xl uppercase text-white tracking-tight">Ofertas <span
+                            class="text-[#FACC15]">Trending</span></h2>
+                    <span
+                        class="hidden sm:block bg-[#FACC15] border-2 border-black text-black font-black text-xs px-2 py-1 uppercase tracking-widest shadow-[2px_2px_0_0_#000]">¡Mejor
+                        precio!</span>
+                </div>
             </div>
+
+            {{-- Skeleton: horizontal scroll --}}
+            <div id="deals-skeleton" class="flex gap-4 overflow-x-auto pb-3 sw-scrollbar">
+                @for ($i = 0; $i < 8; $i++)
+                    <div class="shrink-0 w-52 bg-white/10 border-4 border-white/20 animate-pulse">
+                        <div class="w-full aspect-[460/215] bg-white/15"></div>
+                        <div class="p-3 flex flex-col gap-2">
+                            <div class="h-3 bg-white/20 rounded"></div>
+                            <div class="h-3 w-2/3 bg-white/15 rounded"></div>
+                            <div class="h-5 w-14 bg-[#FACC15]/25 mt-1"></div>
+                        </div>
+                    </div>
+                @endfor
+            </div>
+
+            {{-- Real cards: all in one scrollable row --}}
+            <div id="deals-list" class="hidden flex gap-4 overflow-x-auto pb-3 sw-scrollbar"></div>
+
+            {{-- Empty --}}
+            <div id="deals-empty" class="hidden text-blue-200 text-sm font-bold text-center py-10">
+                No hay ofertas disponibles ahora.
+            </div>
+
         </div>
     </section>
 
@@ -77,7 +93,7 @@
                     <h2 class="font-black text-xl uppercase text-[#0F3A52]">Trending</h2>
                     <span
                         class="bg-[#16A34A] border-2 border-black text-white text-xs font-black uppercase px-2 py-1 shadow-[2px_2px_0_0_#000]">Hot
-                        🔥</span>
+                    </span>
                 </div>
                 {{-- Skeleton --}}
                 <div id="trending-skeleton" class="flex flex-col gap-3">
@@ -125,10 +141,9 @@
                 @endfor
             </div>
             {{-- Real data --}}
-            <div id="upcoming-list" class="flex gap-6 overflow-x-auto pb-4 hide-scrollbar hidden"></div>
+            <div id="upcoming-list" class="flex gap-6 overflow-x-auto pb-4 sw-scrollbar hidden"></div>
             {{-- Empty state --}}
-            <div id="upcoming-empty"
-                class="hidden p-6 bg-white border-4 border-black font-bold text-gray-400 text-center">
+            <div id="upcoming-empty" class="hidden p-6 bg-white border-4 border-black font-bold text-gray-400 text-center">
                 No se pudo cargar. Intenta más tarde.
             </div>
         </section>
@@ -139,6 +154,32 @@
 
 @push('scripts')
     <style>
+        /* ── Custom Neo-Brutalist scrollbar ────────── */
+        .sw-scrollbar::-webkit-scrollbar {
+            height: 10px;
+            width: 10px;
+        }
+
+        .sw-scrollbar::-webkit-scrollbar-track {
+            background: #0F3A52;
+            border: 2px solid #000;
+        }
+
+        .sw-scrollbar::-webkit-scrollbar-thumb {
+            background: #FACC15;
+            border: 2px solid #000;
+        }
+
+        .sw-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #fde047;
+        }
+
+        .sw-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: #FACC15 #0F3A52;
+        }
+
+        /* keep the old class for anything that still uses it */
         .hide-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -298,6 +339,55 @@
         }
 
         // ─────────────────────────────────────────────
+        // Render: Hero Deals Carousel (discounted trending games)
+        // ─────────────────────────────────────────────
+        function renderDeals(allGames) {
+            const deals = allGames
+                .filter(g => g.discount > 0)
+                .sort((a, b) => b.discount - a.discount);
+
+            const skeleton = document.getElementById('deals-skeleton');
+            const list = document.getElementById('deals-list');
+            const empty = document.getElementById('deals-empty');
+
+            if (!deals.length) {
+                skeleton?.classList.add('hidden');
+                empty?.classList.remove('hidden');
+                return;
+            }
+
+            list.innerHTML = deals.map(g => {
+                const img = g.image ?
+                    `<img src="${g.image}" alt="${g.name}" class="w-full aspect-[460/215] object-cover border-b-4 border-black">` :
+                    `<div class="w-full aspect-[460/215] bg-[#0F3A52]/60 border-b-4 border-black flex items-center justify-center"><i data-lucide="gamepad-2" class="w-8 h-8 text-blue-300"></i></div>`;
+
+                const discountBadge = g.discount > 0 ?
+                    `<span class="inline-block bg-[#16A34A] border-2 border-black text-white font-black text-xs px-2 py-0.5 shadow-[2px_2px_0_0_#000]">-${g.discount}%</span>` :
+                    '';
+
+                return `
+                <a href="${gameUrl(g.appid)}"
+                   class="relative group block shrink-0 w-52 bg-[#F5F5F5] border-4 border-black
+                          shadow-[4px_4px_0_0_#FACC15] hover:shadow-[6px_6px_0_0_#FACC15]
+                          hover:-translate-y-1 hover:-translate-x-1 transition-all duration-200 flex flex-col">
+                    ${img}
+                    ${heartBtn(g.appid, 'absolute top-2 right-2')}
+                    <div class="p-3 flex flex-col flex-grow justify-between bg-white">
+                        <h3 class="text-xs font-black uppercase text-[#0F3A52] line-clamp-2 group-hover:text-[#5DA9D6] transition-colors leading-tight mb-2">${g.name}</h3>
+                        <div class="flex items-center justify-between gap-1 mt-auto flex-wrap">
+                            <span class="inline-block bg-[#FACC15] border-2 border-black px-2 py-0.5 font-black text-xs text-black shadow-[2px_2px_0_0_#000]">${g.price}</span>
+                            ${discountBadge}
+                        </div>
+                    </div>
+                </a>`;
+            }).join('');
+
+            skeleton?.classList.add('hidden');
+            list.classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        // ─────────────────────────────────────────────
         // Fetch and render all sections
         // ─────────────────────────────────────────────
         async function loadHomeData() {
@@ -316,6 +406,7 @@
                 renderMostPlayed(data.mostPlayed ?? []);
                 renderTrending(data.trending ?? []);
                 renderUpcoming(data.upcoming ?? []);
+                renderDeals(data.trending ?? []);
             } catch (err) {
                 console.error('Home data load failed:', err);
                 ['most-played', 'trending', 'upcoming'].forEach(key => {
