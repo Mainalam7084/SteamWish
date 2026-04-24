@@ -388,31 +388,77 @@
         }
 
         // ─────────────────────────────────────────────
+        // Cache helpers (localStorage, 2-hour TTL)
+        // ─────────────────────────────────────────────
+        const CACHE_KEY = 'sw_home_data';
+        const CACHE_TTL = 2 * 60 * 60 * 1000; // 2 hours in ms
+
+        function getCached() {
+            try {
+                const raw = localStorage.getItem(CACHE_KEY);
+                if (!raw) return null;
+                const { ts, data } = JSON.parse(raw);
+                if (Date.now() - ts > CACHE_TTL) { localStorage.removeItem(CACHE_KEY); return null; }
+                return data;
+            } catch { return null; }
+        }
+
+        function setCache(data) {
+            try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch {}
+        }
+
+        // ─────────────────────────────────────────────
+        // Render everything from a data object
+        // ─────────────────────────────────────────────
+        function renderAll(data, ids) {
+            savedAppids = new Set(ids.map(Number));
+            renderMostPlayed(data.mostPlayed ?? []);
+            renderTrending(data.trending ?? []);
+            renderUpcoming(data.upcoming ?? []);
+            renderDeals(data.trending ?? []);
+        }
+
+        // ─────────────────────────────────────────────
         // Fetch and render all sections
         // ─────────────────────────────────────────────
         async function loadHomeData() {
+            const cached = getCached();
+
+            // --- FAST PATH: render from cache immediately ---
+            if (cached) {
+                // Skip loading screen — data is ready now
+                const overlay = document.getElementById('sw-loader-overlay');
+                if (overlay) overlay.remove();
+
+                // Wishlist IDs are user-specific, always fetch live
+                const ids = await fetch('{{ route('api.wishlist-ids') }}')
+                    .then(r => r.ok ? r.json() : [])
+                    .catch(() => []);
+
+                renderAll(cached, ids);
+                return;
+            }
+
+            // --- SLOW PATH: fresh fetch ---
             try {
-                // Load wishlist IDs and home data in parallel, but handle ID errors gracefully
                 const homePromise = fetch('{{ route('api.home-data') }}').then(r => r.json());
-                const idsPromise = fetch('{{ route('api.wishlist-ids') }}')
+                const idsPromise  = fetch('{{ route('api.wishlist-ids') }}')
                     .then(r => r.ok ? r.json() : [])
                     .catch(() => []);
 
                 const [data, ids] = await Promise.all([homePromise, idsPromise]);
 
-                // Populate the shared set before rendering so heartBtn() reads correct state
-                savedAppids = new Set(ids.map(Number));
-
-                renderMostPlayed(data.mostPlayed ?? []);
-                renderTrending(data.trending ?? []);
-                renderUpcoming(data.upcoming ?? []);
-                renderDeals(data.trending ?? []);
+                setCache(data); // save for next visit
+                renderAll(data, ids);
             } catch (err) {
                 console.error('Home data load failed:', err);
                 ['most-played', 'trending', 'upcoming'].forEach(key => {
                     hide(`${key}-skeleton`);
                     show(`${key}-empty`);
                 });
+                // also hide deals skeleton
+                document.getElementById('deals-skeleton')?.classList.add('hidden');
+                document.getElementById('deals-empty')?.classList.remove('hidden');
             }
         }
 
