@@ -6,9 +6,7 @@
 
 @section('content')
 
-    {{-- ══════════════════════════════════════ --}}
-    {{--  HERO — Ofertas Trending               --}}
-    {{-- ══════════════════════════════════════ --}}
+   <!-- HERO — Ofertas Trending -->
     <section id="hero" class="relative border-b-4 border-black bg-[#0F3A52] py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -37,7 +35,7 @@
                 @endfor
             </div>
 
-            {{-- Real cards: all in one scrollable row --}}
+            {{-- Real cards: todos en scrollable row --}}
             <div id="deals-list" class="hidden flex gap-4 overflow-x-auto pb-3 sw-scrollbar"></div>
 
             {{-- Empty --}}
@@ -48,9 +46,7 @@
         </div>
     </section>
 
-    {{-- ══════════════════════════════════════ --}}
-    {{--  DASHBOARD                             --}}
-    {{-- ══════════════════════════════════════ --}}
+    <!-- Dashboard -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
         {{-- TOP: Two columns --}}
@@ -191,9 +187,7 @@
     </style>
 
     <script>
-        // ─────────────────────────────────────────────
-        // Helpers
-        // ─────────────────────────────────────────────
+        // Helper functions
         function show(id) {
             document.getElementById(id)?.classList.remove('hidden');
         }
@@ -229,9 +223,7 @@
         </button>`;
         }
 
-        // ─────────────────────────────────────────────
-        // Render: Most Played list item
-        // ─────────────────────────────────────────────
+        // Render: Most Played list items
         function renderMostPlayed(games) {
             const container = document.getElementById('most-played-list');
             if (!games.length) {
@@ -264,9 +256,7 @@
             lucide.createIcons();
         }
 
-        // ─────────────────────────────────────────────
-        // Render: Trending list item
-        // ─────────────────────────────────────────────
+        // Render: Trending list items
         function renderTrending(games) {
             const container = document.getElementById('trending-list');
             if (!games.length) {
@@ -299,9 +289,7 @@
             show('trending-list');
         }
 
-        // ─────────────────────────────────────────────
-        // Render: Upcoming cards carousel
-        // ─────────────────────────────────────────────
+        // Render: Upcoming games carousel
         function renderUpcoming(games) {
             const container = document.getElementById('upcoming-list');
             if (!games.length) {
@@ -338,9 +326,7 @@
             lucide.createIcons();
         }
 
-        // ─────────────────────────────────────────────
-        // Render: Hero Deals Carousel (discounted trending games)
-        // ─────────────────────────────────────────────
+       // Render: Deals carousel (reuses trending data, but filters to only discounted games)
         function renderDeals(allGames) {
             const deals = allGames
                 .filter(g => g.discount > 0)
@@ -387,9 +373,7 @@
             lucide.createIcons();
         }
 
-        // ─────────────────────────────────────────────
-        // Cache helpers (localStorage, 2-hour TTL)
-        // ─────────────────────────────────────────────
+        // Cache Helper functions (2h cache for home data, wishlist is always live)
         const CACHE_KEY = 'sw_home_data';
         const CACHE_TTL = 2 * 60 * 60 * 1000; // 2 hours in ms
 
@@ -407,9 +391,7 @@
             try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch {}
         }
 
-        // ─────────────────────────────────────────────
-        // Render everything from a data object
-        // ─────────────────────────────────────────────
+        // Main render function: takes all data and renders each section
         function renderAll(data, ids) {
             savedAppids = new Set(ids.map(Number));
             renderMostPlayed(data.mostPlayed ?? []);
@@ -418,9 +400,7 @@
             renderDeals(data.trending ?? []);
         }
 
-        // ─────────────────────────────────────────────
-        // Fetch and render all sections
-        // ─────────────────────────────────────────────
+        // Main data loading function: tries cache first, then falls back to live fetch
         async function loadHomeData() {
             const cached = getCached();
 
