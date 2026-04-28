@@ -50,6 +50,14 @@
     {{-- Footer --}}
     <x-footer />
 
+    {{-- Global Loader --}}
+    <div id="global-loader" class="fixed inset-0 z-[9999] bg-[#0F3A52]/90 backdrop-blur-sm flex flex-col items-center justify-center transition-opacity duration-200 opacity-0 pointer-events-none hidden">
+        <div class="relative border-4 border-black shadow-[8px_8px_0_0_#FACC15] bg-white p-4 max-w-[300px] w-full mx-4 flex flex-col items-center">
+            <img id="loader-gif" src="" alt="Cargando..." class="w-full h-auto border-4 border-black object-cover aspect-square bg-[#F5F5F5]">
+            <h2 class="mt-4 font-black text-2xl uppercase text-center text-[#0F3A52] tracking-widest animate-pulse">Cargando...</h2>
+        </div>
+    </div>
+
     {{-- Scripts --}}
     <script>
         lucide.createIcons();
@@ -222,6 +230,65 @@
                     @endauth
                 });
             }
+        });
+
+        // ── Global Loading Screen ───────────────────────────────────────────
+        document.addEventListener('DOMContentLoaded', () => {
+            const loader = document.getElementById('global-loader');
+            const loaderGif = document.getElementById('loader-gif');
+            const totalGifs = 7; // Tenemos 0.gif a 6.gif en public/gifs
+
+            // Pre-cargar GIFs en segundo plano para que el navegador no cancele
+            // su descarga al cambiar de página (location.href cancela peticiones pendientes).
+            const preloadedGifs = [];
+            for (let i = 0; i < totalGifs; i++) {
+                const img = new Image();
+                img.src = `/gifs/${i}.gif`;
+                preloadedGifs.push(img);
+            }
+
+            document.addEventListener('click', (e) => {
+                const link = e.target.closest('a');
+                if (!link) return;
+                
+                const href = link.getAttribute('href');
+                
+                // Ignorar enlaces sin href, anclas, targets _blank, javascript, o si se hace click derecho/con control
+                if (!href || href.startsWith('#') || href.startsWith('javascript:') || link.getAttribute('target') === '_blank' || link.hasAttribute('download')) {
+                    return;
+                }
+
+                if (e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) {
+                    return;
+                }
+
+                // Prevenir navegación por defecto para mostrar el loader
+                e.preventDefault();
+                
+                const randomGif = Math.floor(Math.random() * totalGifs);
+                // Usamos el src pre-cargado para asegurar que ya está en caché
+                loaderGif.src = preloadedGifs[randomGif].src;
+                
+                loader.classList.remove('hidden');
+                // Timeout mínimo para que el transition de CSS funcione
+                setTimeout(() => {
+                    loader.classList.remove('opacity-0', 'pointer-events-none');
+                    loader.classList.add('opacity-100');
+                }, 10);
+
+                // Navegar
+                setTimeout(() => {
+                    window.location.href = link.href;
+                }, 150); 
+            });
+            
+            // Ocultar si el usuario usa el botón Atrás del navegador (bfcache)
+            window.addEventListener('pageshow', (e) => {
+                if (e.persisted) {
+                    loader.classList.add('hidden', 'opacity-0', 'pointer-events-none');
+                    loader.classList.remove('opacity-100');
+                }
+            });
         });
     </script>
 </body>
