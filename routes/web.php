@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
@@ -37,7 +38,13 @@ Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 
-    //Rutas de wishlist
+    // Rutas de wishlist
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/wishlist/toggle', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+
+    // Rutas de notificaciones
+    Route::get('/notificaciones', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/api/notifications-preview', [NotificationController::class, 'preview'])->name('api.notifications-preview');
+    Route::post('/api/notifications/mark-read/{id}', [NotificationController::class, 'markRead'])->name('notifications.mark-read');
+    Route::post('/api/notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name('notifications.mark-all-read');
 });

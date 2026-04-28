@@ -158,6 +158,70 @@
                         });
                 });
             }
+
+            // ── Notifications dropdown ──────────────────────────────────────────
+            const navNotifContainer = document.getElementById('nav-notifications-container');
+            const navNotifItems     = document.getElementById('nav-notifications-items');
+            const navNotifLabel     = document.getElementById('nav-notif-unread-label');
+            const navNotifBadge     = document.getElementById('nav-notif-badge');
+
+            if (navNotifContainer && navNotifItems) {
+                let notifLoaded = false;
+
+                navNotifContainer.addEventListener('mouseenter', () => {
+                    if (notifLoaded) return;
+                    notifLoaded = true;
+
+                    @auth
+                    fetch('{{ route("api.notifications-preview") }}')
+                        .then(res => res.ok ? res.json() : { notifications: [], unread: 0 })
+                        .then(({ notifications, unread }) => {
+                            // Update badge
+                            if (navNotifBadge) {
+                                if (unread > 0) {
+                                    navNotifBadge.textContent = unread > 9 ? '9+' : unread;
+                                    navNotifBadge.style.display = 'flex';
+                                } else {
+                                    navNotifBadge.style.display = 'none';
+                                }
+                            }
+                            if (navNotifLabel) {
+                                navNotifLabel.textContent = unread > 0 ? `${unread} sin leer` : 'Todo leído';
+                            }
+
+                            if (notifications.length === 0) {
+                                navNotifItems.innerHTML = `
+                                    <div class="p-4 text-center">
+                                        <i data-lucide="bell-off" class="w-8 h-8 mx-auto mb-2 text-gray-300"></i>
+                                        <p class="text-xs font-bold text-gray-400">Sin notificaciones aún.</p>
+                                    </div>
+                                `;
+                            } else {
+                                navNotifItems.innerHTML = notifications.map(n => `
+                                    <a href="{{ route('notifications.index') }}"
+                                       class="flex items-start gap-3 p-3 border-b-2 border-black hover:bg-[#FACC15] transition-colors ${n.is_unread ? 'bg-yellow-50' : ''}">
+                                        ${n.game_image ? `<img src="${n.game_image}" alt="${n.game_name}" class="w-14 h-7 object-cover border-2 border-black shrink-0">` : ''}
+                                        <div class="flex-1 min-w-0">
+                                            <p class="font-black text-[10px] uppercase text-[#0F3A52] truncate">${n.game_name}</p>
+                                            <div class="flex items-center gap-1 mt-0.5">
+                                                <span class="text-gray-400 line-through text-[9px]">${n.old_price}</span>
+                                                <span class="font-black text-[11px] text-[#16A34A]">${n.new_price}</span>
+                                                ${n.discount_percent > 0 ? `<span class="bg-[#FACC15] border border-black text-[8px] font-black px-1">-${n.discount_percent}%</span>` : ''}
+                                            </div>
+                                            <p class="text-[9px] text-gray-400 mt-0.5">${n.created_at}</p>
+                                        </div>
+                                        ${n.is_unread ? '<span class="w-2 h-2 bg-red-500 border border-black shrink-0 mt-1"></span>' : ''}
+                                    </a>
+                                `).join('');
+                            }
+                            if (window.lucide) lucide.createIcons();
+                        })
+                        .catch(() => {
+                            navNotifItems.innerHTML = `<div class="p-4 text-center"><p class="text-xs font-bold text-red-500">Error al cargar.</p></div>`;
+                        });
+                    @endauth
+                });
+            }
         });
     </script>
 </body>

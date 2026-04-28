@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\PriceNotification;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -51,5 +52,15 @@ class User extends Authenticatable
     public function wishlists()
     {
         return $this->hasMany(Wishlist::class);
+    }
+
+    public function priceNotifications()
+    {
+        return $this->hasMany(PriceNotification::class);
+    }
+
+    public function unreadNotificationsCount(): int
+    {
+        return $this->priceNotifications()->whereNull('read_at')->count();
     }
 }

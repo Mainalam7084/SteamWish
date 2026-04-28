@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 require_once app_path() . '/Includes/steam_wrapper.php';
 
@@ -172,6 +173,40 @@ class WishlistController
         }
 
         Wishlist::create(['user_id' => $user->id, 'appid' => $appid]);
+
+        // Guardar/actualizar datos del juego para tracking de precios.
+        try {
+            $steamData = $this->gameService->GetDetails($appid);
+            $data = $steamData['data'] ?? null;
+
+            if ($data) {
+                $priceOverview = $data['price_overview'] ?? null;
+                $price         = $priceOverview['final']    ?? 0;
+                $basePrice     = $priceOverview['initial']  ?? 0;
+                $discount      = $priceOverview['discount_percent'] ?? 0;
+                $image         = $data['header_image'] ?? null;
+                $name          = $data['name'] ?? "Game #{$appid}";
+
+                Game::updateOrCreate(
+                    ['appid' => (int) $appid],
+                    [
+                        'name'             => $name,
+                        'last_updated_at'  => now(),
+                        'price'            => $price,
+                        'base_price'       => $basePrice > 0 ? $basePrice : $price,
+                        'discount_percent' => $discount,
+                        'image'            => $image,
+                        'is_free'          => $data['is_free'] ?? false,
+                    ]
+                );
+            }
+        } catch (\Throwable $e) {
+            Log::warning('WishlistController::toggle — no se pudo guardar precio base', [
+                'appid' => $appid,
+                'error' => $e->getMessage(),
+            ]);
+        }
+
         return response()->json(['status' => 'added']);
     }
 }

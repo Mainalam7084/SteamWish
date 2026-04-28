@@ -75,11 +75,53 @@
                 </div>
                 @endauth
 
-                <a href="#" id="nav-notifications"
+                @auth
+                <div class="relative group hidden sm:flex h-full items-center" id="nav-notifications-container">
+                    <a href="{{ route('notifications.index') }}" id="nav-notifications"
+                        class="relative w-9 h-9 bg-[#0F3A52] border-2 border-white/30 flex items-center justify-center nb-shadow-sm transition-colors duration-100 group-hover:bg-[#FACC15] group-hover:border-black"
+                        title="Notificaciones">
+                        <i data-lucide="bell" class="w-4 h-4 text-[#FACC15] group-hover:text-black"></i>
+                        {{-- Badge de no leídas --}}
+                        @php $unreadCount = Auth::user()->unreadNotificationsCount(); @endphp
+                        @if($unreadCount > 0)
+                        <span id="nav-notif-badge"
+                            class="absolute -top-1.5 -right-1.5 w-4 h-4 bg-red-500 border border-black text-white text-[9px] font-black flex items-center justify-center rounded-none">
+                            {{ $unreadCount > 9 ? '9+' : $unreadCount }}
+                        </span>
+                        @endif
+                    </a>
+
+                    {{-- Dropdown hover --}}
+                    <div class="absolute right-0 top-full pt-4 hidden group-hover:block z-50">
+                        <div class="w-80 bg-white border-4 border-black shadow-[4px_4px_0_0_#0F3A52] flex flex-col pt-2" id="nav-notifications-dropdown">
+                            <div class="px-4 pb-2 border-b-2 border-black flex items-center justify-between">
+                                <span class="font-black uppercase text-[#0F3A52] text-sm">Notificaciones</span>
+                                <span id="nav-notif-unread-label" class="text-[10px] font-bold text-gray-400"></span>
+                            </div>
+
+                            <div id="nav-notifications-items" class="flex flex-col">
+                                <div class="p-4 text-center text-xs font-bold text-gray-400" id="nav-notif-loading">
+                                    Cargando...
+                                </div>
+                            </div>
+
+                            <a href="{{ route('notifications.index') }}"
+                                class="block px-4 py-3 bg-[#F5F5F5] text-center text-[#0F3A52] font-black hover:bg-[#FACC15] border-t-2 border-black transition-colors uppercase text-xs">
+                                Ver todas las notificaciones
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                @endauth
+
+                {{-- Bell para usuarios no autenticados (sin funcionalidad) --}}
+                @guest
+                <a href="{{ route('auth.steam') }}" id="nav-notifications"
                     class="hidden sm:flex relative w-9 h-9 bg-[#0F3A52] border-2 border-white/30 items-center justify-center nb-shadow-sm nb-hover group"
-                    title="Notificaciones">
+                    title="Inicia sesión para ver notificaciones">
                     <i data-lucide="bell" class="w-4 h-4 text-[#FACC15]"></i>
                 </a>
+                @endguest
 
                 {{-- Login / User --}}
                 @auth
