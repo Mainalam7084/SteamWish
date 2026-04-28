@@ -10,6 +10,8 @@ SteamWish es una aplicación web que permite a los usuarios buscar juegos en Ste
 - Permite a los usuarios buscar cualquier juego por nombre.
 - Muestra una página de detalles completa para cada juego, incluyendo el historial de precios desde IsThereAnyDeal.
 - Permite a los usuarios registrados añadir juegos a una lista de deseos personal.
+- **Seguimiento de Precios y Notificaciones**: Un sistema en segundo plano revisa diariamente los precios de la Wishlist y notifica en la app si algún juego baja de precio.
+- **Diseño Neo-Brutalista y UX**: Toda la interfaz cuenta con un diseño premium Neo-Brutalista, incluyendo una pantalla de carga global animada con GIFs entre transiciones.
 - Tiene un formulario de contacto y una página sobre nosotros.
 - El inicio de sesión de Steam está implementado usando OpenID (no se requiere contraseña).
 
@@ -87,6 +89,7 @@ ITAD_API_KEY=    # Desde https://isthereanydeal.com (para el historial de precio
 | `/login` | Página de login (botón de login con Steam) |
 | `/dashboard` | Panel de usuario (requiere login) |
 | `/wishlist` | Juegos guardados del usuario (requiere login) |
+| `/notificaciones` | Centro de notificaciones de bajadas de precio (requiere login) |
 
 ---
 
@@ -118,7 +121,17 @@ Gestiona el endpoint JSON de búsqueda utilizado por la barra de búsqueda y la 
 Gestiona el login con Steam OpenID. El usuario es redirigido a Steam, Steam lo devuelve con una identidad verificada, y el controlador crea o busca al usuario en la base de datos.
 
 **WishlistController**
-Dos acciones: mostrar la página de la lista de deseos y alternar un juego en la lista (añadir o eliminar).
+Dos acciones: mostrar la página de la lista de deseos y alternar un juego en la lista (añadir o eliminar). También guarda el precio base del juego cuando se añade por primera vez.
+
+**NotificationController**
+Gestiona el sistema de notificaciones en la app: vista previa en el menú superior, página completa y opciones para marcar alertas como leídas.
+
+---
+
+## Tareas en Segundo Plano (Jobs)
+
+**CheckWishlistPrices** (`app/Jobs/CheckWishlistPrices.php`)
+Compara periódicamente el precio actual de los juegos en las listas de deseos de los usuarios con el precio base al que lo guardaron. Si detecta una bajada, genera una alerta en el sistema de notificaciones. Se ejecuta automáticamente mediante el Programador de Laravel (`routes/console.php`).
 
 ---
 
@@ -203,8 +216,6 @@ routes/
 ## Qué no está implementado todavía
 
 - Caching con Redis para resultados de búsqueda.
-- Tareas programadas para mantener los precios de los juegos actualizados automáticamente.
-- Notificaciones de bajada de precio para juegos en la lista de deseos.
-- Historial de precios almacenado en la base de datos (por ahora viene de la API de ITAD).
-- Página de perfil de usuario completa.
-- La página del panel (dashboard) tiene contenido de marcador de posición.
+- Historial de precios almacenado internamente a largo plazo (por ahora depende de la API en vivo de ITAD).
+- Página de perfil de usuario completa y pública.
+- La página del panel (dashboard) aún necesita gráficas de estadísticas de usuario reales.
