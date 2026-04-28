@@ -51,20 +51,28 @@ class GameController
             abort(404, 'No se encontró el identificador del juego.');
         }
 
-        $details = $this->gameService->GetDetails($appid)['data'];
-        $app_name = $details['name'];
-        $app_short_desc = $details['short_description'];
-        $app_header_img = $details['header_image'];
-        $app_price = $details['price_overview']['final_formatted'] ?? 'Free';
+        $apiResponse = $this->gameService->GetDetails($appid);
+
+        // Validar que Steam nos haya devuelto datos válidos para este appid
+        if (!isset($apiResponse['success']) || !$apiResponse['success'] || !isset($apiResponse['data'])) {
+            abort(404, 'El juego no está disponible o no tiene datos públicos en Steam.');
+        }
+
+        $details = $apiResponse['data'];
+
+        $app_name = $details['name'] ?? 'Unknown Game';
+        $app_short_desc = $details['short_description'] ?? '';
+        $app_header_img = $details['header_image'] ?? 'https://placehold.co/460x215/0F3A52/FACC15?text=No+Image';
+        $app_price = $details['price_overview']['final_formatted'] ?? 'Gratis';
         $app_price_numeric = ($details['price_overview']['final'] ?? 0) / 100;
-        $app_publisher = $details['publishers'][0] ?? 'Unknown';
-        $app_developer = $details['developers'][0] ?? 'Unknown';
+        $app_publisher = $details['publishers'][0] ?? 'Unknown Publisher';
+        $app_developer = $details['developers'][0] ?? 'Unknown Developer';
         $app_detailed_desc = $details['detailed_description'] ?? '';
 
         $discount_percent = $details['price_overview']['discount_percent'] ?? 0;
         $discount_formatted = $discount_percent > 0 ? "(-$discount_percent%)" : '';
 
-        $screenshots = $details["screenshots"];
+        $screenshots = $details["screenshots"] ?? [];
 
         // TODO: Conseguir más de solo 3 meses de historial.
         $price_history = getPriceHistory($itad_api_key, $appid, new DateTime("first day of this month -3 months"), "es");
