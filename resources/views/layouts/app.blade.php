@@ -50,7 +50,10 @@
     {{-- Footer --}}
     <x-footer />
 
-    {{-- Global Loader --}}
+    {{-- Cursor Loader (Small GIF near mouse) --}}
+    <img id="cursor-loader" src="" class="fixed z-[10000] w-20 h-20 object-cover border-4 border-black pointer-events-none hidden transition-opacity duration-100 opacity-0 shadow-[4px_4px_0_0_#FACC15] bg-[#F5F5F5]">
+
+    {{-- Global Loader (Full screen) --}}
     <div id="global-loader" class="fixed inset-0 z-[9999] bg-[#0F3A52]/90 backdrop-blur-sm flex flex-col items-center justify-center transition-opacity duration-200 opacity-0 pointer-events-none hidden">
         <div class="relative border-4 border-black shadow-[8px_8px_0_0_#FACC15] bg-white p-4 max-w-[300px] w-full mx-4 flex flex-col items-center">
             <img id="loader-gif" src="" alt="Cargando..." class="w-full h-auto border-4 border-black object-cover aspect-square bg-[#F5F5F5]">
@@ -234,12 +237,12 @@
 
         // ── Global Loading Screen ───────────────────────────────────────────
         document.addEventListener('DOMContentLoaded', () => {
-            const loader = document.getElementById('global-loader');
-            const loaderGif = document.getElementById('loader-gif');
+            const globalLoader = document.getElementById('global-loader');
+            const globalLoaderGif = document.getElementById('loader-gif');
+            const cursorLoader = document.getElementById('cursor-loader');
             const totalGifs = 7; // Tenemos 0.gif a 6.gif en public/gifs
 
-            // Pre-cargar GIFs en segundo plano para que el navegador no cancele
-            // su descarga al cambiar de página (location.href cancela peticiones pendientes).
+            // Pre-cargar GIFs en segundo plano
             const preloadedGifs = [];
             for (let i = 0; i < totalGifs; i++) {
                 const img = new Image();
@@ -247,6 +250,20 @@
                 preloadedGifs.push(img);
             }
 
+            // Seguir el ratón para el cursor loader
+            let mouseX = 0;
+            let mouseY = 0;
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                if (cursorLoader && !cursorLoader.classList.contains('hidden')) {
+                    // Posicionarlo un poco desplazado del cursor
+                    cursorLoader.style.left = (mouseX + 15) + 'px';
+                    cursorLoader.style.top = (mouseY + 15) + 'px';
+                }
+            });
+
+            // Al hacer click en cualquier enlace (juegos, navegación)
             document.addEventListener('click', (e) => {
                 const link = e.target.closest('a');
                 if (!link) return;
@@ -266,27 +283,56 @@
                 e.preventDefault();
                 
                 const randomGif = Math.floor(Math.random() * totalGifs);
-                // Usamos el src pre-cargado para asegurar que ya está en caché
-                loaderGif.src = preloadedGifs[randomGif].src;
                 
-                loader.classList.remove('hidden');
-                // Timeout mínimo para que el transition de CSS funcione
-                setTimeout(() => {
-                    loader.classList.remove('opacity-0', 'pointer-events-none');
-                    loader.classList.add('opacity-100');
-                }, 10);
+                if (cursorLoader) {
+                    cursorLoader.src = preloadedGifs[randomGif].src;
+                    cursorLoader.style.left = (mouseX + 15) + 'px';
+                    cursorLoader.style.top = (mouseY + 15) + 'px';
+                    
+                    cursorLoader.classList.remove('hidden');
+                    // Timeout mínimo para que la transición funcione
+                    setTimeout(() => {
+                        cursorLoader.classList.remove('opacity-0');
+                        cursorLoader.classList.add('opacity-100');
+                    }, 10);
+                }
 
                 // Navegar
                 setTimeout(() => {
                     window.location.href = link.href;
                 }, 150); 
             });
+
+            // Al enviar formularios (búsquedas, logout)
+            document.addEventListener('submit', (e) => {
+                const form = e.target.closest('form');
+                if (!form || form.getAttribute('target') === '_blank') return;
+
+                const randomGif = Math.floor(Math.random() * totalGifs);
+                
+                if (globalLoader && globalLoaderGif) {
+                    globalLoaderGif.src = preloadedGifs[randomGif].src;
+                    globalLoader.classList.remove('hidden');
+                    
+                    setTimeout(() => {
+                        globalLoader.classList.remove('opacity-0', 'pointer-events-none');
+                        globalLoader.classList.add('opacity-100');
+                    }, 10);
+                }
+                // No detenemos el submit natural del form, solo mostramos el globalLoader visualmente
+            });
             
             // Ocultar si el usuario usa el botón Atrás del navegador (bfcache)
             window.addEventListener('pageshow', (e) => {
                 if (e.persisted) {
-                    loader.classList.add('hidden', 'opacity-0', 'pointer-events-none');
-                    loader.classList.remove('opacity-100');
+                    if (globalLoader) {
+                        globalLoader.classList.add('hidden', 'opacity-0', 'pointer-events-none');
+                        globalLoader.classList.remove('opacity-100');
+                    }
+                    if (cursorLoader) {
+                        cursorLoader.classList.add('hidden', 'opacity-0');
+                        cursorLoader.classList.remove('opacity-100');
+                    }
                 }
             });
         });
