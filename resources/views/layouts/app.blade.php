@@ -19,6 +19,26 @@
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/animateMosaico.js', 'resources/js/interactions.js'])
+
+    @auth
+        @php
+            $globalThemeColor = Auth::user()->preferences['themeColor'] ?? '#FACC15';
+        @endphp
+        <style>
+            :root {
+                --theme-color: {{ $globalThemeColor }};
+            }
+            .bg-\[\#FACC15\] { background-color: var(--theme-color) !important; }
+            .text-\[\#FACC15\] { color: var(--theme-color) !important; }
+            .border-\[\#FACC15\] { border-color: var(--theme-color) !important; }
+            .shadow-\[4px_4px_0_0_\#FACC15\] { box-shadow: 4px 4px 0 0 var(--theme-color) !important; }
+            .shadow-\[8px_8px_0_0_\#FACC15\] { box-shadow: 8px 8px 0 0 var(--theme-color) !important; }
+            .hover\:text-\[\#FACC15\]:hover { color: var(--theme-color) !important; }
+            .hover\:bg-\[\#FACC15\]:hover { background-color: var(--theme-color) !important; }
+            .group-hover\:text-\[\#FACC15\]:hover { color: var(--theme-color) !important; }
+            .group-hover\:bg-\[\#FACC15\]:hover { background-color: var(--theme-color) !important; }
+        </style>
+    @endauth
 </head>
 
 <body class="bg-[#F5F5F5] text-[#0F3A52] font-sans antialiased">

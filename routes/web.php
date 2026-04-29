@@ -37,6 +37,7 @@ Route::get('/about', [HomeController::class, 'about'])->name('about');
 // Routas protegidas -> Rutas para perfil de usuario
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+    Route::post('/api/user/preferences', [HomeController::class, 'savePreferences'])->name('user.preferences');
 
     // Rutas de wishlist
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');

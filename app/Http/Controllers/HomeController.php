@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
 
 class HomeController
 {
@@ -41,11 +41,12 @@ class HomeController
 
             return response()->json([
                 'mostPlayed' => $this->parseItems($data['top_sellers']['items'] ?? [], 8),
-                'trending'   => $this->parseItems($data['specials']['items']    ?? [], 8),
-                'upcoming'   => $this->parseItems($data['coming_soon']['items'] ?? [], 12),
+                'trending' => $this->parseItems($data['specials']['items'] ?? [], 8),
+                'upcoming' => $this->parseItems($data['coming_soon']['items'] ?? [], 12),
             ]);
         } catch (\Throwable $e) {
             Log::error('HomeController::homeData failed', ['error' => $e->getMessage()]);
+
             return response()->json($this->emptyPayload(), 200);
         }
     }
@@ -80,19 +81,19 @@ class HomeController
     {
         $rules = [
             'nombre' => 'required|string|min:3|max:100',
-            'email'  => 'required|email|max:150',
-            'mensaje'=> 'required|string|min:10|max:200',
+            'email' => 'required|email|max:150',
+            'mensaje' => 'required|string|min:10|max:200',
         ];
 
         $message = [
-            'nombre.required'  => 'Por favor, dinos tu nombre.',
-            'nombre.min'       => 'El nombre debe tener al menos 3 letras.',
-            'nombre.max'       => 'El nombre es demasiado largo.',
-            'email.required'   => 'El correo es obligatorio',
-            'email.email'      => 'Debes introducir un correo válido (ej: hola@web.com).',
+            'nombre.required' => 'Por favor, dinos tu nombre.',
+            'nombre.min' => 'El nombre debe tener al menos 3 letras.',
+            'nombre.max' => 'El nombre es demasiado largo.',
+            'email.required' => 'El correo es obligatorio',
+            'email.email' => 'Debes introducir un correo válido (ej: hola@web.com).',
             'mensaje.required' => 'No olvides escribir tu mensaje.',
-            'mensaje.min'      => 'El mensaje es muy corto',
-            'mensaje.max'      => 'El mesaje debe de tener máximo 200 caracteres',
+            'mensaje.min' => 'El mensaje es muy corto',
+            'mensaje.max' => 'El mesaje debe de tener máximo 200 caracteres',
         ];
 
         $request->validate($rules, $message);
@@ -107,9 +108,47 @@ class HomeController
      */
     public function dashboard(): View
     {
-        return view('pages.dashboard');
+        $user = auth()->user();
+
+        // Wishlist Stats
+        $wishlistCount = $user->wishlists()->count();
+
+        // Notifications Stats
+        $alertsCount = $user->unreadNotificationsCount();
+
+        // Tema
+        $preferences = $user->preferences ?? [];
+        $themeColor = $preferences['themeColor'] ?? '#FACC15';
+
+        // Fake searches and alerts for the Chart if needed, since we removed stats
+        $searches = 0;
+
+        return view('pages.dashboard', compact(
+            'user', 'wishlistCount', 'alertsCount', 'themeColor', 'searches'
+        ));
     }
 
+    /**
+     * Guarda las preferencias del dashboard (módulos y colores).
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function savePreferences(Request $request): JsonResponse
+    {
+        $user = auth()->user();
+
+        $preferences = $user->preferences ?? [];
+
+        if ($request->has('themeColor')) {
+            $preferences['themeColor'] = $request->input('themeColor');
+        }
+
+        $user->preferences = $preferences;
+        $user->save();
+
+        return response()->json(['status' => 'success']);
+    }
 
     /**
      * Normaliza los items recibidos de Steam en un array plano y usable.
@@ -123,28 +162,28 @@ class HomeController
         $result = [];
 
         foreach (array_slice($items, 0, $limit) as $item) {
-            $appid    = $item['id'] ?? null;
-            $name     = $item['name'] ?? '';
-            $isFree   = (bool) ($item['is_free_game'] ?? false);
-            $final    = $item['final_price']    ?? 0;
+            $appid = $item['id'] ?? null;
+            $name = $item['name'] ?? '';
+            $isFree = (bool) ($item['is_free_game'] ?? false);
+            $final = $item['final_price'] ?? 0;
             $original = $item['original_price'] ?? 0;
             $discount = $item['discount_percent'] ?? 0;
 
             if ($isFree) {
                 $priceStr = 'Free';
             } elseif ($final > 0) {
-                $priceStr = number_format($final / 100, 2) . '€';
+                $priceStr = number_format($final / 100, 2).'€';
             } else {
                 $priceStr = 'Free';
             }
 
             $result[] = [
-                'appid'    => $appid,
-                'name'     => $name,
-                'image'    => $item['large_capsule_image'] ?? $item['header_image'] ?? null,
-                'price'    => $priceStr,
+                'appid' => $appid,
+                'name' => $name,
+                'image' => $item['large_capsule_image'] ?? $item['header_image'] ?? null,
+                'price' => $priceStr,
                 'discount' => $discount,
-                'is_free'  => $isFree,
+                'is_free' => $isFree,
             ];
         }
 
