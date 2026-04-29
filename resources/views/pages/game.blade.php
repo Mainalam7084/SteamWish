@@ -46,17 +46,20 @@
                 </div>
             </div>
 
-            <div class="mb-10">
+            @if($app_price_numeric > 0)
+                <div class="mb-10">
                 <h2 class="text-3xl font-black uppercase text-[#0F3A52] mb-6">Price History</h2>
                 <div class="border-4 border-black shadow-[4px_4px_0_0_#0F3A52] p-4 bg-white">
                     <canvas id="priceHistory" style="width:100%;"></canvas> 
                 </div>
             </div>
 
+
             {{-- TODO: Poner divs o lo q sea --}}
             <p>
                 Precio más bajo: {{ $lowest_price }}€
             </p>
+            @endif
 
             <div class="text-lg md:text-xl font-bold border-l-8 border-[#FACC15] pl-6 py-4 mb-10 text-[#0F3A52] bg-[#F5F5F5] pr-4 shadow-[2px_2px_0_0_#0F3A52] border-y-2 border-r-2 border-black border-l-black">
                 {{ $app_short_desc }}
@@ -84,7 +87,6 @@
                         </div>
                     @endforeach
                 </div>
-
                 @push('scripts')
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
@@ -108,8 +110,10 @@
                         }
                     });
                 </script>
+            @endif
 
-                {{-- HISTORIAL DE PRECIOS --}}
+                @if ($app_price_numeric > 0)
+                    {{-- HISTORIAL DE PRECIOS --}}
                 <script>
                     Chart.defaults.global.defaultFontFamily = "'Inter', 'Roboto', 'sans-serif'";
                     Chart.defaults.global.defaultFontColor = "#0F3A52";
@@ -186,8 +190,9 @@
                         }
                     });
                 </script>
+                @endif
+                
                 @endpush
-            @endif
             <div class="mt-10">
                 <h2 class="text-3xl font-black uppercase text-[#0F3A52] mb-6">Detailed Description</h2>
                 <div class="game-description border-4 border-black shadow-[4px_4px_0_0_#0F3A52] p-6 bg-[#F5F5F5] text-[#0F3A52] text-md md:text-lg font-medium space-y-4">
