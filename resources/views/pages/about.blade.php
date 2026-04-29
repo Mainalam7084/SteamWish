@@ -72,10 +72,10 @@
                     
                     <div class="text-2xl md:text-3xl font-bold text-black relative z-10 space-y-4">
                         <p class="inline-block bg-[#1D9E75] text-white p-4 border-4 border-black shadow-[6px_6px_0_0_#000]">
-                            "El backend es oscuro y alberga terrores."
+                            "Si el código es magia, llámame hechicero."
                         </p>
                         <p class="inline-block bg-white px-2 py-1 border-2 border-black text-xl md:text-2xl mt-4">
-                            (Pero mis APIs rara vez explotan).
+                            (Ni yo entiendo lo que escribo).
                         </p>
                     </div>
                 </div>
