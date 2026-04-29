@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const href = link.getAttribute('href');
 
-        if (!href || href.startsWith('#') || href.startsWith('javascript:') || link.getAttribute('target') === '_blank' || link.hasAttribute('download')) {
+        if (!href || href.startsWith('#') || href.startsWith('javascript:') || href.startsWith('data:') || href.startsWith('vbscript:') || link.getAttribute('target') === '_blank' || link.hasAttribute('download')) {
             return;
         }
 
