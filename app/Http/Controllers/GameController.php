@@ -75,7 +75,7 @@ class GameController
         $screenshots = $details["screenshots"] ?? [];
 
         // TODO: Conseguir más de solo 3 meses de historial.
-        $price_history = getPriceHistory($itad_api_key, $appid, new DateTime("first day of this month -3 months"), "es");
+        $price_history = getPriceHistory($itad_api_key, $appid, new DateTime("first day of this month -12 months"), "es");
         $lowest_price = getLowestPrice($itad_api_key, $appid, "es");
         
         if($app_price_numeric === 0 || count($lowest_price) === 0)
