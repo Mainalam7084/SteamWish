@@ -1,10 +1,9 @@
-console.log("¡El archivo JS de Vite está conectado!");
 document.addEventListener('DOMContentLoaded', () => {
     const contenedores = document.querySelectorAll(".imagen-grid-animada");
 
     contenedores.forEach(container => {
-     
-        const imageUrl = container.dataset.imagen; 
+
+        const imageUrl = container.dataset.imagen;
         container.style.backgroundImage = `url('${imageUrl}')`;
         container.style.backgroundSize = '100% 100%';
         const rows = 10;
@@ -21,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
             div.dataset.row = y;
             div.dataset.col = x;
 
-            
+
             div.style.backgroundImage = `url('${imageUrl}')`;
             div.style.backgroundPosition = `${(x / (cols - 1)) * 100}% ${(y / (rows - 1)) * 100}%`;
 
@@ -42,12 +41,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const col = parseInt(tile.dataset.col);
 
                 tiles.forEach(t => {
-                    const dist = distance({row, col}, {row: parseInt(t.dataset.row), col: parseInt(t.dataset.col)});
-                    const lift = Math.max(0, 20 - dist * 5); 
+                    const dist = distance({ row, col }, { row: parseInt(t.dataset.row), col: parseInt(t.dataset.col) });
+                    const lift = Math.max(0, 20 - dist * 5);
                     const rx = (Math.random() * 10 - 5).toFixed(2);
                     const ry = (Math.random() * 10 - 5).toFixed(2);
 
-                    t.style.transform = `translateY(-${lift}px) translateZ(${lift*2}px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+                    t.style.transform = `translateY(-${lift}px) translateZ(${lift * 2}px) rotateX(${rx}deg) rotateY(${ry}deg)`;
                     t.style.boxShadow = `0 ${lift}px 20px rgba(0,0,0,0.4)`;
                 });
             });
