@@ -18,7 +18,7 @@
     {{-- Lucide Icons --}}
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/animateMosaico.js', 'resources/js/interactions.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/animateMosaico.js', 'resources/js/interactions2.js'])
 
     @auth
         @php
