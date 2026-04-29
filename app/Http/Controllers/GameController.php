@@ -105,7 +105,7 @@ class GameController
 
             $last_price = $price;
         }
-
+        
         // Añadimos el precio de la fecha actual
         $price_history_timestamps[] = (new DateTime())->format("d/m/Y");
         $price_history_prices[] = $app_price_numeric;

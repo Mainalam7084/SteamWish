@@ -49,7 +49,7 @@ function getLowestPrice($apiKey, $appid, $country = "us") {
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($body));
 
     $response = json_decode(curl_exec($ch), true);
-    return $response[0]["lows"][0]["price"];
+    return count($response) > 0 ? $response[0]["lows"][0]["price"] : 0;
 }
 
 function getUrl($interfaceName, $version=1, $args=[]) {
