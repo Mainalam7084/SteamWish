@@ -1,5 +1,6 @@
 <?php
 const URL = "https://api.isthereanydeal.com/";
+const STEAM_SHOP_ID = 61;
 
 function lookupById($apiKey, $appid) {
     return json_decode(file_get_contents(
@@ -23,7 +24,8 @@ function getPriceHistory($apiKey, $appid, $since, $country = "us") {
             "id" => $id,
             "key" => $apiKey,
             "country" => $country,
-            "since" => $since->format("c")
+            "since" => $since->format("c"),
+            "shops" => STEAM_SHOP_ID
         ])
     ), true);
 }
@@ -37,16 +39,17 @@ function getLowestPrice($apiKey, $appid, $country = "us") {
 
     $body = [$id];
 
-    $ch = curl_init(getUrl("games/historylow", 1, [
+    $ch = curl_init(getUrl("games/storelow", 2, [
         "key" => $apiKey,
-        "country" => $country
+        "country" => $country,
+        "shops" => STEAM_SHOP_ID
     ]));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($body));
 
     $response = json_decode(curl_exec($ch), true);
-    return $response;
+    return $response[0]["lows"][0]["price"];
 }
 
 function getUrl($interfaceName, $version=1, $args=[]) {

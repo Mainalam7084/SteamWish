@@ -81,7 +81,7 @@ class GameController
         if($app_price_numeric === 0 || count($lowest_price) === 0)
             $lowest_price = 0;
         else
-            $lowest_price = $lowest_price[0]["low"]["price"]["amount"];
+            $lowest_price = $lowest_price["amount"];
 
         // Ordenar historial de precios por fecha ascendente.
         usort($price_history, function ($a, $b) {
