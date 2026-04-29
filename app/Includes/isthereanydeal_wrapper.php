@@ -28,6 +28,27 @@ function getPriceHistory($apiKey, $appid, $since, $country = "us") {
     ), true);
 }
 
+function getLowestPrice($apiKey, $appid, $country = "us") {
+    $lookup = lookupById($apiKey, $appid);
+    if(!$lookup["found"])
+        return [];
+
+    $id = $lookup["game"]["id"];
+
+    $body = [$id];
+
+    $ch = curl_init(getUrl("games/historylow", 1, [
+        "key" => $apiKey,
+        "country" => $country
+    ]));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($body));
+
+    $response = json_decode(curl_exec($ch), true);
+    return $response;
+}
+
 function getUrl($interfaceName, $version=1, $args=[]) {
     return URL . $interfaceName . "/v".$version . "?" . http_build_query($args);
 }
