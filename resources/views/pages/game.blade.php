@@ -47,18 +47,22 @@
             </div>
 
             @if($app_price_numeric > 0)
+
+                {{-- TODO: Poner divs o lo q sea --}}
+                @if($app_price_numeric === $lowest_price )
+                <p style="color:green; font-weight: bold;">Precio más bajo: {{ $lowest_price }}€</p>
+                @else
+                <p> Precio más bajo: {{ $lowest_price }}€ </p>
+                @endif
+
+                
+            
                 <div class="mb-10">
                 <h2 class="text-3xl font-black uppercase text-[#0F3A52] mb-6">Price History</h2>
                 <div class="border-4 border-black shadow-[4px_4px_0_0_#0F3A52] p-4 bg-white">
                     <canvas id="priceHistory" style="width:100%;"></canvas> 
                 </div>
             </div>
-
-
-            {{-- TODO: Poner divs o lo q sea --}}
-            <p>
-                Precio más bajo: {{ $lowest_price }}€
-            </p>
             @endif
 
             <div class="text-lg md:text-xl font-bold border-l-8 border-[#FACC15] pl-6 py-4 mb-10 text-[#0F3A52] bg-[#F5F5F5] pr-4 shadow-[2px_2px_0_0_#0F3A52] border-y-2 border-r-2 border-black border-l-black">
