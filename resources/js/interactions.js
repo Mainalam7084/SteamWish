@@ -1,4 +1,3 @@
-// ── SteamWish Interactions & Loaders ─────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Initialize Lucide Icons
     if (window.lucide) {
@@ -21,15 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const wishlistBtn = e.target.closest('.wishlist-btn');
         if (wishlistBtn) {
             e.preventDefault();
-
             if (window.AppConfig.isGuest) {
                 window.location.href = window.AppConfig.routes.login;
                 return;
             }
-
             const appid = wishlistBtn.dataset.appid;
             if (!appid) return;
-
             fetch(window.AppConfig.routes.wishlistToggle, {
                 method: 'POST',
                 headers: {
@@ -43,7 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     const btns = document.querySelectorAll(`.wishlist-btn[data-appid="${appid}"]`);
                     btns.forEach(btn => {
                         const textSpan = btn.querySelector('span');
-
                         if (data.status === 'added') {
                             btn.classList.add('bg-[#FACC15]', 'text-black');
                             btn.classList.remove('bg-white', 'text-[#0F3A52]', 'hover:bg-[#5DA9D6]', 'hover:text-white');
@@ -62,13 +57,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. Navbar Wishlist Preview Dropdown
     const navWishlistContainer = document.getElementById('nav-wishlist-container');
     const navWishlistItems = document.getElementById('nav-wishlist-items');
-
     if (navWishlistContainer && navWishlistItems) {
         let previewLoaded = false;
         navWishlistContainer.addEventListener('mouseenter', () => {
             if (previewLoaded) return;
             previewLoaded = true;
-
             fetch(window.AppConfig.routes.wishlistPreview)
                 .then(res => res.ok ? res.json() : [])
                 .then(games => {
@@ -89,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     if (window.lucide) lucide.createIcons();
                 })
-                .catch(err => {
+                .catch(() => {
                     navWishlistItems.innerHTML = `
                         <div class="p-4 text-center">
                             <p class="text-xs font-bold text-red-500">Error al cargar.</p>
@@ -104,13 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const navNotifItems = document.getElementById('nav-notifications-items');
     const navNotifLabel = document.getElementById('nav-notif-unread-label');
     const navNotifBadge = document.getElementById('nav-notif-badge');
-
     if (navNotifContainer && navNotifItems && !window.AppConfig.isGuest) {
         let notifLoaded = false;
         navNotifContainer.addEventListener('mouseenter', () => {
             if (notifLoaded) return;
             notifLoaded = true;
-
             fetch(window.AppConfig.routes.notificationsPreview)
                 .then(res => res.ok ? res.json() : { notifications: [], unread: 0 })
                 .then(({ notifications, unread }) => {
@@ -125,7 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (navNotifLabel) {
                         navNotifLabel.textContent = unread > 0 ? `${unread} sin leer` : 'Todo leído';
                     }
-
                     if (notifications.length === 0) {
                         navNotifItems.innerHTML = `
                             <div class="p-4 text-center">
@@ -159,27 +149,52 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 6. Global Loading Screens (Cursor Loader & Full Screen Loader)
+    // 6. Global Loading Screens — optimizado
     const globalLoader = document.getElementById('global-loader');
     const globalLoaderGif = document.getElementById('loader-gif');
     const cursorLoader = document.getElementById('cursor-loader');
     const totalGifs = 7;
 
-    const preloadedGifs = [];
+    // Contenedor oculto con opacity 0.01 para que el browser mantenga los GIFs decodificados
+    const hiddenGifContainer = document.createElement('div');
+    hiddenGifContainer.style.cssText = `
+        position: fixed;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        opacity: 0.01;
+        pointer-events: none;
+        top: -9999px;
+        left: -9999px;
+    `;
+    document.body.appendChild(hiddenGifContainer);
+
+    const gifElements = [];
     for (let i = 0; i < totalGifs; i++) {
         const img = new Image();
         img.src = `/gifs/${i}.gif`;
-        preloadedGifs.push(img);
+        img.style.width = '1px';
+        img.style.height = '1px';
+        if (img.decode) {
+            img.decode().catch(() => {});
+        }
+        hiddenGifContainer.appendChild(img);
+        gifElements.push(img);
     }
 
-    let mouseX = 0;
-    let mouseY = 0;
+    function getRandomGifSrc() {
+        const idx = Math.floor(Math.random() * totalGifs);
+        return gifElements[idx].src;
+    }
+
+    let mouseX = 0, mouseY = 0;
+
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
         if (cursorLoader && !cursorLoader.classList.contains('hidden')) {
             cursorLoader.style.left = (mouseX + 15) + 'px';
-            cursorLoader.style.top = (mouseY + 15) + 'px';
+            cursorLoader.style.top  = (mouseY + 15) + 'px';
         }
     });
 
@@ -188,63 +203,58 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!link) return;
 
         const href = link.getAttribute('href');
+        if (
+            !href ||
+            href.startsWith('#') ||
+            href.startsWith('javascript:') ||
+            href.startsWith('data:') ||
+            href.startsWith('vbscript:') ||
+            link.getAttribute('target') === '_blank' ||
+            link.hasAttribute('download')
+        ) return;
 
-        if (!href || href.startsWith('#') || href.startsWith('javascript:') || href.startsWith('data:') || href.startsWith('vbscript:') || link.getAttribute('target') === '_blank' || link.hasAttribute('download')) {
-            return;
-        }
-
-        if (e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) {
-            return;
-        }
+        if (e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;
 
         e.preventDefault();
 
-        const randomGif = Math.floor(Math.random() * totalGifs);
-
         if (cursorLoader) {
-            cursorLoader.src = preloadedGifs[randomGif].src;
-            cursorLoader.style.left = (mouseX + 15) + 'px';
-            cursorLoader.style.top = (mouseY + 15) + 'px';
+            const newSrc = getRandomGifSrc();
+            if (cursorLoader.src !== newSrc) cursorLoader.src = newSrc;
 
-            cursorLoader.classList.remove('hidden');
-            setTimeout(() => {
-                cursorLoader.classList.remove('opacity-0');
-                cursorLoader.classList.add('opacity-100');
-            }, 10);
+            cursorLoader.style.left = (mouseX + 15) + 'px';
+            cursorLoader.style.top  = (mouseY + 15) + 'px';
+            cursorLoader.classList.remove('hidden', 'opacity-0');
+            cursorLoader.classList.add('opacity-100');
         }
 
-        setTimeout(() => {
-            window.location.href = link.href;
-        }, 150);
+        requestAnimationFrame(() => {
+            setTimeout(() => { window.location.href = link.href; }, 80);
+        });
     });
 
     document.addEventListener('submit', (e) => {
         const form = e.target.closest('form');
         if (!form || form.getAttribute('target') === '_blank') return;
 
-        const randomGif = Math.floor(Math.random() * totalGifs);
-
         if (globalLoader && globalLoaderGif) {
-            globalLoaderGif.src = preloadedGifs[randomGif].src;
-            globalLoader.classList.remove('hidden');
+            const newSrc = getRandomGifSrc();
+            if (globalLoaderGif.src !== newSrc) globalLoaderGif.src = newSrc;
 
-            setTimeout(() => {
-                globalLoader.classList.remove('opacity-0', 'pointer-events-none');
-                globalLoader.classList.add('opacity-100');
-            }, 10);
+            globalLoader.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+            globalLoader.classList.add('opacity-100');
         }
     });
 
     window.addEventListener('pageshow', (e) => {
-        if (e.persisted) {
-            if (globalLoader) {
-                globalLoader.classList.add('hidden', 'opacity-0', 'pointer-events-none');
-                globalLoader.classList.remove('opacity-100');
-            }
-            if (cursorLoader) {
-                cursorLoader.classList.add('hidden', 'opacity-0');
-                cursorLoader.classList.remove('opacity-100');
-            }
+        if (!e.persisted) return;
+
+        if (globalLoader) {
+            globalLoader.classList.add('hidden', 'opacity-0', 'pointer-events-none');
+            globalLoader.classList.remove('opacity-100');
+        }
+        if (cursorLoader) {
+            cursorLoader.classList.add('hidden', 'opacity-0');
+            cursorLoader.classList.remove('opacity-100');
         }
     });
 });
