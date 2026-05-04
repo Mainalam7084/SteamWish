@@ -7,11 +7,11 @@ use App\Models\Wishlist;
 use App\Services\GameService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
 
-require_once app_path() . '/Includes/steam_wrapper.php';
+require_once app_path().'/Includes/steam_wrapper.php';
 
 class WishlistController
 {
@@ -24,12 +24,10 @@ class WishlistController
 
     /**
      * Devuelve los IDs de los juegos en la wishlist del usuario.
-     *
-     * @return JsonResponse
      */
     public function ids(): JsonResponse
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return response()->json([]);
         }
 
@@ -40,12 +38,10 @@ class WishlistController
 
     /**
      * Devuelve una vista previa de los últimos juegos en la wishlist.
-     *
-     * @return JsonResponse
      */
     public function preview(): JsonResponse
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return response()->json([]);
         }
 
@@ -70,7 +66,7 @@ class WishlistController
                 $g = $dbGames[$appid];
                 $games[] = [
                     'appid' => $g->appid,
-                    'name'  => $g->name,
+                    'name' => $g->name,
                     'image' => $g->image ?? "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/{$appid}/header.jpg",
                 ];
             } else {
@@ -78,7 +74,7 @@ class WishlistController
                 $steamData = $this->gameService->GetDetails($appid)['data'] ?? null;
                 $games[] = [
                     'appid' => $appid,
-                    'name'  => $steamData['name'] ?? "Game #{$appid}",
+                    'name' => $steamData['name'] ?? "Game #{$appid}",
                     'image' => $steamData['header_image'] ?? "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/{$appid}/header.jpg",
                 ];
             }
@@ -89,13 +85,11 @@ class WishlistController
 
     /**
      * Muestra la lista completa de juegos en la wishlist del usuario.
-     *
-     * @return View
      */
     public function index(): View
     {
-        $user    = Auth::user();
-        $appids  = $user->wishlists()->pluck('appid')->map(fn ($id) => (int) $id)->toArray();
+        $user = Auth::user();
+        $appids = $user->wishlists()->pluck('appid')->map(fn ($id) => (int) $id)->toArray();
 
         if (empty($appids)) {
             return view('pages.wishlist', ['games' => []]);
@@ -113,12 +107,12 @@ class WishlistController
                 // Usar datos de la base de datos local.
                 $g = $dbGames[$appid];
                 $games[] = [
-                    'appid'    => $g->appid,
-                    'name'     => $g->name,
-                    'image'    => $g->image ?? "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/{$appid}/header.jpg",
-                    'price'    => $g->is_free ? 'Free' : ($g->price ? number_format($g->price, 2) . '€' : '—'),
+                    'appid' => $g->appid,
+                    'name' => $g->name,
+                    'image' => $g->image ?? "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/{$appid}/header.jpg",
+                    'price' => $g->is_free ? 'Free' : ($g->price ? $g->price_formatted : 'Free'),
                     'discount' => $g->discount_percent,
-                    'is_free'  => $g->is_free,
+                    'is_free' => $g->is_free,
                 ];
             } else {
                 // Obtener datos de Steam si no están en la DB.
@@ -127,21 +121,21 @@ class WishlistController
 
                 if ($data) {
                     $games[] = [
-                        'appid'    => $appid,
-                        'name'     => $data['name'] ?? "Game #{$appid}",
-                        'image'    => $data['header_image'] ?? "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/{$appid}/header.jpg",
-                        'price'    => isset($data['price_overview']['final_formatted']) ? $data['price_overview']['final_formatted'] : ('Free'),
+                        'appid' => $appid,
+                        'name' => $data['name'] ?? "Game #{$appid}",
+                        'image' => $data['header_image'] ?? "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/{$appid}/header.jpg",
+                        'price' => isset($data['price_overview']['final_formatted']) ? $data['price_overview']['final_formatted'] : ('Free'),
                         'discount' => isset($data['price_overview']['discount_percent']) ? $data['price_overview']['discount_percent'] : 0,
-                        'is_free'  => $data['is_free'] ?? false,
+                        'is_free' => $data['is_free'] ?? false,
                     ];
                 } else {
                     $games[] = [
-                        'appid'    => $appid,
-                        'name'     => "Game #{$appid}",
-                        'image'    => "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/{$appid}/header.jpg",
-                        'price'    => '—',
+                        'appid' => $appid,
+                        'name' => "Game #{$appid}",
+                        'image' => "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/{$appid}/header.jpg",
+                        'price' => '—',
                         'discount' => 0,
-                        'is_free'  => false,
+                        'is_free' => false,
                     ];
                 }
             }
@@ -152,23 +146,21 @@ class WishlistController
 
     /**
      * Agrega o elimina un juego de la wishlist del usuario.
-     *
-     * @param Request $request
-     * @return JsonResponse
      */
     public function toggle(Request $request): JsonResponse
     {
         $request->validate(['appid' => 'required|string']);
-        $user  = Auth::user();
+        $user = Auth::user();
         $appid = $request->input('appid');
 
         // Verificar si el juego ya está en la wishlist.
         $wishlist = Wishlist::where('user_id', $user->id)
-                            ->where('appid', $appid)
-                            ->first();
+            ->where('appid', $appid)
+            ->first();
 
         if ($wishlist) {
             $wishlist->delete();
+
             return response()->json(['status' => 'removed']);
         }
 
@@ -181,22 +173,22 @@ class WishlistController
 
             if ($data) {
                 $priceOverview = $data['price_overview'] ?? null;
-                $price         = $priceOverview['final']    ?? 0;
-                $basePrice     = $priceOverview['initial']  ?? 0;
-                $discount      = $priceOverview['discount_percent'] ?? 0;
-                $image         = $data['header_image'] ?? null;
-                $name          = $data['name'] ?? "Game #{$appid}";
+                $price = $priceOverview['final'] ?? 0;
+                $basePrice = $priceOverview['initial'] ?? 0;
+                $discount = $priceOverview['discount_percent'] ?? 0;
+                $image = $data['header_image'] ?? null;
+                $name = $data['name'] ?? "Game #{$appid}";
 
                 Game::updateOrCreate(
                     ['appid' => (int) $appid],
                     [
-                        'name'             => $name,
-                        'last_updated_at'  => now(),
-                        'price'            => $price,
-                        'base_price'       => $basePrice > 0 ? $basePrice : $price,
+                        'name' => $name,
+                        'last_updated_at' => now(),
+                        'price' => $price,
+                        'base_price' => $basePrice > 0 ? $basePrice : $price,
                         'discount_percent' => $discount,
-                        'image'            => $image,
-                        'is_free'          => $data['is_free'] ?? false,
+                        'image' => $image,
+                        'is_free' => $data['is_free'] ?? false,
                     ]
                 );
             }
