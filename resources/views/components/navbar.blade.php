@@ -3,9 +3,12 @@
         <div class="flex items-center justify-between h-16 gap-4">
 
             {{-- Logo --}}
-            <a href="{{ route('home') }}" id="nav-logo" class="flex items-center shrink-0 group">
-                <img src="{{ asset('img/SteamWishLogo.png') }}" alt="SteamWish"
-                    class="h-15 w-auto object-contain rounded-full group-hover:scale-105 transition-transform duration-150">
+            <a href="{{ route('home') }}" id="nav-logo"
+                class="flex items-center shrink-0 group transition-all duration-150">
+                <div class="relative bg-white border-2 border-black rounded-full p-1 transition-all duration-150">
+                    <img src="{{ asset('img/SteamWishLogo.png') }}" alt="SteamWish"
+                        class="h-12 w-auto sm:h-14 object-contain rounded-full">
+                </div>
             </a>
 
             {{-- Search Bar --}}
@@ -46,88 +49,90 @@
 
                 {{-- Wishlist icon & Dropdown --}}
                 @auth
-                <div class="relative group hidden sm:flex h-full items-center" id="nav-wishlist-container">
-                    <a href="{{ route('wishlist.index') }}" id="nav-wishlist"
-                        class="relative w-9 h-9 bg-[#0F3A52] border-2 border-white/30 flex items-center justify-center nb-shadow-sm transition-colors duration-100 group-hover:bg-[#FACC15] group-hover:border-black"
-                        title="Mi Wishlist">
-                        <i data-lucide="heart" class="w-4 h-4 text-[#FACC15] group-hover:text-black"></i>
-                    </a>
+                    <div class="relative group hidden sm:flex h-full items-center" id="nav-wishlist-container">
+                        <a href="{{ route('wishlist.index') }}" id="nav-wishlist"
+                            class="relative w-9 h-9 bg-[#0F3A52] border-2 border-white/30 flex items-center justify-center nb-shadow-sm transition-all duration-100 group-hover:bg-[#FACC15] group-hover:border-black text-[#FACC15] group-hover:!text-black [&>svg]:group-hover:!stroke-black"
+                            title="Mi Wishlist">
+                            <i data-lucide="heart" class="w-4 h-4"></i>
+                        </a>
 
-                    {{-- Invisible bridge wrapper for hover --}}
-                    <div class="absolute right-0 top-full pt-4 hidden group-hover:block z-50">
-                        <div class="w-72 bg-white border-4 border-black shadow-[4px_4px_0_0_#0F3A52] flex flex-col pt-2" id="nav-wishlist-dropdown">
-                            <div class="px-4 pb-2 border-b-2 border-black flex items-center justify-between">
-                                <span class="font-black uppercase text-[#0F3A52] text-sm">Agregados Recién</span>
-                            </div>
-                            
-                            <div id="nav-wishlist-items" class="flex flex-col">
-                                <div class="p-4 text-center text-xs font-bold text-gray-400" id="nav-wishlist-loading">
-                                    Cargando...
+                        {{-- Invisible bridge wrapper for hover --}}
+                        <div class="absolute right-0 top-full pt-4 hidden group-hover:block z-50">
+                            <div class="w-72 bg-white border-4 border-black shadow-[4px_4px_0_0_#0F3A52] flex flex-col pt-2"
+                                id="nav-wishlist-dropdown">
+                                <div class="px-4 pb-2 border-b-2 border-black flex items-center justify-between">
+                                    <span class="font-black uppercase text-[#0F3A52] text-sm">Agregados Recién</span>
                                 </div>
-                            </div>
 
-                            <a href="{{ route('wishlist.index') }}"
-                                class="block px-4 py-3 bg-[#F5F5F5] text-center text-[#0F3A52] font-black hover:bg-[#FACC15] border-t-2 border-black transition-colors uppercase text-xs">
-                                Ver toda la lista
-                            </a>
+                                <div id="nav-wishlist-items" class="flex flex-col">
+                                    <div class="p-4 text-center text-xs font-bold text-gray-400" id="nav-wishlist-loading">
+                                        Cargando...
+                                    </div>
+                                </div>
+
+                                <a href="{{ route('wishlist.index') }}"
+                                    class="block px-4 py-3 bg-[#F5F5F5] text-center text-[#0F3A52] font-black hover:bg-[#FACC15] border-t-2 border-black transition-colors uppercase text-xs">
+                                    Ver toda la lista
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
                 @endauth
 
                 @auth
-                <div class="relative group hidden sm:flex h-full items-center" id="nav-notifications-container">
-                    <a href="{{ route('notifications.index') }}" id="nav-notifications"
-                        class="relative w-9 h-9 bg-[#0F3A52] border-2 border-white/30 flex items-center justify-center nb-shadow-sm transition-colors duration-100 group-hover:bg-[#FACC15] group-hover:border-black"
-                        title="Notificaciones">
-                        <i data-lucide="bell" class="w-4 h-4 text-[#FACC15] group-hover:text-black"></i>
-                        {{-- Badge de no leídas --}}
-                        @php $unreadCount = Auth::user()->unreadNotificationsCount(); @endphp
-                        @if($unreadCount > 0)
-                        <span id="nav-notif-badge"
-                            class="absolute -top-1.5 -right-1.5 w-4 h-4 bg-red-500 border border-black text-white text-[9px] font-black flex items-center justify-center rounded-none">
-                            {{ $unreadCount > 9 ? '9+' : $unreadCount }}
-                        </span>
-                        @endif
-                    </a>
+                    <div class="relative group hidden sm:flex h-full items-center" id="nav-notifications-container">
+                        <a href="{{ route('notifications.index') }}" id="nav-notifications"
+                            class="relative w-9 h-9 bg-[#0F3A52] border-2 border-white/30 flex items-center justify-center nb-shadow-sm transition-all duration-100 group-hover:bg-[#FACC15] group-hover:border-black text-[#FACC15] group-hover:!text-black [&>svg]:group-hover:!stroke-black"
+                            title="Notificaciones">
+                            <i data-lucide="bell" class="w-4 h-4"></i>
+                            {{-- Badge de no leídas --}}
+                            @php $unreadCount = Auth::user()->unreadNotificationsCount(); @endphp
+                            @if ($unreadCount > 0)
+                                <span id="nav-notif-badge"
+                                    class="absolute -top-1.5 -right-1.5 w-4 h-4 bg-red-500 border border-black text-white text-[9px] font-black flex items-center justify-center rounded-none group-hover:!text-white">
+                                    {{ $unreadCount > 9 ? '9+' : $unreadCount }}
+                                </span>
+                            @endif
+                        </a>
 
-                    {{-- Dropdown hover --}}
-                    <div class="absolute right-0 top-full pt-4 hidden group-hover:block z-50">
-                        <div class="w-80 bg-white border-4 border-black shadow-[4px_4px_0_0_#0F3A52] flex flex-col pt-2" id="nav-notifications-dropdown">
-                            <div class="px-4 pb-2 border-b-2 border-black flex items-center justify-between">
-                                <span class="font-black uppercase text-[#0F3A52] text-sm">Notificaciones</span>
-                                <span id="nav-notif-unread-label" class="text-[10px] font-bold text-gray-400"></span>
-                            </div>
-
-                            <div id="nav-notifications-items" class="flex flex-col">
-                                <div class="p-4 text-center text-xs font-bold text-gray-400" id="nav-notif-loading">
-                                    Cargando...
+                        {{-- Dropdown hover --}}
+                        <div class="absolute right-0 top-full pt-4 hidden group-hover:block z-50">
+                            <div class="w-80 bg-white border-4 border-black shadow-[4px_4px_0_0_#0F3A52] flex flex-col pt-2"
+                                id="nav-notifications-dropdown">
+                                <div class="px-4 pb-2 border-b-2 border-black flex items-center justify-between">
+                                    <span class="font-black uppercase text-[#0F3A52] text-sm">Notificaciones</span>
+                                    <span id="nav-notif-unread-label" class="text-[10px] font-bold text-gray-400"></span>
                                 </div>
-                            </div>
 
-                            <a href="{{ route('notifications.index') }}"
-                                class="block px-4 py-3 bg-[#F5F5F5] text-center text-[#0F3A52] font-black hover:bg-[#FACC15] border-t-2 border-black transition-colors uppercase text-xs">
-                                Ver todas las notificaciones
-                            </a>
+                                <div id="nav-notifications-items" class="flex flex-col">
+                                    <div class="p-4 text-center text-xs font-bold text-gray-400" id="nav-notif-loading">
+                                        Cargando...
+                                    </div>
+                                </div>
+
+                                <a href="{{ route('notifications.index') }}"
+                                    class="block px-4 py-3 bg-[#F5F5F5] text-center text-[#0F3A52] font-black hover:bg-[#FACC15] border-t-2 border-black transition-colors uppercase text-xs">
+                                    Ver todas las notificaciones
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
                 @endauth
 
                 {{-- Bell para usuarios no autenticados (sin funcionalidad) --}}
                 @guest
-                <a href="{{ route('auth.steam') }}" id="nav-notifications"
-                    class="hidden sm:flex relative w-9 h-9 bg-[#0F3A52] border-2 border-white/30 items-center justify-center nb-shadow-sm nb-hover group"
-                    title="Inicia sesión para ver notificaciones">
-                    <i data-lucide="bell" class="w-4 h-4 text-[#FACC15]"></i>
-                </a>
+                    <a href="{{ route('auth.steam') }}" id="nav-notifications"
+                        class="hidden sm:flex relative w-9 h-9 bg-[#0F3A52] border-2 border-white/30 items-center justify-center nb-shadow-sm nb-hover group"
+                        title="Inicia sesión para ver notificaciones">
+                        <i data-lucide="bell" class="w-4 h-4 text-[#FACC15]"></i>
+                    </a>
                 @endguest
 
                 {{-- Login / User --}}
                 @auth
                     <div class="relative group">
                         <button
-                            class="flex items-center gap-2 bg-[#FACC15] border-2 border-black text-black font-black text-xs sm:text-sm tracking-wider px-2 py-1 nb-shadow nb-hover nb-hover-yellow transition-all duration-100 h-full">
+                            class="flex items-center gap-2 bg-[#FACC15] border-2 border-black text-black font-black text-xs sm:text-sm tracking-wider px-2 py-1 shadow-[4px_4px_0px_0px_black] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_black] active:translate-x-1 active:translate-y-1 active:shadow-[0px_0px_0px_0px_black] transition-all duration-100 h-full">
                             <img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->username }}"
                                 class="w-6 h-6 border border-black">
                             <span class="hidden sm:block truncate max-w-[100px]">{{ Auth::user()->username }}</span>
@@ -136,7 +141,7 @@
 
                         {{-- Invisible bridge wrapper for hover --}}
                         <div class="absolute right-0 top-full pt-2 hidden group-hover:block z-50">
-                            <div class="w-48 bg-white border-4 border-black nb-shadow flex flex-col">
+                            <div class="w-48 bg-white border-4 border-black shadow-[4px_4px_0_0_#0F3A52] flex flex-col">
                                 <a href="{{ route('dashboard') }}"
                                     class="block px-4 py-2 text-[#0F3A52] font-bold hover:bg-[#FACC15] border-b-2 border-black transition-colors">Dashboard</a>
                                 <a href="{{ route('wishlist.index') }}"
