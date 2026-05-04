@@ -43,6 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             btn.classList.add('bg-[#FACC15]', 'text-black');
                             btn.classList.remove('bg-white', 'text-[#0F3A52]', 'hover:bg-[#5DA9D6]', 'hover:text-white');
                             if (textSpan) textSpan.textContent = 'Saved';
+                            // Actualizar badge de notificaciones por si el juego tiene descuento ≥50%
+                            if (!window.AppConfig.isGuest) {
+                                setTimeout(() => refreshNotifBadge(), 400);
+                            }
                         } else {
                             btn.classList.remove('bg-[#FACC15]', 'text-black');
                             btn.classList.add('bg-white', 'text-[#0F3A52]');
@@ -92,11 +96,33 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ─── Utilidad: actualizar el badge de notificaciones ───────────────────
+    const navNotifBadge = document.getElementById('nav-notif-badge');
+
+    function updateNotifBadge(unread) {
+        if (!navNotifBadge) return;
+        if (unread > 0) {
+            navNotifBadge.textContent = unread > 9 ? '9+' : unread;
+            navNotifBadge.classList.remove('hidden');
+            navNotifBadge.classList.add('flex');
+        } else {
+            navNotifBadge.classList.add('hidden');
+            navNotifBadge.classList.remove('flex');
+        }
+    }
+
+    function refreshNotifBadge() {
+        if (window.AppConfig.isGuest) return;
+        fetch(window.AppConfig.routes.notificationsPreview)
+            .then(res => res.ok ? res.json() : { unread: 0 })
+            .then(({ unread }) => updateNotifBadge(unread))
+            .catch(() => {});
+    }
+
     // 5. Navbar Notifications Preview Dropdown
     const navNotifContainer = document.getElementById('nav-notifications-container');
     const navNotifItems = document.getElementById('nav-notifications-items');
     const navNotifLabel = document.getElementById('nav-notif-unread-label');
-    const navNotifBadge = document.getElementById('nav-notif-badge');
     if (navNotifContainer && navNotifItems && !window.AppConfig.isGuest) {
         let notifLoaded = false;
         navNotifContainer.addEventListener('mouseenter', () => {
@@ -105,14 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
             fetch(window.AppConfig.routes.notificationsPreview)
                 .then(res => res.ok ? res.json() : { notifications: [], unread: 0 })
                 .then(({ notifications, unread }) => {
-                    if (navNotifBadge) {
-                        if (unread > 0) {
-                            navNotifBadge.textContent = unread > 9 ? '9+' : unread;
-                            navNotifBadge.style.display = 'flex';
-                        } else {
-                            navNotifBadge.style.display = 'none';
-                        }
-                    }
+                    updateNotifBadge(unread);
                     if (navNotifLabel) {
                         navNotifLabel.textContent = unread > 0 ? `${unread} sin leer` : 'Todo leído';
                     }

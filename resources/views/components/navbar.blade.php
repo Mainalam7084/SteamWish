@@ -85,14 +85,12 @@
                             class="relative w-9 h-9 bg-[#0F3A52] border-2 border-white/30 flex items-center justify-center nb-shadow-sm transition-all duration-100 group-hover:bg-[#FACC15] group-hover:border-black text-[#FACC15] group-hover:!text-black [&>svg]:group-hover:!stroke-black"
                             title="Notificaciones">
                             <i data-lucide="bell" class="w-4 h-4"></i>
-                            {{-- Badge de no leídas --}}
+                            {{-- Badge dinámico: siempre en el DOM, JS controla visibilidad --}}
                             @php $unreadCount = Auth::user()->unreadNotificationsCount(); @endphp
-                            @if ($unreadCount > 0)
-                                <span id="nav-notif-badge"
-                                    class="absolute -top-1.5 -right-1.5 w-4 h-4 bg-red-500 border border-black text-white text-[9px] font-black flex items-center justify-center rounded-none group-hover:!text-white">
-                                    {{ $unreadCount > 9 ? '9+' : $unreadCount }}
-                                </span>
-                            @endif
+                            <span id="nav-notif-badge"
+                                class="absolute -top-1.5 -right-1.5 min-w-[1rem] h-4 px-0.5 bg-red-500 border border-black text-white text-[9px] font-black items-center justify-center rounded-none group-hover:!text-white transition-all duration-200 {{ $unreadCount > 0 ? 'flex' : 'hidden' }}">
+                                {{ $unreadCount > 9 ? '9+' : ($unreadCount > 0 ? $unreadCount : '') }}
+                            </span>
                         </a>
 
                         {{-- Dropdown hover --}}

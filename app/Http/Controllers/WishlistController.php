@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game;
+use App\Models\PriceNotification;
 use App\Models\Wishlist;
 use App\Services\GameService;
 use Illuminate\Http\JsonResponse;
@@ -191,6 +192,19 @@ class WishlistController
                         'is_free' => $data['is_free'] ?? false,
                     ]
                 );
+
+                // Si el juego tiene ≥50% de descuento, crear notificación inmediatamente.
+                if ($discount >= 50 && ! $data['is_free']) {
+                    $this->createDiscountNotification(
+                        $user->id,
+                        (int) $appid,
+                        $name,
+                        $image,
+                        $basePrice > 0 ? $basePrice : $price,
+                        $price,
+                        $discount
+                    );
+                }
             }
         } catch (\Throwable $e) {
             Log::warning('WishlistController::toggle — no se pudo guardar precio base', [
@@ -200,5 +214,45 @@ class WishlistController
         }
 
         return response()->json(['status' => 'added']);
+    }
+
+    /**
+     * Crea una notificación de descuento si no existe una reciente (últimas 24h) para el mismo juego y usuario.
+     */
+    private function createDiscountNotification(
+        int $userId,
+        int $appid,
+        string $gameName,
+        ?string $gameImage,
+        int $oldPrice,
+        int $newPrice,
+        int $discountPercent
+    ): void {
+        // Evitar duplicados: no crear si ya existe una notificación en las últimas 24 horas.
+        $alreadyExists = PriceNotification::where('user_id', $userId)
+            ->where('appid', $appid)
+            ->where('created_at', '>=', now()->subHours(24))
+            ->exists();
+
+        if ($alreadyExists) {
+            return;
+        }
+
+        PriceNotification::create([
+            'user_id'          => $userId,
+            'appid'            => $appid,
+            'game_name'        => $gameName,
+            'game_image'       => $gameImage,
+            'old_price'        => $oldPrice,
+            'new_price'        => $newPrice,
+            'discount_percent' => $discountPercent,
+            'read_at'          => null,
+        ]);
+
+        Log::info('WishlistController: notificación de oferta creada', [
+            'user_id'  => $userId,
+            'appid'    => $appid,
+            'discount' => $discountPercent,
+        ]);
     }
 }
