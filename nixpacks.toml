@@ -1,5 +1,9 @@
 [phases.setup]
-nixPkgs = ["php83", "php83Extensions.pdo", "php83Extensions.pdo_mysql", "php83Extensions.mbstring", "php83Extensions.xml", "php83Extensions.tokenizer", "php83Extensions.ctype", "php83Extensions.fileinfo", "php83Extensions.dom", "php83Extensions.curl", "php83Extensions.zip", "php83Extensions.gd", "php83Extensions.intl", "php83Extensions.bcmath", "php83Extensions.openssl", "nodejs_20", "nodePackages.npm", "git"]
+nixPkgs = ["php83", "php83Extensions.pdo", "php83Extensions.pdo_mysql", "php83Extensions.mbstring", "php83Extensions.xml", "php83Extensions.tokenizer", "php83Extensions.ctype", "php83Extensions.fileinfo", "php83Extensions.dom", "php83Extensions.curl", "php83Extensions.zip", "php83Extensions.gd", "php83Extensions.intl", "php83Extensions.bcmath", "php83Extensions.openssl", "nodejs_20", "nodePackages.npm", "git", "curl"]
+cmds = [
+  "curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer",
+  "chmod +x /usr/local/bin/composer"
+]
 
 [phases.install]
 cmds = [
