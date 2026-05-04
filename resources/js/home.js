@@ -184,7 +184,7 @@ function renderDeals(allGames) {
           </div>
 
           <div class="card-title-area">
-            <span class="truncate pr-2">${escapeHTML(g.name)}</span>
+            <span class="line-clamp-2 leading-tight pr-2">${escapeHTML(g.name)}</span>
             ${discountBadge}
           </div>
 
