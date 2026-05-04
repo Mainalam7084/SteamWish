@@ -6,7 +6,7 @@
 
 @section('content')
 
-   <!-- HERO — Ofertas Trending -->
+    <!-- HERO — Ofertas Trending -->
     <section id="hero" class="relative border-b-4 border-black bg-[#0F3A52] py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -19,24 +19,29 @@
                         class="hidden sm:block bg-[#FACC15] border-2 border-black text-black font-black text-xs px-2 py-1 uppercase tracking-widest shadow-[2px_2px_0_0_#000]">¡Mejor
                         precio!</span>
                 </div>
+                <div class="flex gap-3">
+                    <button id="deal-prev"
+                        class="w-10 h-10 bg-white border-2 border-black shadow-[2px_2px_0_0_#000] hover:shadow-[4px_4px_0_0_#000] hover:-translate-x-[2px] hover:-translate-y-[2px] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all flex items-center justify-center">
+                        <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                    </button>
+                    <button id="deal-next"
+                        class="w-10 h-10 bg-[#FACC15] border-2 border-black shadow-[2px_2px_0_0_#000] hover:shadow-[4px_4px_0_0_#000] hover:-translate-x-[2px] hover:-translate-y-[2px] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all flex items-center justify-center">
+                        <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                    </button>
+                </div>
             </div>
 
             {{-- Skeleton: horizontal scroll --}}
-            <div id="deals-skeleton" class="flex gap-4 overflow-x-auto pb-3 sw-scrollbar">
+            <div id="deals-skeleton" class="flex gap-8 overflow-x-auto pb-8 pt-4 px-2 sw-scrollbar">
                 @for ($i = 0; $i < 8; $i++)
-                    <div class="shrink-0 w-52 bg-white/10 border-4 border-white/20 animate-pulse">
-                        <div class="w-full aspect-[460/215] bg-white/15"></div>
-                        <div class="p-3 flex flex-col gap-2">
-                            <div class="h-3 bg-white/20 rounded"></div>
-                            <div class="h-3 w-2/3 bg-white/15 rounded"></div>
-                            <div class="h-5 w-14 bg-[#FACC15]/25 mt-1"></div>
-                        </div>
+                    <div
+                        class="shrink-0 w-[20em] h-[26em] bg-white/10 border-4 border-white/20 animate-pulse rounded-[0.6em]">
                     </div>
                 @endfor
             </div>
 
             {{-- Real cards: todos en scrollable row --}}
-            <div id="deals-list" class="hidden flex gap-4 overflow-x-auto pb-3 sw-scrollbar"></div>
+            <div id="deals-list" class="hidden flex gap-8 overflow-x-auto pb-10 pt-4 px-2 sw-scrollbar scroll-smooth"></div>
 
             {{-- Empty --}}
             <div id="deals-empty" class="hidden text-blue-200 text-sm font-bold text-center py-10">
@@ -184,7 +189,382 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+
+        /* ── Custom Neo-Brutalist Card Component ────────── */
+        .card {
+            --primary: #FACC15;
+            --primary-hover: #fde047;
+            --secondary: #0F3A52;
+            --secondary-hover: #174b6b;
+            --accent: #16A34A;
+            --text: #050505;
+            --bg: #ffffff;
+            --shadow-color: #000000;
+            --pattern-color: #cfcfcf;
+
+            position: relative;
+            width: 20em;
+            background: var(--bg);
+            border: 0.35em solid var(--text);
+            border-radius: 0.6em;
+            box-shadow:
+                0.7em 0.7em 0 var(--shadow-color),
+                inset 0 0 0 0.15em rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+            font-family: ui-sans-serif, system-ui, sans-serif;
+            transform-origin: center;
+            display: block;
+        }
+
+        .card:hover {
+            transform: translate(-0.4em, -0.4em) scale(1.02);
+            box-shadow: 1em 1em 0 var(--shadow-color);
+        }
+
+        .card:hover .card-pattern-grid,
+        .card:hover .card-overlay-dots {
+            opacity: 1;
+        }
+
+        .card:active {
+            transform: translate(0.1em, 0.1em) scale(0.98);
+            box-shadow: 0.5em 0.5em 0 var(--shadow-color);
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: -1em;
+            right: -1em;
+            width: 4em;
+            height: 4em;
+            background: var(--accent);
+            transform: rotate(45deg);
+            z-index: 1;
+        }
+
+        .card::after {
+            content: "★";
+            position: absolute;
+            top: 0.4em;
+            right: 0.4em;
+            color: var(--text);
+            font-size: 1.2em;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        .card-pattern-grid {
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(to right,
+                    rgba(0, 0, 0, 0.05) 1px,
+                    transparent 1px),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+            background-size: 0.5em 0.5em;
+            pointer-events: none;
+            opacity: 0.5;
+            transition: opacity 0.4s ease;
+            z-index: 1;
+        }
+
+        .card-overlay-dots {
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(var(--pattern-color) 1px, transparent 1px);
+            background-size: 1em 1em;
+            background-position: -0.5em -0.5em;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 1;
+        }
+
+        .bold-pattern {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 6em;
+            height: 6em;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .card-title-area {
+            position: relative;
+            padding: 1.4em;
+            background: var(--primary);
+            color: var(--text);
+            font-weight: 800;
+            font-size: 1.2em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 0.35em solid var(--text);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .card-title-area::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(45deg,
+                    rgba(0, 0, 0, 0.1),
+                    rgba(0, 0, 0, 0.1) 0.5em,
+                    transparent 0.5em,
+                    transparent 1em);
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        .card-tag {
+            background: var(--bg);
+            color: var(--text);
+            font-size: 0.6em;
+            font-weight: 800;
+            padding: 0.4em 0.8em;
+            border: 0.15em solid var(--text);
+            border-radius: 0.3em;
+            box-shadow: 0.2em 0.2em 0 var(--shadow-color);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transform: rotate(3deg);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .card:hover .card-tag {
+            transform: rotate(-2deg) scale(1.1);
+            box-shadow: 0.25em 0.25em 0 var(--shadow-color);
+        }
+
+        .card-body {
+            position: relative;
+            padding: 1.5em;
+            z-index: 2;
+        }
+
+        .card-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5em;
+            padding-top: 1.2em;
+            border-top: 0.15em dashed rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+
+        .card-actions::before {
+            content: "✂";
+            position: absolute;
+            top: -0.8em;
+            left: 50%;
+            transform: translateX(-50%) rotate(90deg);
+            background: var(--bg);
+            padding: 0 0.5em;
+            font-size: 1em;
+            color: rgba(0, 0, 0, 0.4);
+        }
+
+        .price {
+            position: relative;
+            font-size: 1.8em;
+            font-weight: 800;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1;
+        }
+
+        .price::before {
+            content: "";
+            position: absolute;
+            bottom: 0.05em;
+            left: 0;
+            width: 100%;
+            height: 0.2em;
+            background: var(--accent);
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .price-currency {
+            font-size: 0.6em;
+            font-weight: 700;
+            vertical-align: top;
+            margin-right: 0.1em;
+        }
+
+        .price-period {
+            display: block;
+            font-size: 0.4em;
+            font-weight: 600;
+            color: rgba(0, 0, 0, 0.6);
+            margin-top: 0.4em;
+            text-transform: uppercase;
+        }
+
+        .card-button {
+            position: relative;
+            background: var(--secondary);
+            color: var(--bg);
+            font-size: 0.9em;
+            font-weight: 700;
+            padding: 0.7em 1.2em;
+            border: 0.2em solid var(--text);
+            border-radius: 0.4em;
+            box-shadow: 0.3em 0.3em 0 var(--shadow-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .card-button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                    transparent 0%,
+                    rgba(255, 255, 255, 0.2) 50%,
+                    transparent 100%);
+            transition: left 0.6s ease;
+        }
+
+        .card-button:hover {
+            background: var(--secondary-hover);
+            transform: translate(-0.1em, -0.1em);
+            box-shadow: 0.4em 0.4em 0 var(--shadow-color);
+        }
+
+        .card-button:hover::before {
+            left: 100%;
+        }
+
+        .card-button:active {
+            transform: translate(0.1em, 0.1em);
+            box-shadow: 0.15em 0.15em 0 var(--shadow-color);
+        }
+
+        .dots-pattern {
+            position: absolute;
+            bottom: 2em;
+            left: -2em;
+            width: 8em;
+            height: 4em;
+            opacity: 0.3;
+            transform: rotate(-10deg);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .accent-shape {
+            position: absolute;
+            width: 2.5em;
+            height: 2.5em;
+            background: var(--primary);
+            border: 0.15em solid var(--text);
+            border-radius: 0.3em;
+            transform: rotate(45deg);
+            bottom: -1.2em;
+            right: 2em;
+            z-index: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .accent-shape {
+            transform: rotate(55deg) scale(1.1);
+        }
+
+        .stamp {
+            position: absolute;
+            bottom: 1.5em;
+            left: 1.5em;
+            width: 4em;
+            height: 4em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 0.15em solid rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            transform: rotate(-15deg);
+            opacity: 0.2;
+            z-index: 1;
+        }
+
+        .stamp-text {
+            font-size: 0.6em;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .corner-slice {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 1.5em;
+            height: 1.5em;
+            background: var(--bg);
+            border-right: 0.25em solid var(--text);
+            border-top: 0.25em solid var(--text);
+            border-radius: 0 0.5em 0 0;
+            z-index: 1;
+        }
     </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const list = document.getElementById('deals-list');
+            const prevBtn = document.getElementById('deal-prev');
+            const nextBtn = document.getElementById('deal-next');
+
+            if (list && prevBtn && nextBtn) {
+                const scrollAmount = 350; // card width + gap approx
+
+                nextBtn.addEventListener('click', () => {
+                    if (list.scrollLeft + list.clientWidth >= list.scrollWidth - 20) {
+                        // Loop back to start
+                        list.scrollTo({
+                            left: 0,
+                            behavior: 'smooth'
+                        });
+                    } else {
+                        list.scrollBy({
+                            left: scrollAmount,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+
+                prevBtn.addEventListener('click', () => {
+                    if (list.scrollLeft <= 10) {
+                        // Loop to end
+                        list.scrollTo({
+                            left: list.scrollWidth,
+                            behavior: 'smooth'
+                        });
+                    } else {
+                        list.scrollBy({
+                            left: -scrollAmount,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            }
+        });
+    </script>
 
     <script>
         window.HomeConfig = {

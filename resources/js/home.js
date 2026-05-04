@@ -1,4 +1,14 @@
 // Helper functions
+function escapeHTML(str) {
+    if (!str) return '';
+    return str.toString()
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 function show(id) {
     document.getElementById(id)?.classList.remove('hidden');
 }
@@ -9,8 +19,8 @@ function hide(id) {
 
 function priceTag(game, accentClass = 'bg-[#FACC15] text-black') {
     const label = game.discount > 0 ?
-        `-${game.discount}% · ${game.price}` :
-        game.price;
+        `-${game.discount}% · ${escapeHTML(game.price)}` :
+        escapeHTML(game.price);
     return `<span class="shrink-0 ${accentClass} border-2 border-black px-2 py-0.5 font-black text-xs">${label}</span>`;
 }
 
@@ -46,7 +56,7 @@ function renderMostPlayed(games) {
         const rank = i + 1;
         const badgeCls = rank <= 3 ? 'bg-[#FACC15] text-black' : 'bg-[#0F3A52] text-white';
         const thumb = g.image ?
-            `<img src="${g.image}" alt="${g.name}" class="shrink-0 w-28 h-16 object-cover border-2 border-black">` :
+            `<img src="${escapeHTML(g.image)}" alt="${escapeHTML(g.name)}" class="shrink-0 w-28 h-16 object-cover border-2 border-black">` :
             `<div class="shrink-0 w-28 h-16 bg-gray-200 border-2 border-black"></div>`;
 
         return `
@@ -56,7 +66,7 @@ function renderMostPlayed(games) {
               hover:-translate-x-1 hover:-translate-y-1 transition-all group">
         <span class="shrink-0 w-8 h-8 flex items-center justify-center border-2 border-black font-black text-sm ${badgeCls}">#${rank}</span>
         ${thumb}
-        <span class="flex-1 font-black text-sm uppercase text-[#0F3A52] truncate group-hover:text-[#5DA9D6] transition-colors">${g.name}</span>
+        <span class="flex-1 font-black text-sm uppercase text-[#0F3A52] truncate group-hover:text-[#5DA9D6] transition-colors">${escapeHTML(g.name)}</span>
         ${priceTag(g)}
         ${heartBtn(g.appid, 'relative shrink-0 ml-1')}
     </a>`;
@@ -77,12 +87,12 @@ function renderTrending(games) {
 
     container.innerHTML = games.map(g => {
         const thumb = g.image ?
-            `<img src="${g.image}" alt="${g.name}" class="shrink-0 w-28 h-16 object-cover border-2 border-black">` :
+            `<img src="${escapeHTML(g.image)}" alt="${escapeHTML(g.name)}" class="shrink-0 w-28 h-16 object-cover border-2 border-black">` :
             `<div class="shrink-0 w-28 h-16 bg-gray-200 border-2 border-black"></div>`;
 
         const badge = g.discount > 0 ?
-            `<span class="shrink-0 bg-[#16A34A] border-2 border-black text-white font-black text-xs px-2 py-0.5">-${g.discount}% · ${g.price}</span>` :
-            `<span class="shrink-0 bg-[#FACC15] border-2 border-black text-black font-black text-xs px-2 py-0.5">${g.price}</span>`;
+            `<span class="shrink-0 bg-[#16A34A] border-2 border-black text-white font-black text-xs px-2 py-0.5">-${g.discount}% · ${escapeHTML(g.price)}</span>` :
+            `<span class="shrink-0 bg-[#FACC15] border-2 border-black text-black font-black text-xs px-2 py-0.5">${escapeHTML(g.price)}</span>`;
 
         return `
     <a href="${gameUrl(g.appid)}"
@@ -90,7 +100,7 @@ function renderTrending(games) {
               shadow-[4px_4px_0_0_#16A34A] hover:shadow-[6px_6px_0_0_#5DA9D6]
               hover:-translate-x-1 hover:-translate-y-1 transition-all group">
         ${thumb}
-        <span class="flex-1 font-black text-sm uppercase text-[#0F3A52] truncate group-hover:text-[#5DA9D6] transition-colors">${g.name}</span>
+        <span class="flex-1 font-black text-sm uppercase text-[#0F3A52] truncate group-hover:text-[#5DA9D6] transition-colors">${escapeHTML(g.name)}</span>
         ${badge}
         ${heartBtn(g.appid, 'relative shrink-0 ml-1')}
     </a>`;
@@ -110,7 +120,7 @@ function renderUpcoming(games) {
 
     container.innerHTML = games.map(g => {
         const img = g.image ?
-            `<img src="${g.image}" alt="${g.name}" class="w-full aspect-[460/215] object-cover border-b-4 border-black">` :
+            `<img src="${escapeHTML(g.image)}" alt="${escapeHTML(g.name)}" class="w-full aspect-[460/215] object-cover border-b-4 border-black">` :
             `<div class="w-full aspect-[460/215] bg-[#0F3A52] border-b-4 border-black flex items-center justify-center">
                <i data-lucide="calendar" class="w-10 h-10 text-[#5DA9D6]"></i>
            </div>`;
@@ -123,7 +133,7 @@ function renderUpcoming(games) {
         ${img}
         ${heartBtn(g.appid, 'absolute top-2 right-2')}
         <div class="p-3 flex flex-col gap-1">
-            <h3 class="font-black text-sm uppercase text-[#0F3A52] line-clamp-2 group-hover:text-[#5DA9D6] transition-colors leading-tight">${g.name}</h3>
+            <h3 class="font-black text-sm uppercase text-[#0F3A52] line-clamp-2 group-hover:text-[#5DA9D6] transition-colors leading-tight">${escapeHTML(g.name)}</h3>
             <div class="flex items-center justify-between mt-1">
                 ${priceTag(g)}
                 <span class="text-gray-400 text-xs font-bold uppercase">Coming Soon</span>
@@ -155,27 +165,65 @@ function renderDeals(allGames) {
 
     list.innerHTML = deals.map(g => {
         const img = g.image ?
-            `<img src="${g.image}" alt="${g.name}" class="w-full aspect-[460/215] object-cover border-b-4 border-black">` :
-            `<div class="w-full aspect-[460/215] bg-[#0F3A52]/60 border-b-4 border-black flex items-center justify-center"><i data-lucide="gamepad-2" class="w-8 h-8 text-blue-300"></i></div>`;
+            `<img src="${escapeHTML(g.image)}" alt="${escapeHTML(g.name)}" class="w-full h-[8.5rem] object-cover border-2 border-black mb-1">` :
+            `<div class="w-full h-[8.5rem] bg-[#0F3A52]/60 border-2 border-black flex items-center justify-center mb-1"><i data-lucide="gamepad-2" class="w-8 h-8 text-blue-300"></i></div>`;
 
         const discountBadge = g.discount > 0 ?
-            `<span class="inline-block bg-[#16A34A] border-2 border-black text-white font-black text-xs px-2 py-0.5 shadow-[2px_2px_0_0_#000]">-${g.discount}%</span>` :
-            '';
+            `<span class="card-tag">-${g.discount}%</span>` :
+            '<span class="card-tag">SALE</span>';
 
         return `
-        <a href="${gameUrl(g.appid)}"
-           class="relative group block shrink-0 w-52 bg-[#F5F5F5] border-4 border-black
-                  shadow-[4px_4px_0_0_#FACC15] hover:shadow-[6px_6px_0_0_#FACC15]
-                  hover:-translate-y-1 hover:-translate-x-1 transition-all duration-200 flex flex-col">
+        <a href="${gameUrl(g.appid)}" class="card shrink-0" style="text-decoration: none;">
+          <div class="card-pattern-grid"></div>
+          <div class="card-overlay-dots"></div>
+
+          <div class="bold-pattern">
+            <svg viewBox="0 0 100 100">
+              <path stroke-dasharray="15 10" stroke-width="10" stroke="#000" fill="none" d="M0,0 L100,0 L100,100 L0,100 Z"></path>
+            </svg>
+          </div>
+
+          <div class="card-title-area">
+            <span class="truncate pr-2">${escapeHTML(g.name)}</span>
+            ${discountBadge}
+          </div>
+
+          <div class="card-body">
             ${img}
-            ${heartBtn(g.appid, 'absolute top-2 right-2')}
-            <div class="p-3 flex flex-col flex-grow justify-between bg-white">
-                <h3 class="text-xs font-black uppercase text-[#0F3A52] line-clamp-2 group-hover:text-[#5DA9D6] transition-colors leading-tight mb-2">${g.name}</h3>
-                <div class="flex items-center justify-between gap-1 mt-auto flex-wrap">
-                    <span class="inline-block bg-[#FACC15] border-2 border-black px-2 py-0.5 font-black text-xs text-black shadow-[2px_2px_0_0_#000]">${g.price}</span>
-                    ${discountBadge}
-                </div>
+            ${heartBtn(g.appid, 'absolute top-[5rem] right-[1.2rem] bg-white')}
+
+            <div class="card-actions">
+              <div class="price">
+                ${escapeHTML(g.price)}
+                <span class="price-period">Steam Store</span>
+              </div>
+
+              <button class="card-button" onclick="window.location='${gameUrl(g.appid)}'; event.preventDefault();">Ver Más</button>
             </div>
+          </div>
+
+          <div class="dots-pattern">
+            <svg viewBox="0 0 80 40">
+              <circle fill="#000" r="3" cy="10" cx="10"></circle>
+              <circle fill="#000" r="3" cy="10" cx="30"></circle>
+              <circle fill="#000" r="3" cy="10" cx="50"></circle>
+              <circle fill="#000" r="3" cy="10" cx="70"></circle>
+              <circle fill="#000" r="3" cy="20" cx="20"></circle>
+              <circle fill="#000" r="3" cy="20" cx="40"></circle>
+              <circle fill="#000" r="3" cy="20" cx="60"></circle>
+              <circle fill="#000" r="3" cy="30" cx="10"></circle>
+              <circle fill="#000" r="3" cy="30" cx="30"></circle>
+              <circle fill="#000" r="3" cy="30" cx="50"></circle>
+              <circle fill="#000" r="3" cy="30" cx="70"></circle>
+            </svg>
+          </div>
+
+          <div class="accent-shape"></div>
+          <div class="corner-slice"></div>
+
+          <div class="stamp">
+            <span class="stamp-text">HOT</span>
+          </div>
         </a>`;
     }).join('');
 
