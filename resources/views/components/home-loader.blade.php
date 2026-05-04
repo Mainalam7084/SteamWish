@@ -19,53 +19,7 @@
             visibility: hidden;
         }
 
-        .sw-loader-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 900;
-            font-size: 2.5rem;
-            text-transform: uppercase;
-            letter-spacing: -0.03em;
-            color: #0F3A52;
-            text-align: center;
-            line-height: 1;
-        }
 
-        .sw-loader-title span {
-            color: #FACC15;
-            -webkit-text-stroke: 2px #000;
-        }
-
-        .sw-loader-badge {
-            background: #FACC15;
-            border: 3px solid #000;
-            color: #000;
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 900;
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            padding: 0.25rem 0.75rem;
-            box-shadow: 3px 3px 0 0 #000;
-            display: none;
-        }
-
-        /* Progress bar */
-        .sw-progress-track {
-            width: 200px;
-            height: 12px;
-            background: #fff;
-            border: 3px solid #000;
-            box-shadow: 3px 3px 0 0 #000;
-            overflow: hidden;
-        }
-
-        .sw-progress-fill {
-            height: 100%;
-            width: 0%;
-            background: #FACC15;
-            border-right: 2px solid #000;
-            transition: width 3s linear;
-        }
 
         /* ── Loader character (original styles preserved + tinted) ── */
         .loader {
@@ -302,15 +256,11 @@
                 </g>
             </svg>
         </div>
-    </div>
 
-    {{-- Title --}}
-    <div class="sw-loader-title">Steam<span>Wish</span></div>
-
-    {{-- Progress bar --}}
-    <div class="sw-progress-track">
-        <div class="sw-progress-fill" id="sw-progress-fill"></div>
-    </div>
+        {{-- Progress bar (Max width at bottom) --}}
+        <div class="absolute bottom-0 left-0 w-full h-4 bg-white border-t-4 border-black shadow-[0_-4px_0_0_#0F3A52]">
+            <div class="h-full bg-[#FACC15] border-r-4 border-black w-0 transition-all duration-[3000ms] ease-out" id="sw-progress-fill"></div>
+        </div>
     </div>
 
     <script>

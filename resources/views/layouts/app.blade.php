@@ -41,7 +41,7 @@
     @endauth
 </head>
 
-<body class="bg-[#F5F5F5] text-[#0F3A52] font-sans antialiased">
+<body class="bg-[#F5F5F5] text-[#0F3A52] font-sans antialiased min-h-screen flex flex-col">
 
     {{-- Ticker Bar --}}
     <div class="bg-[#0F3A52] border-b-4 border-black overflow-hidden py-1.5">
@@ -63,12 +63,21 @@
     <x-navbar />
 
     {{-- Main Content --}}
-    <main id="main-content" class="min-h-screen">
+    <main id="main-content" class="flex-grow">
         @yield('content')
     </main>
 
-    {{-- Footer --}}
-    <x-footer />
+    {{-- Simple Footer --}}
+    <footer class="w-full border-t-4 border-black bg-[#0F3A52] py-6 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="font-black text-2xl text-white uppercase tracking-tighter">
+                STEAM<span class="text-[#FACC15] drop-shadow-[1px_1px_0_#000]">WISH</span>
+            </div>
+            <div class="font-bold text-sm text-gray-300 uppercase">
+                &copy; {{ date('Y') }} Todos los derechos reservados. Licencia MIT.
+            </div>
+        </div>
+    </footer>
 
     {{-- Cursor Loader (Small GIF near mouse) --}}
     <img id="cursor-loader" src="" class="fixed z-[10000] w-20 h-20 object-cover border-4 border-black pointer-events-none hidden transition-opacity duration-100 opacity-0 shadow-[4px_4px_0_0_#FACC15] bg-[#F5F5F5]">

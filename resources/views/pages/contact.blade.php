@@ -44,21 +44,30 @@
                     <h3 class="text-3xl font-black uppercase text-[#0F3A52] mb-8 underline decoration-8 decoration-[#1D9E75]">Información</h3>
                     <div class="space-y-8">
                         <div class="flex items-start gap-4">
-                            <div class="bg-black p-2 border-2 border-black shadow-[4px_4px_0_0_#1D9E75]">
-                                <i data-lucide="map-pin" class="w-6 h-6 text-[#1D9E75]"></i>
+                            <div class="bg-white p-2 border-2 border-black shadow-[4px_4px_0_0_#1D9E75] hover:translate-y-1 hover:translate-x-1 hover:shadow-[2px_2px_0_0_#1D9E75] transition-all flex items-center justify-center group cursor-default">
+                                <i data-lucide="map-pin" class="w-6 h-6 text-black group-hover:scale-110 transition-transform"></i>
                             </div>
                             <div>
                                 <span class="block font-black uppercase text-xs text-gray-500">Ubicación</span>
-                                <span class="font-bold text-lg">Madrid, España</span>
+                                <span class="font-bold text-lg hover:text-[#1D9E75] transition-colors">Madrid, España</span>
                             </div>
                         </div>
                         <div class="flex items-start gap-4">
-                            <div class="bg-black p-2 border-2 border-black shadow-[4px_4px_0_0_#1D9E75]">
-                                <i data-lucide="mail-plus" class="w-6 h-6 text-[#1D9E75]"></i>
-                            </div>
+                            <a href="mailto:soporte@steamwish.com" class="bg-white p-2 border-2 border-black shadow-[4px_4px_0_0_#1D9E75] hover:translate-y-1 hover:translate-x-1 hover:shadow-[2px_2px_0_0_#1D9E75] transition-all flex items-center justify-center group cursor-pointer">
+                                <i data-lucide="mail-plus" class="w-6 h-6 text-black group-hover:scale-110 transition-transform"></i>
+                            </a>
                             <div>
                                 <span class="block font-black uppercase text-xs text-gray-500">Email Directo</span>
-                                <span class="font-bold text-lg">soporte@steamwish.com</span>
+                                <a href="mailto:soporte@steamwish.com" class="font-bold text-lg hover:text-[#1D9E75] transition-colors">soporte@steamwish.com</a>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <a href="#" class="bg-white p-2 border-2 border-black shadow-[4px_4px_0_0_#1D9E75] hover:translate-y-1 hover:translate-x-1 hover:shadow-[2px_2px_0_0_#1D9E75] transition-all flex items-center justify-center group cursor-pointer">
+                                <img src="{{ asset('icons/github.png') }}" alt="GitHub" class="w-6 h-6 object-contain group-hover:scale-110 transition-transform">
+                            </a>
+                            <div>
+                                <span class="block font-black uppercase text-xs text-gray-500">Conectar</span>
+                                <a href="#" class="font-bold text-lg hover:text-[#1D9E75] transition-colors">GitHub</a>
                             </div>
                         </div>
                     </div>
