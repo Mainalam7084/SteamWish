@@ -10,7 +10,7 @@ RUN install-php-extensions \
     zip gd bcmath intl opcache
 
 # ── Runtime system tools ──────────────────────────────────────────────────────
-RUN apk add --no-cache nodejs npm git curl
+RUN apk add --no-cache nodejs npm git curl dos2unix
 
 # ── Composer ──────────────────────────────────────────────────────────────────
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -42,7 +42,10 @@ RUN mkdir -p storage/logs \
         bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
+# ── Startup script ───────────────────────────────────────────────────────────
+COPY startup.sh /app/startup.sh
+RUN dos2unix /app/startup.sh && chmod +x /app/startup.sh
+
 EXPOSE 8080
 
-# ── Runtime: cache config, run migrations, serve ─────────────────────────────
-CMD ["sh", "-c", "php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan migrate --force && php artisan storage:link && php -S 0.0.0.0:${PORT:-8080} -t public"]
+CMD ["/app/startup.sh"]
