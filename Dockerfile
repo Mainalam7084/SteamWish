@@ -6,14 +6,17 @@ RUN apk add --no-cache \
     libpng-dev libzip-dev zip unzip \
     libxml2-dev oniguruma-dev \
     postgresql-dev \
-    freetype-dev libjpeg-turbo-dev
+    freetype-dev libjpeg-turbo-dev \
+    icu-dev icu-libs \
+    $PHPIZE_DEPS
 
 # ── PHP extensions ────────────────────────────────────────────────────────────
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install \
         pdo pdo_mysql pdo_pgsql \
         mbstring xml tokenizer ctype fileinfo dom \
-        zip gd bcmath intl opcache
+        zip gd bcmath intl opcache \
+    && apk del $PHPIZE_DEPS
 
 # ── Composer ──────────────────────────────────────────────────────────────────
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
