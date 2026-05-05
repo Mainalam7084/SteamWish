@@ -1,22 +1,16 @@
 FROM php:8.3-cli-alpine
 
-# ── System dependencies ───────────────────────────────────────────────────────
-RUN apk add --no-cache \
-    nodejs npm git curl \
-    libpng-dev libzip-dev zip unzip \
-    libxml2-dev oniguruma-dev \
-    postgresql-dev \
-    freetype-dev libjpeg-turbo-dev \
-    icu-dev icu-libs \
-    $PHPIZE_DEPS
+# ── php-extension-installer (handles all deps automatically) ──────────────────
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
 
 # ── PHP extensions ────────────────────────────────────────────────────────────
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install \
-        pdo pdo_mysql pdo_pgsql \
-        mbstring xml tokenizer ctype fileinfo dom \
-        zip gd bcmath intl opcache \
-    && apk del $PHPIZE_DEPS
+RUN install-php-extensions \
+    pdo pdo_mysql pdo_pgsql \
+    mbstring xml tokenizer ctype fileinfo dom \
+    zip gd bcmath intl opcache
+
+# ── Runtime system tools ──────────────────────────────────────────────────────
+RUN apk add --no-cache nodejs npm git curl
 
 # ── Composer ──────────────────────────────────────────────────────────────────
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -27,7 +21,7 @@ WORKDIR /app
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
-# ── JS dependencies & build ───────────────────────────────────────────────────
+# ── JS dependencies ───────────────────────────────────────────────────────────
 COPY package.json package-lock.json ./
 RUN npm ci
 
