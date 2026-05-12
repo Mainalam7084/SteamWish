@@ -16,30 +16,36 @@
         </div>
 
         @if(count($games) > 0)
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
                 @foreach($games as $game)
-                    <div class="group bg-white border-4 border-black shadow-[4px_4px_0_0_#0F3A52] hover:shadow-[8px_8px_0_0_#5DA9D6] hover:-translate-y-1 hover:-translate-x-1 transition-all flex flex-col overflow-hidden">
+                    <div class="group relative bg-white border-4 border-black shadow-[4px_4px_0_0_#0F3A52]
+                                hover:shadow-[8px_8px_0_0_#5DA9D6] hover:-translate-y-1 hover:-translate-x-1
+                                transition-all flex flex-col overflow-hidden">
 
                         {{-- Image --}}
-                        <a href="/game?appid={{ $game['appid'] }}" class="relative overflow-hidden border-b-4 border-black block">
+                        <a href="/game?appid={{ $game['appid'] }}"
+                           class="relative overflow-hidden border-b-4 border-black block">
                             <img src="{{ $game['image'] }}"
                                  alt="{{ $game['name'] }}"
-                                 class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300"
+                                 class="w-full aspect-[460/215] object-cover group-hover:scale-105 transition-transform duration-300"
                                  loading="lazy"
-                                 onerror="this.src='https://placehold.co/300x180/0F3A52/5DA9D6?text=No+Image'">
+                                 onerror="this.src='https://placehold.co/460x215/0F3A52/5DA9D6?text=No+Image'">
                         </a>
 
                         {{-- Info --}}
                         <div class="p-4 flex flex-col gap-3 flex-1">
                             <a href="/game?appid={{ $game['appid'] }}"
-                               class="font-black text-sm uppercase text-[#0F3A52] line-clamp-2 hover:text-[#5DA9D6] transition-colors">
+                               class="font-black text-sm uppercase text-[#0F3A52] line-clamp-2
+                                      hover:text-[#5DA9D6] transition-colors leading-tight">
                                 {{ $game['name'] }}
                             </a>
 
-                            <div class="mt-auto flex items-center justify-between border-t-2 border-gray-100 pt-3">
-                                <span class="font-black text-[#5DA9D6] text-lg">
+                            <div class="mt-auto flex items-center justify-between border-t-2 border-gray-100 pt-3 gap-2">
+                                <span class="font-black text-[#5DA9D6] text-base leading-none">
                                     @if($game['discount'] > 0)
-                                        <span class="bg-[#16A34A] text-white text-xs font-black px-1 border border-black mr-1">-{{ $game['discount'] }}%</span>
+                                        <span class="bg-[#16A34A] text-white text-xs font-black px-1 border border-black mr-1">
+                                            -{{ $game['discount'] }}%
+                                        </span>
                                     @endif
                                     {{ $game['price'] }}
                                 </span>
@@ -47,11 +53,12 @@
                                 {{-- Remove button --}}
                                 <button
                                     data-appid="{{ $game['appid'] }}"
-                                    class="wishlist-btn border-2 border-black font-black text-[10px] uppercase px-3 py-1.5
-                                           bg-[#FACC15] text-black
+                                    class="wishlist-btn border-2 border-black font-black text-[10px] uppercase px-3 py-2
+                                           bg-[#FACC15] text-black shrink-0
                                            shadow-[2px_2px_0_0_#000] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]
                                            transition-all"
-                                    aria-label="Remove from wishlist">
+                                    aria-label="Quitar de wishlist: {{ $game['name'] }}"
+                                    aria-pressed="true">
                                     Saved
                                 </button>
                             </div>

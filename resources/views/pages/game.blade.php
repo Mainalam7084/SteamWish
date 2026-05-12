@@ -1,8 +1,10 @@
 @extends('layouts.app')
 
 @section('title', $app_name . ' - SteamWish')
-{{-- Esto va aqui? --}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+@push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+@endpush
 
 @section('content')
     <div class="max-w-6xl mx-auto px-4 py-8">
@@ -12,9 +14,11 @@
             </a>
         </div>
 
-        <article class="bg-white border-4 border-black shadow-[8px_8px_0_0_#0F3A52] p-6 md:p-10">
-            <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
-                <h1 class="text-4xl md:text-6xl font-black uppercase text-[#0F3A52]">{{ $app_name }}</h1>
+        <article class="bg-white border-4 border-black shadow-[8px_8px_0_0_#0F3A52] p-4 sm:p-6 md:p-10">
+            <div class="flex flex-col sm:flex-row sm:flex-wrap items-start justify-between gap-4 mb-6">
+                <h1 class="text-3xl sm:text-4xl md:text-6xl font-black uppercase text-[#0F3A52] leading-tight">
+                    {{ $app_name }}
+                </h1>
 
                 {{-- Wishlist Button --}}
                 <button
@@ -47,12 +51,18 @@
             </div>
 
             @if($app_price_numeric > 0)
-
-                {{-- TODO: Poner divs o lo q sea --}}
-                @if($app_price_numeric === $lowest_price )
-                <p style="color:green; font-weight: bold;">Precio más bajo: {{ $lowest_price }}€</p>
+                @if($app_price_numeric === $lowest_price)
+                <div class="inline-flex items-center gap-2 bg-[#16A34A] text-white border-2 border-black
+                            font-black text-sm px-4 py-2 mb-4 shadow-[2px_2px_0_0_#000]">
+                    <i data-lucide="trending-down" class="w-4 h-4" aria-hidden="true"></i>
+                    Precio más bajo: {{ $lowest_price }}€
+                </div>
                 @else
-                <p> Precio más bajo: {{ $lowest_price }}€ </p>
+                <div class="inline-flex items-center gap-2 bg-[#F5F5F5] text-[#0F3A52] border-2 border-black
+                            font-bold text-sm px-4 py-2 mb-4">
+                    <i data-lucide="tag" class="w-4 h-4" aria-hidden="true"></i>
+                    Precio más bajo histórico: {{ $lowest_price }}€
+                </div>
                 @endif
 
                 

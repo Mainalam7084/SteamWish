@@ -60,16 +60,24 @@
         <div class="flex flex-col gap-4" id="notifications-list">
             @foreach($notifications as $notification)
             <div id="notif-{{ $notification->id }}"
-                 class="group bg-white border-4 border-black shadow-[4px_4px_0_0_{{ $notification->isUnread() ? '#0F3A52' : '#D1D5DB' }}]
-                        hover:shadow-[6px_6px_0_0_#5DA9D6] hover:-translate-y-0.5 transition-all flex overflow-hidden
-                        {{ $notification->isUnread() ? 'ring-2 ring-[#FACC15] ring-offset-0' : '' }}">
+                 class="group bg-white border-4 border-black
+                        shadow-[4px_4px_0_0_{{ $notification->isUnread() ? '#0F3A52' : '#D1D5DB' }}]
+                        hover:shadow-[6px_6px_0_0_#5DA9D6] hover:-translate-y-0.5 transition-all
+                        flex flex-col sm:flex-row overflow-hidden
+                        {{ $notification->isUnread() ? 'ring-2 ring-[#FACC15] ring-offset-0' : '' }}"
+                 role="article"
+                 aria-label="{{ $notification->game_name }}{{ $notification->isUnread() ? ' — sin leer' : '' }}">
 
                 {{-- Game image --}}
                 @if($notification->game_image)
-                <a href="/game?appid={{ $notification->appid }}" class="shrink-0 block w-36 sm:w-48 relative border-r-4 border-black overflow-hidden">
+                <a href="/game?appid={{ $notification->appid }}"
+                   class="shrink-0 block relative border-b-4 sm:border-b-0 sm:border-r-4 border-black overflow-hidden
+                          h-32 sm:h-auto sm:w-44"
+                   tabindex="-1" aria-hidden="true">
                     <img src="{{ $notification->game_image }}"
                          alt="{{ $notification->game_name }}"
                          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                         loading="lazy"
                          onerror="this.src='https://placehold.co/192x96/0F3A52/5DA9D6?text=No+Image'">
                     @if($notification->isUnread())
                     <span class="absolute top-2 left-2 bg-red-500 text-white text-[9px] font-black border border-black px-1.5 py-0.5 uppercase">
@@ -80,24 +88,29 @@
                 @endif
 
                 {{-- Content --}}
-                <div class="flex-1 p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                    <div class="flex-1">
-                        {{-- Unread dot --}}
+                <div class="flex-1 min-w-0 p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                    <div class="flex-1 min-w-0">
+                        {{-- Unread dot + game name --}}
                         <div class="flex items-center gap-2 mb-1">
                             @if($notification->isUnread())
-                            <span class="w-2 h-2 bg-red-500 border border-black shrink-0"></span>
+                            <span class="w-2 h-2 bg-red-500 border border-black shrink-0" aria-hidden="true"></span>
                             @endif
                             <a href="/game?appid={{ $notification->appid }}"
-                               class="font-black text-sm uppercase text-[#0F3A52] hover:text-[#5DA9D6] transition-colors line-clamp-1">
+                               class="font-black text-sm uppercase text-[#0F3A52] hover:text-[#5DA9D6]
+                                      transition-colors line-clamp-1 min-w-0">
                                 {{ $notification->game_name }}
                             </a>
                         </div>
 
                         {{-- Price comparison --}}
                         <div class="flex flex-wrap items-center gap-2 mb-2">
-                            <span class="text-gray-400 line-through text-sm font-bold">{{ $notification->old_price_formatted }}</span>
-                            <i data-lucide="arrow-right" class="w-3 h-3 text-gray-400"></i>
-                            <span class="text-xl font-black text-[#0F3A52]">{{ $notification->new_price_formatted }}</span>
+                            <span class="text-gray-400 line-through text-sm font-bold">
+                                {{ $notification->old_price_formatted }}
+                            </span>
+                            <i data-lucide="arrow-right" class="w-3 h-3 text-gray-400 shrink-0" aria-hidden="true"></i>
+                            <span class="text-lg sm:text-xl font-black text-[#0F3A52]">
+                                {{ $notification->new_price_formatted }}
+                            </span>
                             @if($notification->discount_percent > 0)
                             <span class="bg-[#FACC15] text-black text-xs font-black border-2 border-black px-2 py-0.5 shadow-[2px_2px_0_0_#000]">
                                 -{{ $notification->discount_percent }}%
@@ -106,26 +119,33 @@
                         </div>
 
                         <p class="text-[11px] text-gray-400 font-bold uppercase">
-                            <i data-lucide="clock" class="w-3 h-3 inline-block mr-1"></i>
-                            {{ $notification->created_at->diffForHumans() }}
+                            <i data-lucide="clock" class="w-3 h-3 inline-block mr-1" aria-hidden="true"></i>
+                            <time datetime="{{ $notification->created_at->toISOString() }}">
+                                {{ $notification->created_at->diffForHumans() }}
+                            </time>
                         </p>
                     </div>
 
                     {{-- Actions --}}
-                    <div class="flex flex-col gap-2 shrink-0">
+                    <div class="flex sm:flex-col gap-2 shrink-0 w-full sm:w-auto">
                         <a href="https://store.steampowered.com/app/{{ $notification->appid }}"
                            target="_blank"
-                           class="flex items-center gap-1 bg-[#FACC15] text-black border-2 border-black font-black text-[10px] uppercase
-                                  px-3 py-1.5 shadow-[2px_2px_0_0_#000] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all">
-                            <i data-lucide="external-link" class="w-3 h-3"></i>
+                           rel="noopener noreferrer"
+                           class="flex items-center justify-center gap-1 bg-[#FACC15] text-black border-2 border-black
+                                  font-black text-[10px] uppercase flex-1 sm:flex-none
+                                  px-3 py-2 shadow-[2px_2px_0_0_#000] hover:shadow-none
+                                  hover:translate-x-[2px] hover:translate-y-[2px] transition-all">
+                            <i data-lucide="external-link" class="w-3 h-3" aria-hidden="true"></i>
                             Ver en Steam
                         </a>
                         @if($notification->isUnread())
                         <button
                             onclick="markAsRead({{ $notification->id }}, this)"
-                            class="flex items-center gap-1 bg-white text-[#0F3A52] border-2 border-black font-black text-[10px] uppercase
-                                   px-3 py-1.5 shadow-[2px_2px_0_0_#000] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all">
-                            <i data-lucide="check" class="w-3 h-3"></i>
+                            class="flex items-center justify-center gap-1 bg-white text-[#0F3A52] border-2 border-black
+                                   font-black text-[10px] uppercase flex-1 sm:flex-none
+                                   px-3 py-2 shadow-[2px_2px_0_0_#000] hover:shadow-none
+                                   hover:translate-x-[2px] hover:translate-y-[2px] transition-all">
+                            <i data-lucide="check" class="w-3 h-3" aria-hidden="true"></i>
                             Marcar leído
                         </button>
                         @endif

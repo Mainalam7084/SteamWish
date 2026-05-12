@@ -131,11 +131,13 @@
                 @auth
                     <div class="relative group">
                         <button
+                            aria-haspopup="true"
+                            aria-label="Menú de usuario: {{ Auth::user()->username }}"
                             class="flex items-center gap-2 bg-[#FACC15] border-2 border-black text-black font-black text-sm tracking-wider px-2 py-1 shadow-[4px_4px_0px_0px_black] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_black] active:translate-x-1 active:translate-y-1 active:shadow-[0px_0px_0px_0px_black] transition-all duration-100 h-full">
-                            <img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->username }}"
-                                class="w-6 h-6 border border-black">
+                            <img src="{{ Auth::user()->avatar }}" alt=""
+                                class="w-6 h-6 border border-black" aria-hidden="true">
                             <span class="truncate max-w-[100px]">{{ Auth::user()->username }}</span>
-                            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                            <i data-lucide="chevron-down" class="w-4 h-4" aria-hidden="true"></i>
                         </button>
 
                         {{-- Invisible bridge wrapper for hover --}}

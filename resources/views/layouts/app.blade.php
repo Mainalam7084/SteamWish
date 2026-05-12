@@ -43,6 +43,9 @@
 
 <body class="bg-[#F5F5F5] text-[#0F3A52] font-sans antialiased min-h-screen flex flex-col">
 
+    {{-- Skip to main content (accesibilidad teclado) --}}
+    <a href="#main-content" class="skip-link">Ir al contenido principal</a>
+
     {{-- Ticker Bar --}}
     <div class="bg-[#0F3A52] border-b-4 border-black overflow-hidden py-1.5">
         <div class="marquee-inner text-[#FACC15] font-bold text-sm uppercase tracking-widest">
