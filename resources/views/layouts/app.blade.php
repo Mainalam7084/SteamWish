@@ -20,25 +20,61 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/animateMosaico.js', 'resources/js/interactions.js'])
 
-    @auth
-        @php
-            $globalThemeColor = Auth::user()->preferences['themeColor'] ?? '#FACC15';
-        @endphp
-        <style>
-            :root {
-                --theme-color: {{ $globalThemeColor }};
-            }
-            .bg-\[\#FACC15\] { background-color: var(--theme-color) !important; }
-            .text-\[\#FACC15\] { color: var(--theme-color) !important; }
-            .border-\[\#FACC15\] { border-color: var(--theme-color) !important; }
-            .shadow-\[4px_4px_0_0_\#FACC15\] { box-shadow: 4px 4px 0 0 var(--theme-color) !important; }
-            .shadow-\[8px_8px_0_0_\#FACC15\] { box-shadow: 8px 8px 0 0 var(--theme-color) !important; }
-            .hover\:text-\[\#FACC15\]:hover { color: var(--theme-color) !important; }
-            .hover\:bg-\[\#FACC15\]:hover { background-color: var(--theme-color) !important; }
-            .group-hover\:text-\[\#FACC15\]:hover { color: var(--theme-color) !important; }
-            .group-hover\:bg-\[\#FACC15\]:hover { background-color: var(--theme-color) !important; }
-        </style>
-    @endauth
+    @php
+        $globalThemeColor = Auth::check() ? (Auth::user()->preferences['themeColor'] ?? '#FACC15') : '#FACC15';
+        $complementaryMap = [
+            '#FACC15' => '#16A34A',
+            '#4ADE80' => '#F472B6',
+            '#F87171' => '#60A5FA',
+            '#60A5FA' => '#F87171',
+            '#C084FC' => '#FACC15',
+            '#F472B6' => '#4ADE80',
+        ];
+        $globalSecondaryColor = $complementaryMap[$globalThemeColor] ?? '#16A34A';
+    @endphp
+    <style>
+        :root {
+            --theme-color: {{ $globalThemeColor }};
+            --theme-secondary: {{ $globalSecondaryColor }};
+        }
+        
+        /* Tema Primario (Sustituyendo el Amarillo #FACC15) */
+        .bg-\[\#FACC15\] { background-color: var(--theme-color) !important; }
+        .text-\[\#FACC15\] { color: var(--theme-color) !important; }
+        .border-\[\#FACC15\] { border-color: var(--theme-color) !important; }
+        .shadow-\[4px_4px_0_0_\#FACC15\] { box-shadow: 4px 4px 0 0 var(--theme-color) !important; }
+        .shadow-\[8px_8px_0_0_\#FACC15\] { box-shadow: 8px 8px 0 0 var(--theme-color) !important; }
+        .hover\:text-\[\#FACC15\]:hover { color: var(--theme-color) !important; }
+        .hover\:bg-\[\#FACC15\]:hover { background-color: var(--theme-color) !important; }
+        .group-hover\:text-\[\#FACC15\]:hover { color: var(--theme-color) !important; }
+        .group-hover\:bg-\[\#FACC15\]:hover { background-color: var(--theme-color) !important; }
+        
+        /* Tema Secundario Complementario (Sustituyendo el Verde #16A34A del Trending) */
+        .bg-\[\#16A34A\] { background-color: var(--theme-secondary) !important; }
+        .text-\[\#16A34A\] { color: var(--theme-secondary) !important; }
+        .border-\[\#16A34A\] { border-color: var(--theme-secondary) !important; }
+        .shadow-\[4px_4px_0_0_\#16A34A\] { box-shadow: 4px 4px 0 0 var(--theme-secondary) !important; }
+        
+        /* Custom Scrollbar Brutalist */
+        ::-webkit-scrollbar {
+            width: 16px;
+            height: 16px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0F3A52;
+            border-left: 3px solid black;
+            border-top: 3px solid black;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--theme-color);
+            border: 3px solid black;
+            border-right: none;
+            border-bottom: none;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: var(--theme-color);
+        }
+    </style>
 </head>
 
 <body class="bg-[#F5F5F5] text-[#0F3A52] font-sans antialiased min-h-screen flex flex-col">

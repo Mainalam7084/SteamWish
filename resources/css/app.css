@@ -330,17 +330,17 @@ body {
 }
 
 .sw-scrollbar::-webkit-scrollbar-thumb {
-    background: #FACC15;
+    background: var(--theme-color, #FACC15);
     border: 2px solid #000000;
 }
 
 .sw-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #fde047;
+    background: var(--theme-color, #FACC15);
 }
 
 .sw-scrollbar {
     scrollbar-width: auto;
-    scrollbar-color: #FACC15 #000000;
+    scrollbar-color: var(--theme-color, #FACC15) #000000;
 }
 
 /* keep the old class for anything that still uses it */
@@ -355,11 +355,11 @@ body {
 
 /* ── Custom Neo-Brutalist Card Component ────────── */
 .card {
-    --primary: #FACC15;
-    --primary-hover: #fde047;
+    --primary: var(--theme-color, #FACC15);
+    --primary-hover: var(--theme-color, #fde047);
     --secondary: #0F3A52;
     --secondary-hover: #174b6b;
-    --accent: #16A34A;
+    --accent: var(--theme-secondary, #16A34A);
     --text: #050505;
     --bg: #ffffff;
     --shadow-color: #000000;

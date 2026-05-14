@@ -71,19 +71,51 @@
         </div>
 
         {{-- Theme Configurator --}}
-        <div class="bg-white border-4 border-black p-6 shadow-[8px_8px_0_0_#000] relative">
-            <h3 class="text-[#0F3A52] font-black uppercase tracking-widest text-xl mb-6 flex items-center gap-2">
-                <i data-lucide="palette" class="w-6 h-6 theme-text transition-colors duration-300"></i> Personalizar Web
-            </h3>
-            <p class="text-xs font-bold text-gray-500 mb-4 uppercase">Elige el color principal de acento para la web.</p>
-            
-            <div class="flex flex-wrap gap-4" id="theme-buttons">
-                <button data-color="#FACC15" class="w-10 h-10 bg-[#FACC15] border-4 border-black hover:scale-110 transition-transform theme-btn shadow-[2px_2px_0_0_#000]"></button>
-                <button data-color="#4ADE80" class="w-10 h-10 bg-[#4ADE80] border-4 border-black hover:scale-110 transition-transform theme-btn shadow-[2px_2px_0_0_#000]"></button>
-                <button data-color="#F87171" class="w-10 h-10 bg-[#F87171] border-4 border-black hover:scale-110 transition-transform theme-btn shadow-[2px_2px_0_0_#000]"></button>
-                <button data-color="#60A5FA" class="w-10 h-10 bg-[#60A5FA] border-4 border-black hover:scale-110 transition-transform theme-btn shadow-[2px_2px_0_0_#000]"></button>
-                <button data-color="#C084FC" class="w-10 h-10 bg-[#C084FC] border-4 border-black hover:scale-110 transition-transform theme-btn shadow-[2px_2px_0_0_#000]"></button>
-                <button data-color="#F472B6" class="w-10 h-10 bg-[#F472B6] border-4 border-black hover:scale-110 transition-transform theme-btn shadow-[2px_2px_0_0_#000]"></button>
+        <div class="bg-white border-4 border-black p-6 shadow-[8px_8px_0_0_#000] relative flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-[#0F3A52] font-black uppercase tracking-widest text-xl flex items-center gap-2">
+                        <i data-lucide="palette" class="w-6 h-6 theme-text transition-colors duration-300"></i> Personalizar
+                    </h3>
+                    <span id="theme-save-msg" class="text-[#1D9E75] font-black text-[10px] uppercase opacity-0 -translate-y-2 transition-all duration-300 flex items-center gap-1 bg-[#1D9E75]/10 border-2 border-[#1D9E75] px-2 py-1 shadow-[2px_2px_0_0_#1D9E75]">
+                        <i data-lucide="check-circle" class="w-3 h-3"></i> Guardado
+                    </span>
+                </div>
+                <p class="text-xs font-bold text-gray-500 mb-6 uppercase">Elige el color de acento. Se aplica al instante en todo SteamWish.</p>
+                
+                @php
+                    $currentTheme = Auth::user()->preferences['themeColor'] ?? '#FACC15';
+                    $themeColors = [
+                        '#FACC15', // Amarillo
+                        '#4ADE80', // Verde
+                        '#F87171', // Rojo
+                        '#60A5FA', // Azul
+                        '#C084FC', // Morado
+                        '#F472B6'  // Rosa
+                    ];
+                    $complementaryMap = [
+                        '#FACC15' => '#16A34A',
+                        '#4ADE80' => '#F472B6',
+                        '#F87171' => '#60A5FA',
+                        '#60A5FA' => '#F87171',
+                        '#C084FC' => '#FACC15',
+                        '#F472B6' => '#4ADE80',
+                    ];
+                @endphp
+
+                <div class="flex flex-wrap gap-4" id="theme-buttons">
+                    @foreach($themeColors as $color)
+                        <button data-color="{{ $color }}" 
+                                class="relative w-10 h-10 border-4 border-black transition-all theme-btn flex items-center justify-center outline-none
+                                       {{ $currentTheme === $color ? 'translate-y-1 shadow-none scale-95' : 'hover:scale-110 shadow-[2px_2px_0_0_#000]' }}"
+                                style="background-color: {{ $color }};"
+                                title="Seleccionar color">
+                            @if($currentTheme === $color)
+                                <i data-lucide="check" class="w-6 h-6 text-black drop-shadow-md"></i>
+                            @endif
+                        </button>
+                    @endforeach
+                </div>
             </div>
         </div>
 
@@ -98,15 +130,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Iniciar Chart.js
     const ctx = document.getElementById('activityChart');
     if (ctx) {
-        new Chart(ctx, {
+        window.activityChartInstance = new Chart(ctx, {
             type: 'doughnut',
             data: {
                 labels: ['Juegos Guardados', 'Alertas'],
                 datasets: [{
                     data: [{{ $wishlistCount }}, {{ $alertsCount }}],
                     backgroundColor: [
-                        '#FACC15',
-                        '#16A34A'
+                        '{{ Auth::user()->preferences['themeColor'] ?? '#FACC15' }}',
+                        '{{ $complementaryMap[Auth::user()->preferences['themeColor'] ?? '#FACC15'] ?? '#16A34A' }}'
                     ],
                     borderWidth: 4,
                     borderColor: '#000',
@@ -129,15 +161,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. Theme Configurator
     const themeButtons = document.querySelectorAll('.theme-btn');
+    let activeColor = '{{ Auth::user()->preferences['themeColor'] ?? '#FACC15' }}';
+
+    const complementaryMap = {
+        '#FACC15': '#16A34A',
+        '#4ADE80': '#F472B6',
+        '#F87171': '#60A5FA',
+        '#60A5FA': '#F87171',
+        '#C084FC': '#FACC15',
+        '#F472B6': '#4ADE80'
+    };
+
     themeButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             const newColor = btn.dataset.color;
+            if (newColor === activeColor) return;
+            
+            activeColor = newColor;
+            const newSecondary = complementaryMap[newColor] || '#16A34A';
+            
+            // Actualizar botones visualmente
+            themeButtons.forEach(b => {
+                if (b.dataset.color === newColor) {
+                    b.classList.add('translate-y-1', 'shadow-none', 'scale-95');
+                    b.classList.remove('hover:scale-110', 'shadow-[2px_2px_0_0_#000]');
+                    b.innerHTML = '<i data-lucide="check" class="w-6 h-6 text-black drop-shadow-md"></i>';
+                } else {
+                    b.classList.remove('translate-y-1', 'shadow-none', 'scale-95');
+                    b.classList.add('hover:scale-110', 'shadow-[2px_2px_0_0_#000]');
+                    b.innerHTML = '';
+                }
+            });
+            lucide.createIcons();
             
             // Actualizar vista previa instantaneamente (CSS Variables)
             document.documentElement.style.setProperty('--dash-theme', newColor);
-            
-            // Actualizar el CSS global de Tailwind para que parezca que cambia toda la web
             document.documentElement.style.setProperty('--theme-color', newColor);
+            document.documentElement.style.setProperty('--theme-secondary', newSecondary);
+
+            // Actualizar color de la gráfica de ChartJS
+            if (window.activityChartInstance) {
+                window.activityChartInstance.data.datasets[0].backgroundColor[0] = newColor;
+                window.activityChartInstance.data.datasets[0].backgroundColor[1] = newSecondary;
+                window.activityChartInstance.update();
+            }
+
+            // Mostrar mensaje "Guardado"
+            const saveMsg = document.getElementById('theme-save-msg');
+            if (saveMsg) {
+                saveMsg.classList.remove('opacity-0', '-translate-y-2');
+                setTimeout(() => {
+                    saveMsg.classList.add('opacity-0', '-translate-y-2');
+                }, 2000);
+            }
 
             // Enviar a la BD
             fetch("{{ route('user.preferences') }}", {
