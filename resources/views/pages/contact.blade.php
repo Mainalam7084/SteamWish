@@ -3,11 +3,11 @@
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     
-    <!-- HERO SECTION -->
+    <!-- Hero -->
     <div class="mb-12 w-full">
         <div class="bg-white border-8 border-black shadow-[16px_16px_0_0_#0F3A52] md:shadow-[24px_24px_0_0_#0F3A52] flex flex-col md:flex-row w-full overflow-hidden hover:-translate-y-2 hover:-translate-x-2 hover:shadow-[24px_24px_0_0_#0F3A52] md:hover:shadow-[32px_32px_0_0_#0F3A52] transition-all duration-300">
             
-            <!-- Visual Side -->
+            <!-- Imagen -->
             <div class="w-full md:w-5/12 border-b-8 md:border-b-0 md:border-r-8 border-black relative bg-[#7F77DD] flex items-center justify-center p-16 min-h-[300px] overflow-hidden">
                 <div class="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none">
                     <i data-lucide="mail" class="w-[300px] h-[300px] text-black transform rotate-12"></i>
@@ -22,7 +22,7 @@
                 </div>
             </div>
             
-            <!-- Content Side -->
+            <!-- Contenido -->
             <div class="w-full md:w-7/12 p-8 md:p-16 flex flex-col justify-center relative bg-[#0F3A52]">
                 <h1 class="text-5xl md:text-7xl font-black uppercase text-[#FACC15] mb-6 leading-tight tracking-tighter relative z-10 drop-shadow-[4px_4px_0_#000]">
                     Contáctanos
@@ -34,11 +34,11 @@
         </div>
     </div>
 
-    <!-- MAIN CONTACT CARD -->
+    <!-- Tarjeta -->
     <div class="my-24 w-full">
         <div class="bg-white border-8 border-black shadow-[16px_16px_0_0_#1D9E75] md:shadow-[24px_24px_0_0_#1D9E75] flex flex-col md:flex-row w-full overflow-hidden hover:translate-y-2 hover:translate-x-2 transition-all duration-300">
             
-            <!-- Info Side -->
+            <!-- Info -->
             <div class="w-full md:w-4/12 border-b-8 md:border-b-0 md:border-r-8 border-black bg-[#F5F5F5] p-8 md:p-12 flex flex-col justify-between">
                 <div>
                     <h3 class="text-3xl font-black uppercase text-[#0F3A52] mb-8 underline decoration-8 decoration-[#1D9E75]">Información</h3>
@@ -80,9 +80,9 @@
                 </div>
             </div>
 
-            <!-- Form Side -->
+            <!-- Formulario -->
             <div class="w-full md:w-8/12 p-8 md:p-16 bg-white relative">
-                <!-- Mensaje de éxito oculto por defecto -->
+                <!-- Mensaje éxito -->
                 <div id="success-message" class="hidden bg-[#1D9E75] text-white border-4 border-black p-6 mb-8 font-black uppercase text-center shadow-[8px_8px_0_0_#000] animate-bounce">
                     ¡Mensaje Enviado con Éxito!
                 </div>

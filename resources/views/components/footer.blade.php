@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-            {{-- Brand --}}
+            {{-- Marca --}}
             <div>
                 <div class="mb-4">
                     <img src="{{ asset('img/SteamWishLogo.png') }}" alt="SteamWish" class="h-12 w-auto object-contain">
@@ -12,7 +12,7 @@
                 </p>
             </div>
 
-            {{-- Navigation Links --}}
+            {{-- Enlaces --}}
             <div>
                 <h3 class="font-black text-[#FACC15] uppercase tracking-wider mb-4 border-b-2 border-[#FACC15] pb-2">
                     Explorar
@@ -28,7 +28,7 @@
                 </ul>
             </div>
 
-            {{-- Social --}}
+            {{-- Redes sociales --}}
             <div>
                 <h3 class="font-black text-[#5DA9D6] uppercase tracking-wider mb-4 border-b-2 border-[#5DA9D6] pb-2">
                     Conectar

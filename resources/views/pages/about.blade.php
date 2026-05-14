@@ -3,15 +3,15 @@
 @section('content')
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-        <!-- HERO -->
+        <!-- Hero -->
         <div class="my-12 w-full">
             <div
                 class="bg-white border-8 border-black shadow-[16px_16px_0_0_#0F3A52] md:shadow-[24px_24px_0_0_#0F3A52] flex flex-col md:flex-row w-full overflow-hidden hover:-translate-y-2 hover:-translate-x-2 hover:shadow-[24px_24px_0_0_#0F3A52] md:hover:shadow-[32px_32px_0_0_#0F3A52] transition-all duration-300">
 
-                <!-- Visual Side -->
+                <!-- Imagen -->
                 <div
                     class="w-full md:w-5/12 border-b-8 md:border-b-0 md:border-r-8 border-black relative bg-[#FACC15] flex items-center justify-center p-16 min-h-[350px] overflow-hidden">
-                    <!-- Background decor graphic -->
+                    <!-- Decoración -->
                     <div class="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none">
                         <span
                             class="text-[350px] font-black text-black leading-none transform rotate-12 select-none">!</span>
@@ -28,7 +28,7 @@
                     </div>
                 </div>
 
-                <!-- Content Side -->
+                <!-- Contenido -->
                 <div class="w-full md:w-7/12 p-8 md:p-16 flex flex-col justify-center relative bg-[#0F3A52]">
                     <h1
                         class="text-5xl md:text-7xl font-black uppercase text-[#FACC15] mb-10 leading-tight tracking-tighter relative z-10 drop-shadow-[4px_4px_0_#000]">
@@ -46,12 +46,12 @@
             </div>
         </div>
 
-        <!-- DAVID -->
+        <!-- David -->
         <div class="my-24 w-full">
             <div
                 class="bg-white border-8 border-black shadow-[16px_16px_0_0_#1D9E75] md:shadow-[24px_24px_0_0_#1D9E75] flex flex-col md:flex-row-reverse w-full overflow-hidden hover:translate-y-2 hover:-translate-x-2 hover:shadow-[8px_8px_0_0_#1D9E75] md:hover:shadow-[12px_12px_0_0_#1D9E75] transition-all duration-300">
 
-                <!-- Image Side -->
+                <!-- Imagen -->
                 <div
                     class="w-full md:w-5/12 border-b-8 md:border-b-0 md:border-l-8 border-black relative bg-[#1D9E75] group flex-shrink-0">
                     <div class="aspect-square md:aspect-auto md:h-full w-full relative overflow-hidden">
@@ -59,7 +59,7 @@
                             data-imagen="{{ asset('img/david.png') }}"></div>
                     </div>
 
-                    <!-- Decorative Badge -->
+                    <!-- Badge -->
                     <div
                         class="absolute bottom-6 right-6 bg-black text-[#1D9E75] font-black uppercase px-4 py-2 border-4 border-black transform rotate-3 shadow-[6px_6px_0_0_#fff] text-xl md:text-2xl z-10 pointer-events-none">
                         >_ ROOT
@@ -96,7 +96,7 @@
             </div>
         </div>
 
-        <!-- MAIN-->
+        <!-- Main -->
         <div class="my-24 w-full">
             <div
                 class="bg-white border-8 border-black shadow-[16px_16px_0_0_#0F3A52] md:shadow-[24px_24px_0_0_#0F3A52] flex flex-col md:flex-row w-full overflow-hidden hover:translate-y-2 hover:translate-x-2 hover:shadow-[8px_8px_0_0_#0F3A52] md:hover:shadow-[12px_12px_0_0_#0F3A52] transition-all duration-300">
@@ -105,12 +105,12 @@
                 <div
                     class="w-full md:w-5/12 border-b-8 md:border-b-0 md:border-r-8 border-black relative bg-[#EF9F27] group flex-shrink-0">
                     <div class="aspect-square md:aspect-auto md:h-full w-full relative overflow-hidden">
-                        <!-- We add grayscale on default and full color on hover for extra edge -->
+                        <!-- Efecto blanco y negro -->
                         <div class="imagen-grid-animada absolute inset-0 w-full h-full object-cover mix-blend-luminosity group-hover:mix-blend-normal transition-all duration-500 scale-105 group-hover:scale-100"
                             data-imagen="{{ asset('img/main.png') }}"></div>
                     </div>
 
-                    <!-- Chaotic Yellow Badge -->
+                    <!-- Badge -->
                     <div
                         class="absolute top-6 left-6 bg-[#FACC15] text-black font-black uppercase px-4 py-2 border-4 border-black transform -rotate-6 shadow-[6px_6px_0_0_#0F3A52] text-2xl md:text-3xl z-10 pointer-events-none">
                         TOP DEV
@@ -148,7 +148,7 @@
             </div>
         </div>
 
-        <!-- GEO -->
+        <!-- Geo -->
         <div class="my-24 w-full">
             <div
                 class="bg-white border-8 border-black shadow-[16px_16px_0_0_#7F77DD] md:shadow-[24px_24px_0_0_#7F77DD] flex flex-col md:flex-row w-full overflow-hidden hover:translate-y-2 hover:translate-x-2 hover:shadow-[8px_8px_0_0_#7F77DD] md:hover:shadow-[12px_12px_0_0_#7F77DD] transition-all duration-300">
@@ -157,7 +157,7 @@
                 <div
                     class="w-full md:w-5/12 border-b-8 md:border-b-0 md:border-r-8 border-black relative bg-[#7F77DD] group flex-shrink-0">
                     <div class="aspect-square md:aspect-auto md:h-full w-full relative overflow-hidden">
-                        <!-- Custom mix blend for design -->
+                        <!-- Efecto visual -->
                         <div class="imagen-grid-animada absolute inset-0 w-full h-full object-cover mix-blend-hard-light grayscale group-hover:mix-blend-normal group-hover:grayscale-0 transition-all duration-500 scale-105 group-hover:scale-100"
                             data-imagen="{{ asset('img/geovanny.jpg') }}"></div>
                     </div>
@@ -200,7 +200,7 @@
             </div>
         </div>
 
-        <!-- HISTORIA -->
+        <!-- Historia -->
         <div class="my-24 w-full">
             <div
                 class="bg-white border-8 border-black shadow-[16px_16px_0_0_#FACC15] md:shadow-[24px_24px_0_0_#FACC15] flex flex-col md:flex-row-reverse w-full overflow-hidden hover:-translate-y-2 hover:-translate-x-2 hover:shadow-[24px_24px_0_0_#FACC15] md:hover:shadow-[32px_32px_0_0_#FACC15] transition-all duration-300">

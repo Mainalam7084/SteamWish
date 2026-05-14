@@ -11,7 +11,7 @@
                 </div>
             </a>
 
-            {{-- Search Bar --}}
+            {{-- Buscador --}}
             <form method="GET" action="{{ route('search') }}" class="flex-1">
                 <div class="relative flex items-center">
                     <div class="absolute left-3 text-[#0F3A52] pointer-events-none">
@@ -29,10 +29,10 @@
                 </div>
             </form>
 
-            {{-- Desktop right section (md+) --}}
+            {{-- Menú escritorio --}}
             <div class="hidden md:flex items-center gap-2 shrink-0">
 
-                {{-- Desktop Nav Links --}}
+                {{-- Enlaces --}}
                 <nav class="flex items-center gap-1">
                     <a href="{{ route('home') }}"
                         class="px-3 py-1.5 text-white/80 hover:text-[#FACC15] text-xs font-bold uppercase tracking-wider transition-colors duration-100 {{ request()->routeIs('home') ? 'text-[#FACC15]' : '' }}">
@@ -48,7 +48,7 @@
                     </a>
                 </nav>
 
-                {{-- Wishlist icon & Dropdown --}}
+                {{-- Dropdown Wishlist --}}
                 @auth
                     <div class="relative group h-full flex items-center" id="nav-wishlist-container">
                         <a href="{{ route('wishlist.index') }}" id="nav-wishlist"
@@ -57,7 +57,7 @@
                             <i data-lucide="heart" class="w-4 h-4"></i>
                         </a>
 
-                        {{-- Invisible bridge wrapper for hover --}}
+                        {{-- Puente hover --}}
                         <div class="absolute right-0 top-full pt-4 hidden group-hover:block z-50">
                             <div class="w-72 bg-white border-4 border-black shadow-[4px_4px_0_0_#0F3A52] flex flex-col pt-2"
                                 id="nav-wishlist-dropdown">
@@ -80,7 +80,7 @@
                     </div>
                 @endauth
 
-                {{-- Notifications icon & Dropdown --}}
+                {{-- Dropdown Notificaciones --}}
                 @auth
                     @php $unreadCount = Auth::user()->unreadNotificationsCount(); @endphp
                     <div class="relative group h-full flex items-center" id="nav-notifications-container">
@@ -118,7 +118,7 @@
                     </div>
                 @endauth
 
-                {{-- Bell para usuarios no autenticados --}}
+                {{-- Campana (No logueados) --}}
                 @guest
                     <a href="{{ route('auth.steam') }}"
                         class="relative w-9 h-9 bg-[#0F3A52] border-2 border-white/30 flex items-center justify-center nb-shadow-sm nb-hover group"
@@ -127,7 +127,7 @@
                     </a>
                 @endguest
 
-                {{-- Login / User --}}
+                {{-- Usuario --}}
                 @auth
                     <div class="relative group">
                         <button aria-haspopup="true" aria-label="Menú de usuario: {{ Auth::user()->username }}"
@@ -167,7 +167,7 @@
 
             </div>
 
-            {{-- Mobile: Hamburger button (hidden on md+) --}}
+            {{-- Menú móvil --}}
             <button id="mobile-menu-btn"
                 class="flex md:hidden items-center justify-center w-10 h-10 bg-[#0F3A52] border-2 border-white/30 shrink-0 hover:border-[#FACC15] transition-colors duration-100"
                 aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
@@ -178,7 +178,7 @@
         </div>
     </div>
 
-    {{-- Mobile Menu Panel --}}
+    {{-- Panel móvil --}}
     <div id="mobile-menu" class="hidden md:hidden border-t-2 border-white/10 bg-[#0F3A52]">
         <div class="px-4 py-2">
 

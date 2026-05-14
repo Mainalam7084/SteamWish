@@ -6,11 +6,11 @@
 
 @section('content')
 
-    <!-- HERO — Ofertas Trending -->
+    <!-- Hero -->
     <section id="hero" class="relative border-b-4 border-black bg-[#0F3A52] py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            {{-- Section header --}}
+            {{-- Encabezado --}}
             <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center gap-3">
                     <h2 class="font-black text-2xl sm:text-3xl uppercase text-white tracking-tight">Ofertas <span
@@ -31,7 +31,7 @@
                 </div>
             </div>
 
-            {{-- Skeleton: horizontal scroll --}}
+            {{-- Skeleton --}}
             <div id="deals-skeleton" class="flex gap-8 overflow-x-auto pb-8 pt-4 px-2 sw-scrollbar">
                 @for ($i = 0; $i < 8; $i++)
                     <div
@@ -40,10 +40,10 @@
                 @endfor
             </div>
 
-            {{-- Real cards: todos en scrollable row --}}
+            {{-- Tarjetas --}}
             <div id="deals-list" class="hidden flex gap-8 overflow-x-auto pb-10 pt-4 px-2 sw-scrollbar scroll-smooth"></div>
 
-            {{-- Empty --}}
+            {{-- Vacío --}}
             <div id="deals-empty" class="hidden text-blue-200 text-sm font-bold text-center py-10">
                 No hay ofertas disponibles ahora.
             </div>
@@ -51,13 +51,13 @@
         </div>
     </section>
 
-    <!-- Dashboard -->
+    <!-- Panel -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
-        {{-- TOP: Two columns --}}
+        {{-- Columnas --}}
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
 
-            {{-- LEFT: Most Played --}}
+            {{-- Más Jugados --}}
             <section id="most-played-section">
                 <div
                     class="flex items-center justify-between mb-4 border-b-4 border-black pb-2 bg-white px-4 py-2 shadow-[4px_4px_0_0_#0F3A52]">
@@ -79,7 +79,7 @@
                 </div>
                 {{-- Real data --}}
                 <div id="most-played-list" class="flex flex-col gap-3 hidden"></div>
-                {{-- Empty state --}}
+                {{-- Vacío --}}
                 <div id="most-played-empty"
                     class="hidden p-6 bg-white border-4 border-black text-center font-bold text-gray-400">
                     <i data-lucide="wifi-off" class="w-8 h-8 mx-auto mb-2"></i>
@@ -87,7 +87,7 @@
                 </div>
             </section>
 
-            {{-- RIGHT: Trending --}}
+            {{-- Tendencias --}}
             <section id="trending-section">
                 <div
                     class="flex items-center justify-between mb-4 border-b-4 border-black pb-2 bg-white px-4 py-2 shadow-[4px_4px_0_0_#16A34A]">
@@ -109,7 +109,7 @@
                 </div>
                 {{-- Real data --}}
                 <div id="trending-list" class="flex flex-col gap-3 hidden"></div>
-                {{-- Empty state --}}
+                {{-- Vacío --}}
                 <div id="trending-empty"
                     class="hidden p-6 bg-white border-4 border-black text-center font-bold text-gray-400">
                     <i data-lucide="wifi-off" class="w-8 h-8 mx-auto mb-2"></i>
@@ -119,7 +119,7 @@
 
         </div>
 
-        {{-- BOTTOM: Upcoming carousel --}}
+        {{-- Carrusel --}}
         <section id="upcoming-section" class="pt-8 border-t-4 border-black border-dashed">
             <div
                 class="flex items-center justify-between mb-6 bg-[#0F3A52] px-4 py-3 border-4 border-black shadow-[4px_4px_0_0_#000]">
@@ -143,7 +143,7 @@
             </div>
             {{-- Real data --}}
             <div id="upcoming-list" class="flex gap-6 overflow-x-auto pb-4 sw-scrollbar hidden"></div>
-            {{-- Empty state --}}
+            {{-- Vacío --}}
             <div id="upcoming-empty" class="hidden p-6 bg-white border-4 border-black font-bold text-gray-400 text-center">
                 No se pudo cargar. Intenta más tarde.
             </div>

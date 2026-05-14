@@ -20,7 +20,7 @@
                     {{ $app_name }}
                 </h1>
 
-                {{-- Wishlist Button --}}
+                {{-- Botón wishlist --}}
                 <button
                     id="game-detail-wishlist-btn"
                     data-appid="{{ $appid }}"
@@ -127,7 +127,7 @@
             @endif
 
                 @if ($app_price_numeric > 0)
-                    {{-- HISTORIAL DE PRECIOS --}}
+                    {{-- Historial de precios --}}
                 <script>
                     Chart.defaults.global.defaultFontFamily = "'Inter', 'Roboto', 'sans-serif'";
                     Chart.defaults.global.defaultFontColor = "#0F3A52";

@@ -5,7 +5,7 @@
 @section('content')
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-    {{-- Header --}}
+    {{-- Encabezado --}}
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 border-b-4 border-black pb-4 gap-4">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-[#FACC15] border-2 border-black flex items-center justify-center shadow-[2px_2px_0_0_#000] shrink-0">
@@ -18,7 +18,7 @@
         </div>
 
         <div class="flex items-center gap-2">
-            {{-- Botón marcar todo como leído --}}
+            {{-- Marcar leídos --}}
             @if($notifications->where('read_at', null)->count() > 0)
             <button id="mark-all-read-btn"
                 class="flex items-center gap-2 bg-[#0F3A52] text-white border-2 border-black font-black text-xs uppercase px-4 py-2
@@ -28,7 +28,7 @@
             </button>
             @endif
 
-            {{-- Badge de no leídas --}}
+            {{-- Contador no leídas --}}
             @php $unread = $notifications->where('read_at', null)->count(); @endphp
             @if($unread > 0)
             <span class="bg-red-500 text-white border-2 border-black font-black text-sm px-3 py-1 shadow-[2px_2px_0_0_#000]">
@@ -38,7 +38,7 @@
         </div>
     </div>
 
-    {{-- Lista de notificaciones --}}
+    {{-- Lista --}}
     @if($notifications->isEmpty())
         <div class="text-center bg-white border-4 border-black p-16 shadow-[8px_8px_0_0_#0F3A52]">
             <div class="w-20 h-20 bg-[#F5F5F5] border-4 border-black flex items-center justify-center mx-auto mb-6 shadow-[4px_4px_0_0_#000]">
@@ -68,7 +68,7 @@
                  role="article"
                  aria-label="{{ $notification->game_name }}{{ $notification->isUnread() ? ' — sin leer' : '' }}">
 
-                {{-- Game image --}}
+                {{-- Imagen --}}
                 @if($notification->game_image)
                 <a href="/game?appid={{ $notification->appid }}"
                    class="shrink-0 block relative border-b-4 sm:border-b-0 sm:border-r-4 border-black overflow-hidden
@@ -87,10 +87,10 @@
                 </a>
                 @endif
 
-                {{-- Content --}}
+                {{-- Contenido --}}
                 <div class="flex-1 min-w-0 p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
                     <div class="flex-1 min-w-0">
-                        {{-- Unread dot + game name --}}
+                        {{-- Nombre --}}
                         <div class="flex items-center gap-2 mb-1">
                             @if($notification->isUnread())
                             <span class="w-2 h-2 bg-red-500 border border-black shrink-0" aria-hidden="true"></span>
@@ -102,7 +102,7 @@
                             </a>
                         </div>
 
-                        {{-- Price comparison --}}
+                        {{-- Precios --}}
                         <div class="flex flex-wrap items-center gap-2 mb-2">
                             <span class="text-gray-400 line-through text-sm font-bold">
                                 {{ $notification->old_price_formatted }}
@@ -126,7 +126,7 @@
                         </p>
                     </div>
 
-                    {{-- Actions --}}
+                    {{-- Acciones --}}
                     <div class="flex sm:flex-col gap-2 shrink-0 w-full sm:w-auto">
                         <a href="https://store.steampowered.com/app/{{ $notification->appid }}"
                            target="_blank"

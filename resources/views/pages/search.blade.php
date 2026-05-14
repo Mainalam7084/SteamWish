@@ -39,12 +39,12 @@
                         $price = $data['price_overview']['final_formatted'] ?? 'Gratis';
                         $inWishlist = $game['in_wishlist'] ?? false;
                     @endphp
-                    {{-- Patrón card overlay: div + enlace absoluto + botón z-10 (evita <button> anidado en <a>) --}}
+                    {{-- Overlay de la tarjeta --}}
                     <div class="relative group bg-white border-4 border-black shadow-[4px_4px_0_0_#0F3A52]
                                 hover:shadow-[8px_8px_0_0_#5DA9D6] hover:-translate-y-2 hover:-translate-x-2
                                 transition-all duration-200 flex flex-col h-full">
 
-                        {{-- Overlay link cubre toda la card --}}
+                        {{-- Enlace principal --}}
                         <a href="/game?appid={{ $appid }}"
                            class="card-overlay-link rounded-none"
                            aria-label="{{ $name }} — ver detalle"></a>
@@ -53,7 +53,7 @@
                             class="w-full aspect-[460/215] object-cover border-b-4 border-black bg-gray-200"
                             loading="lazy">
 
-                        {{-- Wishlist button — z-10 para estar sobre el overlay --}}
+                        {{-- Botón wishlist --}}
                         <button
                             data-appid="{{ $appid }}"
                             class="wishlist-btn absolute top-2 right-2 z-10 shrink-0 w-10 h-10 border-2 border-black

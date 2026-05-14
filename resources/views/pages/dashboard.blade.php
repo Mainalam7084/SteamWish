@@ -3,11 +3,11 @@
 @section('title', 'Perfil y Dashboard - SteamWish')
 
 @push('scripts')
-    <!-- Chart.js -->
+    <!-- Gráfico -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        /* Dashboard Theme Preview */
+        /* Previsualización del tema */
         :root {
             --dash-theme: {{ $themeColor ?? '#FACC15' }};
         }
@@ -20,7 +20,7 @@
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     
-    {{-- Header Profile --}}
+    {{-- Perfil --}}
     <div class="bg-white border-4 border-black nb-shadow p-6 flex flex-col md:flex-row items-center gap-6 mb-8 relative overflow-hidden">
         <div class="absolute top-0 right-0 w-32 h-32 theme-bg rounded-bl-full -z-0 opacity-20 transition-colors duration-300" id="profile-blob"></div>
         
@@ -37,10 +37,10 @@
         </a>
     </div>
 
-    {{-- Static Dashboard Grid --}}
+    {{-- Cuadrícula --}}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         
-        {{-- Stats --}}
+        {{-- Estadísticas --}}
         <div class="bg-[#0F3A52] border-4 border-black p-6 flex flex-col justify-between shadow-[8px_8px_0_0_#000] hover:-translate-y-1 hover:shadow-[10px_10px_0_0_#000] transition-all relative">
             <div>
                 <h3 class="text-white font-black uppercase tracking-widest text-xl mb-6 flex items-center gap-2">
@@ -62,7 +62,7 @@
 
 
 
-        {{-- Chart.js --}}
+        {{-- Gráfico --}}
         <div class="bg-white border-4 border-black p-6 shadow-[8px_8px_0_0_#0F3A52] relative">
             <h3 class="text-[#0F3A52] font-black uppercase tracking-widest text-xl mb-4">Actividad SteamWish</h3>
             <div class="relative w-full h-48 flex justify-center">
@@ -70,7 +70,7 @@
             </div>
         </div>
 
-        {{-- Theme Configurator --}}
+        {{-- Tema --}}
         <div class="bg-white border-4 border-black p-6 shadow-[8px_8px_0_0_#000] relative flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between mb-4">

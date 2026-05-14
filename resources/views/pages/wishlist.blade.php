@@ -5,7 +5,7 @@
 @section('content')
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-        {{-- Header --}}
+        {{-- Encabezado --}}
         <div class="flex items-center justify-between mb-8 border-b-4 border-black pb-4">
             <h1 class="font-black text-3xl md:text-4xl uppercase text-[#0F3A52]">Mi Wishlist</h1>
             @if(count($games) > 0)
@@ -22,7 +22,7 @@
                                 hover:shadow-[8px_8px_0_0_#5DA9D6] hover:-translate-y-1 hover:-translate-x-1
                                 transition-all flex flex-col overflow-hidden">
 
-                        {{-- Image --}}
+                        {{-- Imagen --}}
                         <a href="/game?appid={{ $game['appid'] }}"
                            class="relative overflow-hidden border-b-4 border-black block">
                             <img src="{{ $game['image'] }}"
@@ -50,7 +50,7 @@
                                     {{ $game['price'] }}
                                 </span>
 
-                                {{-- Remove button --}}
+                                {{-- Botón eliminar --}}
                                 <button
                                     data-appid="{{ $game['appid'] }}"
                                     class="wishlist-btn border-2 border-black font-black text-[10px] uppercase px-3 py-2
@@ -67,7 +67,7 @@
                 @endforeach
             </div>
         @else
-            {{-- Empty state --}}
+            {{-- Vacío --}}
             <div class="mt-12 text-center bg-white border-4 border-black p-12 shadow-[8px_8px_0_0_#0F3A52]">
                 <i data-lucide="ghost" class="w-16 h-16 mx-auto mb-4 text-gray-300"></i>
                 <h2 class="text-2xl font-black uppercase text-[#0F3A52] mb-4">Tu wishlist está vacía</h2>

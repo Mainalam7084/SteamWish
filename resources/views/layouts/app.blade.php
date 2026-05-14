@@ -8,14 +8,14 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'SteamWish – Gaming Wishlist & Deals')</title>
 
-    {{-- Fonts --}}
+    {{-- Fuentes --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
         rel="stylesheet">
 
-    {{-- Lucide Icons --}}
+    {{-- Iconos --}}
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/animateMosaico.js', 'resources/js/interactions.js'])
@@ -79,10 +79,10 @@
 
 <body class="bg-[#F5F5F5] text-[#0F3A52] font-sans antialiased min-h-screen flex flex-col">
 
-    {{-- Skip to main content (accesibilidad teclado) --}}
+    {{-- Saltar al contenido --}}
     <a href="#main-content" class="skip-link">Ir al contenido principal</a>
 
-    {{-- Ticker Bar --}}
+    {{-- Barra superior --}}
     <div class="bg-[#0F3A52] border-b-4 border-black overflow-hidden py-1.5">
         <div class="marquee-inner text-[#FACC15] font-bold text-sm uppercase tracking-widest">
             @php
@@ -98,15 +98,15 @@
         </div>
     </div>
 
-    {{-- Navbar --}}
+    {{-- Barra de navegación --}}
     <x-navbar />
 
-    {{-- Main Content --}}
+    {{-- Contenido principal --}}
     <main id="main-content" class="flex-grow">
         @yield('content')
     </main>
 
-    {{-- Simple Footer --}}
+    {{-- Pie de página --}}
     <footer class="w-full border-t-4 border-black bg-[#0F3A52] py-6 mt-auto">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="font-black text-2xl text-white uppercase tracking-tighter">
@@ -118,10 +118,10 @@
         </div>
     </footer>
 
-    {{-- Cursor Loader (Small GIF near mouse) --}}
+    {{-- Loader cursor --}}
     <img id="cursor-loader" src="" class="fixed z-[10000] w-20 h-20 object-cover border-4 border-black pointer-events-none hidden transition-opacity duration-100 opacity-0 shadow-[4px_4px_0_0_#FACC15] bg-[#F5F5F5]">
 
-    {{-- Global Loader (Full screen) --}}
+    {{-- Loader global --}}
     <div id="global-loader" class="fixed inset-0 z-[9999] bg-[#0F3A52]/90 backdrop-blur-sm flex flex-col items-center justify-center transition-opacity duration-200 opacity-0 pointer-events-none hidden">
         <div class="relative border-4 border-black shadow-[8px_8px_0_0_#FACC15] bg-white p-4 max-w-[300px] w-full mx-4 flex flex-col items-center">
             <img id="loader-gif" src="" alt="Cargando..." class="w-full h-auto border-4 border-black object-cover aspect-square bg-[#F5F5F5]">
