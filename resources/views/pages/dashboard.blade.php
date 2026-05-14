@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
             data: {
                 labels: ['Juegos Guardados', 'Alertas'],
                 datasets: [{
-                    data: [{{ max(1, $wishlistCount) }}, {{ max(1, $alertsCount) }}],
+                    data: [{{ $wishlistCount }}, {{ $alertsCount }}],
                     backgroundColor: [
                         '#FACC15',
                         '#16A34A'
