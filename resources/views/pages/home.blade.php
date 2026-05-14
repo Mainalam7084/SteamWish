@@ -14,7 +14,7 @@
             <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center gap-3">
                     <h2 class="font-black text-2xl sm:text-3xl uppercase text-white tracking-tight">Ofertas <span
-                            class="text-[#FACC15]">Trending</span></h2>
+                            class="text-[#FACC15]">Destacadas</span></h2>
                     <span
                         class="hidden sm:block bg-[#FACC15] border-2 border-black text-black font-black text-xs px-2 py-1 uppercase tracking-widest shadow-[2px_2px_0_0_#000]">¡Mejor
                         precio!</span>
@@ -61,9 +61,9 @@
             <section id="most-played-section">
                 <div
                     class="flex items-center justify-between mb-4 border-b-4 border-black pb-2 bg-white px-4 py-2 shadow-[4px_4px_0_0_#0F3A52]">
-                    <h2 class="font-black text-xl uppercase text-[#0F3A52]">Most Played</h2>
+                    <h2 class="font-black text-xl uppercase text-[#0F3A52]">Más Jugados</h2>
                     <span
-                        class="bg-[#FACC15] border-2 border-black text-black text-xs font-black uppercase px-2 py-1 shadow-[2px_2px_0_0_#000]">Live</span>
+                        class="bg-[#FACC15] border-2 border-black text-black text-xs font-black uppercase px-2 py-1 shadow-[2px_2px_0_0_#000]">En Vivo</span>
                 </div>
                 {{-- Skeleton --}}
                 <div id="most-played-skeleton" class="flex flex-col gap-3">
@@ -91,9 +91,9 @@
             <section id="trending-section">
                 <div
                     class="flex items-center justify-between mb-4 border-b-4 border-black pb-2 bg-white px-4 py-2 shadow-[4px_4px_0_0_#16A34A]">
-                    <h2 class="font-black text-xl uppercase text-[#0F3A52]">Trending</h2>
+                    <h2 class="font-black text-xl uppercase text-[#0F3A52]">Tendencias</h2>
                     <span
-                        class="bg-[#16A34A] border-2 border-black text-white text-xs font-black uppercase px-2 py-1 shadow-[2px_2px_0_0_#000]">Hot
+                        class="bg-[#16A34A] border-2 border-black text-white text-xs font-black uppercase px-2 py-1 shadow-[2px_2px_0_0_#000]">Popular
                     </span>
                 </div>
                 {{-- Skeleton --}}
@@ -123,7 +123,7 @@
         <section id="upcoming-section" class="pt-8 border-t-4 border-black border-dashed">
             <div
                 class="flex items-center justify-between mb-6 bg-[#0F3A52] px-4 py-3 border-4 border-black shadow-[4px_4px_0_0_#000]">
-                <h2 class="font-black text-2xl uppercase text-white">Upcoming Games</h2>
+                <h2 class="font-black text-2xl uppercase text-white">Próximos Juegos</h2>
                 <span class="text-blue-200 uppercase font-bold text-xs tracking-widest hidden sm:block">Próximos
                     lanzamientos</span>
             </div>

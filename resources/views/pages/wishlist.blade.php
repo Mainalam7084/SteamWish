@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'My Wishlist - SteamWish')
+@section('title', 'Mi Wishlist - SteamWish')
 
 @section('content')
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
         {{-- Header --}}
         <div class="flex items-center justify-between mb-8 border-b-4 border-black pb-4">
-            <h1 class="font-black text-3xl md:text-4xl uppercase text-[#0F3A52]">My Wishlist</h1>
+            <h1 class="font-black text-3xl md:text-4xl uppercase text-[#0F3A52]">Mi Wishlist</h1>
             @if(count($games) > 0)
                 <span class="bg-[#FACC15] border-2 border-black text-black font-black px-4 py-1 text-sm uppercase shadow-[2px_2px_0_0_#000]">
-                    {{ count($games) }} game{{ count($games) !== 1 ? 's' : '' }} saved
+                    {{ count($games) }} juego{{ count($games) !== 1 ? 's' : '' }} guardado{{ count($games) !== 1 ? 's' : '' }}
                 </span>
             @endif
         </div>
@@ -59,7 +59,7 @@
                                            transition-all"
                                     aria-label="Quitar de wishlist: {{ $game['name'] }}"
                                     aria-pressed="true">
-                                    Saved
+                                    Guardado
                                 </button>
                             </div>
                         </div>
@@ -70,14 +70,14 @@
             {{-- Empty state --}}
             <div class="mt-12 text-center bg-white border-4 border-black p-12 shadow-[8px_8px_0_0_#0F3A52]">
                 <i data-lucide="ghost" class="w-16 h-16 mx-auto mb-4 text-gray-300"></i>
-                <h2 class="text-2xl font-black uppercase text-[#0F3A52] mb-4">Your wishlist is empty</h2>
-                <p class="text-gray-500 mb-8">Explore trending and upcoming games and click the heart to save them here.</p>
+                <h2 class="text-2xl font-black uppercase text-[#0F3A52] mb-4">Tu wishlist está vacía</h2>
+                <p class="text-gray-500 mb-8">Explora las tendencias y próximos juegos y haz clic en el corazón para guardarlos aquí.</p>
                 <a href="{{ route('home') }}"
                    class="inline-flex items-center gap-2 bg-[#FACC15] border-4 border-black font-black uppercase
                           px-6 py-3 shadow-[4px_4px_0_0_#000] hover:shadow-[2px_2px_0_0_#000]
                           hover:translate-x-[2px] hover:translate-y-[2px] transition-all text-black text-sm">
                     <i data-lucide="search" class="w-4 h-4"></i>
-                    Explore Games
+                    Explorar Juegos
                 </a>
             </div>
         @endif

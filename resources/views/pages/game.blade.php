@@ -29,7 +29,7 @@
                            transition-all {{ $inWishlist ? 'bg-[#FACC15] text-black' : 'bg-white text-[#0F3A52] hover:bg-[#5DA9D6] hover:text-white' }}"
                     aria-label="Toggle wishlist">
                     <i data-lucide="heart" class="w-5 h-5"></i>
-                    <span>{{ $inWishlist ? 'Saved' : 'Add to Wishlist' }}</span>
+                    <span>{{ $inWishlist ? 'Guardado' : 'Añadir a Wishlist' }}</span>
                 </button>
             </div>
 
@@ -37,15 +37,15 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div class="bg-[#5DA9D6] border-4 border-black shadow-[4px_4px_0_0_#0F3A52] p-4 text-[#0F3A52]">
-                    <h3 class="font-black uppercase text-sm mb-2">Price</h3>
+                    <h3 class="font-black uppercase text-sm mb-2">Precio</h3>
                     <span class="text-xl font-bold bg-white px-3 py-1 inline-block border-2 border-black">{{ $app_price }} <span class="text-red-600">{{ $discount_formatted }}</span></span>
                 </div>
                 <div class="bg-[#FACC15] border-4 border-black shadow-[4px_4px_0_0_#0F3A52] p-4 text-[#0F3A52]">
-                    <h3 class="font-black uppercase text-sm mb-2">Publisher</h3>
+                    <h3 class="font-black uppercase text-sm mb-2">Editor</h3>
                     <span class="text-xl font-bold bg-white px-3 py-1 inline-block border-2 border-black truncate w-full" title="{{ $app_publisher }}">{{ $app_publisher }}</span>
                 </div>
                 <div class="bg-[#F5F5F5] border-4 border-black shadow-[4px_4px_0_0_#0F3A52] p-4 text-[#0F3A52]">
-                    <h3 class="font-black uppercase text-sm mb-2">Developer</h3>
+                    <h3 class="font-black uppercase text-sm mb-2">Desarrollador</h3>
                     <span class="text-xl font-bold bg-white px-3 py-1 inline-block border-2 border-black truncate w-full" title="{{ $app_developer }}">{{ $app_developer }}</span>
                 </div>
             </div>
@@ -68,7 +68,7 @@
                 
             
                 <div class="mb-10">
-                <h2 class="text-3xl font-black uppercase text-[#0F3A52] mb-6">Price History</h2>
+                <h2 class="text-3xl font-black uppercase text-[#0F3A52] mb-6">Historial de Precios</h2>
                 <div class="border-4 border-black shadow-[4px_4px_0_0_#0F3A52] p-4 bg-white">
                     <canvas id="priceHistory" style="width:100%;"></canvas> 
                 </div>
@@ -81,7 +81,7 @@
 
             @if(!empty($screenshots))
                 <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-3xl font-black uppercase text-[#0F3A52]">Screenshots</h2>
+                    <h2 class="text-3xl font-black uppercase text-[#0F3A52]">Capturas</h2>
                     <div class="flex gap-4">
                         <button id="btn-prev-screenshot" class="p-2 bg-[#FACC15] border-4 border-black shadow-[4px_4px_0_0_#0F3A52] hover:shadow-[2px_2px_0_0_#0F3A52] hover:translate-x-[2px] hover:translate-y-[2px] transition-all text-[#0F3A52]" aria-label="Previous screenshot">
                             <i data-lucide="chevron-left" class="w-6 h-6"></i>
@@ -208,7 +208,7 @@
                 
                 @endpush
             <div class="mt-10">
-                <h2 class="text-3xl font-black uppercase text-[#0F3A52] mb-6">Detailed Description</h2>
+                <h2 class="text-3xl font-black uppercase text-[#0F3A52] mb-6">Descripción Detallada</h2>
                 <div class="game-description border-4 border-black shadow-[4px_4px_0_0_#0F3A52] p-6 bg-[#F5F5F5] text-[#0F3A52] text-md md:text-lg font-medium space-y-4">
                     <style>
                         .game-description h2 { font-size: 1.5rem; font-weight: 900; margin-top: 1.5rem; margin-bottom: 0.5rem; text-transform: uppercase; border-bottom: 4px solid #0F3A52; display: inline-block; padding-bottom: 2px;}

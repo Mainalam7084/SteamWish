@@ -28,7 +28,7 @@
         
         <div class="flex-1 z-10 text-center md:text-left">
             <h1 class="text-4xl font-black uppercase text-[#0F3A52] tracking-widest">{{ $user->username }}</h1>
-            <p class="text-gray-500 font-bold font-mono text-sm mt-1">Steam ID: {{ $user->steam_id }}</p>
+            <p class="text-gray-500 font-bold font-mono text-sm mt-1">ID de Steam: {{ $user->steam_id }}</p>
         </div>
         
         <a href="{{ $user->profile_url }}" target="_blank" class="z-10 bg-white border-4 border-black px-6 py-3 font-black uppercase tracking-widest text-[#0F3A52] shadow-[4px_4px_0_0_#000] hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#000] transition-all flex items-center gap-2">

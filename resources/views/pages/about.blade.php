@@ -81,7 +81,7 @@
 
                     <div
                         class="inline-flex self-start bg-[#FACC15] text-black font-black uppercase px-6 py-2 border-4 border-black mt-6 mb-10 shadow-[6px_6px_0_0_#1D9E75] text-xl md:text-2xl transform -rotate-1 z-10">
-                        Backend Dev
+                        Desarrollador Backend
                     </div>
 
                     <div class="text-2xl md:text-3xl font-bold text-black relative z-10 space-y-4">
@@ -132,7 +132,7 @@
 
                     <div
                         class="inline-flex self-start bg-black text-[#EF9F27] font-black uppercase px-6 py-2 border-4 border-black mt-6 mb-10 shadow-[6px_6px_0_0_#000] text-xl md:text-2xl transform rotate-2 z-10">
-                        Frontend Dev
+                        Desarrollador Frontend
                     </div>
 
                     <div class="text-2xl md:text-3xl font-bold text-[#0F3A52] relative z-10 space-y-4">
@@ -184,7 +184,7 @@
 
                     <div
                         class="inline-flex self-start bg-[#7F77DD] text-white font-black uppercase px-6 py-2 border-4 border-black mt-6 mb-10 shadow-[6px_6px_0_0_#000] text-xl md:text-2xl transform rotate-1 z-10 rounded-full">
-                        Designer
+                        Diseñador
                     </div>
 
                     <div class="text-2xl md:text-3xl font-bold text-black relative z-10 space-y-4">

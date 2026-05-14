@@ -36,15 +36,15 @@
                 <nav class="flex items-center gap-1">
                     <a href="{{ route('home') }}"
                         class="px-3 py-1.5 text-white/80 hover:text-[#FACC15] text-xs font-bold uppercase tracking-wider transition-colors duration-100 {{ request()->routeIs('home') ? 'text-[#FACC15]' : '' }}">
-                        Home
+                        Inicio
                     </a>
                     <a href="{{ route('about') }}"
                         class="px-3 py-1.5 text-white/80 hover:text-[#FACC15] text-xs font-bold uppercase tracking-wider transition-colors duration-100 {{ request()->routeIs('about') ? 'text-[#FACC15]' : '' }}">
-                        About
+                        Nosotros
                     </a>
                     <a href="{{ route('contact') }}"
                         class="px-3 py-1.5 text-white/80 hover:text-[#FACC15] text-xs font-bold uppercase tracking-wider transition-colors duration-100 {{ request()->routeIs('contact') ? 'text-[#FACC15]' : '' }}">
-                        Contact
+                        Contacto
                     </a>
                 </nav>
 
@@ -130,12 +130,10 @@
                 {{-- Login / User --}}
                 @auth
                     <div class="relative group">
-                        <button
-                            aria-haspopup="true"
-                            aria-label="Menú de usuario: {{ Auth::user()->username }}"
+                        <button aria-haspopup="true" aria-label="Menú de usuario: {{ Auth::user()->username }}"
                             class="flex items-center gap-2 bg-[#FACC15] border-2 border-black text-black font-black text-sm tracking-wider px-2 py-1 shadow-[4px_4px_0px_0px_black] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_black] active:translate-x-1 active:translate-y-1 active:shadow-[0px_0px_0px_0px_black] transition-all duration-100 h-full">
-                            <img src="{{ Auth::user()->avatar }}" alt=""
-                                class="w-6 h-6 border border-black" aria-hidden="true">
+                            <img src="{{ Auth::user()->avatar }}" alt="" class="w-6 h-6 border border-black"
+                                aria-hidden="true">
                             <span class="truncate max-w-[100px]">{{ Auth::user()->username }}</span>
                             <i data-lucide="chevron-down" class="w-4 h-4" aria-hidden="true"></i>
                         </button>
@@ -144,14 +142,16 @@
                         <div class="absolute right-0 top-full pt-2 hidden group-hover:block z-50">
                             <div class="w-48 bg-white border-4 border-black shadow-[4px_4px_0_0_#0F3A52] flex flex-col">
                                 <a href="{{ route('dashboard') }}"
-                                    class="block px-4 py-2 text-[#0F3A52] font-bold hover:bg-[#FACC15] border-b-2 border-black transition-colors">Dashboard</a>
+                                    class="block px-4 py-2 text-[#0F3A52] font-bold hover:bg-[#FACC15] border-b-2 border-black transition-colors">Panel
+                                    de Usuario</a>
                                 <a href="{{ route('wishlist.index') }}"
-                                    class="block px-4 py-2 text-[#0F3A52] font-bold hover:bg-[#FACC15] border-b-2 border-black transition-colors">My Wishlist</a>
+                                    class="block px-4 py-2 text-[#0F3A52] font-bold hover:bg-[#FACC15] border-b-2 border-black transition-colors">Lista
+                                    de Deseos</a>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit"
                                         class="w-full text-left block px-4 py-2 text-red-600 font-black hover:bg-black hover:text-white transition-colors">
-                                        Logout
+                                        Cerrar sesión
                                     </button>
                                 </form>
                             </div>
@@ -185,17 +185,17 @@
             <a href="{{ route('home') }}"
                 class="flex items-center gap-3 px-3 py-3 text-white/80 hover:text-[#FACC15] hover:bg-white/5 text-sm font-bold uppercase tracking-wider transition-colors duration-100 border-b border-white/10 {{ request()->routeIs('home') ? '!text-[#FACC15]' : '' }}">
                 <i data-lucide="home" class="w-4 h-4"></i>
-                Home
+                Inicio
             </a>
             <a href="{{ route('about') }}"
                 class="flex items-center gap-3 px-3 py-3 text-white/80 hover:text-[#FACC15] hover:bg-white/5 text-sm font-bold uppercase tracking-wider transition-colors duration-100 border-b border-white/10 {{ request()->routeIs('about') ? '!text-[#FACC15]' : '' }}">
                 <i data-lucide="info" class="w-4 h-4"></i>
-                About
+                Nosotros
             </a>
             <a href="{{ route('contact') }}"
                 class="flex items-center gap-3 px-3 py-3 text-white/80 hover:text-[#FACC15] hover:bg-white/5 text-sm font-bold uppercase tracking-wider transition-colors duration-100 border-b border-white/10 {{ request()->routeIs('contact') ? '!text-[#FACC15]' : '' }}">
                 <i data-lucide="mail" class="w-4 h-4"></i>
-                Contact
+                Contacto
             </a>
 
             @auth
@@ -209,7 +209,7 @@
                     <a href="{{ route('dashboard') }}"
                         class="flex items-center gap-3 px-3 py-3 text-white/80 hover:text-[#FACC15] hover:bg-white/5 text-sm font-bold uppercase tracking-wider transition-colors duration-100 border-b border-white/10">
                         <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-                        Dashboard
+                        Panel
                     </a>
                     <a href="{{ route('wishlist.index') }}"
                         class="flex items-center gap-3 px-3 py-3 text-white/80 hover:text-[#FACC15] hover:bg-white/5 text-sm font-bold uppercase tracking-wider transition-colors duration-100 border-b border-white/10">
@@ -220,8 +220,9 @@
                         class="flex items-center gap-3 px-3 py-3 text-white/80 hover:text-[#FACC15] hover:bg-white/5 text-sm font-bold uppercase tracking-wider transition-colors duration-100 border-b border-white/10">
                         <i data-lucide="bell" class="w-4 h-4"></i>
                         Notificaciones
-                        @if(isset($unreadCount) && $unreadCount > 0)
-                            <span class="ml-auto bg-red-500 text-white text-[10px] font-black px-1.5 py-0.5 border border-black">
+                        @if (isset($unreadCount) && $unreadCount > 0)
+                            <span
+                                class="ml-auto bg-red-500 text-white text-[10px] font-black px-1.5 py-0.5 border border-black">
                                 {{ $unreadCount > 9 ? '9+' : $unreadCount }}
                             </span>
                         @endif
@@ -232,7 +233,7 @@
                         <button type="submit"
                             class="w-full flex items-center gap-3 px-3 py-3 text-red-400 hover:text-red-300 hover:bg-white/5 text-sm font-black uppercase tracking-wider transition-colors duration-100">
                             <i data-lucide="log-out" class="w-4 h-4"></i>
-                            Logout
+                            Cerrar sesión
                         </button>
                     </form>
                 </div>
@@ -250,13 +251,13 @@
     </div>
 
     <script>
-        (function () {
+        (function() {
             var btn = document.getElementById('mobile-menu-btn');
             var menu = document.getElementById('mobile-menu');
             var iconOpen = document.getElementById('mobile-menu-icon-open');
             var iconClose = document.getElementById('mobile-menu-icon-close');
             if (!btn || !menu) return;
-            btn.addEventListener('click', function () {
+            btn.addEventListener('click', function() {
                 var isOpen = !menu.classList.contains('hidden');
                 menu.classList.toggle('hidden');
                 iconOpen.classList.toggle('hidden', !isOpen);

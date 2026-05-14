@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
-@section('title', 'Search Results - SteamWish')
+@section('title', 'Resultados de Búsqueda - SteamWish')
 
 @section('content')
     <div class="max-w-6xl mx-auto px-4 py-8">
         <div class="mb-8">
             <a href="/"
                 class="inline-flex items-center gap-2 px-6 py-3 bg-[#FACC15] text-[#0F3A52] font-black uppercase text-sm border-4 border-black shadow-[4px_4px_0_0_#0F3A52] hover:shadow-[2px_2px_0_0_#0F3A52] hover:translate-x-[2px] hover:translate-y-[2px] transition-all">
-                <i data-lucide="home" class="w-5 h-5"></i> Back to Home
+                <i data-lucide="home" class="w-5 h-5"></i> Volver al Inicio
             </a>
         </div>
 
         <div
             class="bg-white border-4 border-black shadow-[8px_8px_0_0_#0F3A52] p-6 mb-8 uppercase flex flex-col md:flex-row md:items-center gap-4">
             <h1 class="text-3xl md:text-5xl font-black text-[#0F3A52]">
-                Search Results For
+                Resultados de Búsqueda Para
             </h1>
             <span class="bg-[#5DA9D6] text-white px-4 py-2 border-4 border-black text-2xl md:text-4xl font-black break-all">
                 "{{ $query }}"
@@ -24,8 +24,8 @@
         @if (empty($results))
             <div class="bg-[#F5F5F5] border-4 border-black shadow-[8px_8px_0_0_#0F3A52] p-12 text-center text-[#0F3A52]">
                 <i data-lucide="frown" class="w-20 h-20 mx-auto mb-6 text-[#0F3A52]" aria-hidden="true"></i>
-                <h2 class="text-3xl md:text-4xl font-black uppercase mb-4">No games found</h2>
-                <p class="font-bold text-xl">We couldn't find any matches for that search. Try another query!</p>
+                <h2 class="text-3xl md:text-4xl font-black uppercase mb-4">No se encontraron juegos</h2>
+                <p class="font-bold text-xl">No pudimos encontrar ninguna coincidencia para esa búsqueda. ¡Intenta con otra!</p>
             </div>
         @else
             <div class="search-grid">
@@ -33,10 +33,10 @@
                     @php
                         $data = $game['data'] ?? [];
                         $appid = $data['steam_appid'] ?? '';
-                        $name = $data['name'] ?? 'Unknown Game';
+                        $name = $data['name'] ?? 'Juego Desconocido';
                         $headerImage =
                             $data['header_image'] ?? 'https://placehold.co/460x215/F5F5F5/0F3A52?text=No+Image';
-                        $price = $data['price_overview']['final_formatted'] ?? 'Free';
+                        $price = $data['price_overview']['final_formatted'] ?? 'Gratis';
                         $inWishlist = $game['in_wishlist'] ?? false;
                     @endphp
                     {{-- Patrón card overlay: div + enlace absoluto + botón z-10 (evita <button> anidado en <a>) --}}
