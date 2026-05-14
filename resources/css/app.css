@@ -320,12 +320,17 @@ body {
 /* ── Styles from home.blade.php ── */
 /* ── Custom Neo-Brutalist scrollbar ────────── */
 .sw-scrollbar::-webkit-scrollbar {
+    -webkit-appearance: none;
+    appearance: none;
     height: 12px;
     width: 12px;
+    background-color: #000000 !important;
 }
 
 .sw-scrollbar::-webkit-scrollbar-track {
-    background: #000000;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #000000 !important;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -366,7 +371,8 @@ body {
     --pattern-color: #cfcfcf;
 
     position: relative;
-    width: 20em;
+    width: 17em;
+    max-width: 85vw;
     background: var(--bg);
     border: 0.35em solid var(--text);
     border-radius: 0.6em;
@@ -742,6 +748,7 @@ body {
 
 /* ── Touch targets mínimos en dispositivos táctiles ── */
 @media (pointer: coarse) {
+
     button,
     a,
     [role="button"] {
@@ -777,5 +784,11 @@ body {
 @media (min-width: 1024px) {
     .search-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 640px) {
+    .card {
+        width: 20em;
     }
 }

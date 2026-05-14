@@ -35,7 +35,7 @@
             <div id="deals-skeleton" class="flex gap-8 overflow-x-auto pb-8 pt-4 px-2 sw-scrollbar">
                 @for ($i = 0; $i < 8; $i++)
                     <div
-                        class="shrink-0 w-[20em] h-[26em] bg-white/10 border-4 border-white/20 animate-pulse rounded-[0.6em]">
+                        class="shrink-0 w-[17em] max-w-[85vw] sm:w-[20em] h-[26em] bg-white/10 border-4 border-white/20 animate-pulse rounded-[0.6em]">
                     </div>
                 @endfor
             </div>
@@ -69,9 +69,9 @@
                 <div id="most-played-skeleton" class="flex flex-col gap-3">
                     @for ($i = 0; $i < 6; $i++)
                         <div
-                            class="flex items-center gap-4 bg-white border-4 border-black p-3 shadow-[4px_4px_0_0_#0F3A52]">
+                            class="flex items-center gap-2 sm:gap-4 bg-white border-4 border-black p-2 sm:p-3 shadow-[4px_4px_0_0_#0F3A52]">
                             <div class="w-8 h-8 bg-gray-200 animate-pulse border-2 border-black shrink-0"></div>
-                            <div class="w-28 h-16 bg-gray-200 animate-pulse border-2 border-black shrink-0"></div>
+                            <div class="w-16 h-10 sm:w-28 sm:h-16 bg-gray-200 animate-pulse border-2 border-black shrink-0"></div>
                             <div class="flex-1 h-4 bg-gray-200 animate-pulse rounded"></div>
                             <div class="w-14 h-6 bg-gray-200 animate-pulse border-2 border-black shrink-0"></div>
                         </div>
@@ -100,8 +100,8 @@
                 <div id="trending-skeleton" class="flex flex-col gap-3">
                     @for ($i = 0; $i < 6; $i++)
                         <div
-                            class="flex items-center gap-4 bg-white border-4 border-black p-3 shadow-[4px_4px_0_0_#16A34A]">
-                            <div class="w-28 h-16 bg-gray-200 animate-pulse border-2 border-black shrink-0"></div>
+                            class="flex items-center gap-2 sm:gap-4 bg-white border-4 border-black p-2 sm:p-3 shadow-[4px_4px_0_0_#16A34A]">
+                            <div class="w-16 h-10 sm:w-28 sm:h-16 bg-gray-200 animate-pulse border-2 border-black shrink-0"></div>
                             <div class="flex-1 h-4 bg-gray-200 animate-pulse rounded"></div>
                             <div class="w-14 h-6 bg-gray-200 animate-pulse border-2 border-black shrink-0"></div>
                         </div>
@@ -131,7 +131,7 @@
             {{-- Skeleton --}}
             <div id="upcoming-skeleton" class="flex gap-6 overflow-x-auto pb-4">
                 @for ($i = 0; $i < 6; $i++)
-                    <div class="shrink-0 w-72 bg-white border-4 border-black shadow-[4px_4px_0_0_#0F3A52]">
+                    <div class="shrink-0 w-56 sm:w-72 bg-white border-4 border-black shadow-[4px_4px_0_0_#0F3A52]">
                         <div class="w-full aspect-[460/215] bg-gray-200 animate-pulse border-b-4 border-black"></div>
                         <div class="p-3 flex flex-col gap-2">
                             <div class="h-4 bg-gray-200 animate-pulse rounded"></div>

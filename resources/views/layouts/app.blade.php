@@ -57,11 +57,16 @@
         
         /* Custom Scrollbar Brutalist */
         ::-webkit-scrollbar {
+            -webkit-appearance: none;
+            appearance: none;
             width: 16px;
             height: 16px;
+            background-color: #0F3A52 !important;
         }
         ::-webkit-scrollbar-track {
-            background: #0F3A52;
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: #0F3A52 !important;
             border-left: 3px solid black;
             border-top: 3px solid black;
         }

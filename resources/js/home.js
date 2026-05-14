@@ -56,12 +56,12 @@ function renderMostPlayed(games) {
         const rank = i + 1;
         const badgeCls = rank <= 3 ? 'bg-[#FACC15] text-black' : 'bg-[#0F3A52] text-white';
         const thumb = g.image ?
-            `<img src="${escapeHTML(g.image)}" alt="${escapeHTML(g.name)}" class="shrink-0 w-28 h-16 object-cover border-2 border-black">` :
-            `<div class="shrink-0 w-28 h-16 bg-gray-200 border-2 border-black"></div>`;
+            `<img src="${escapeHTML(g.image)}" alt="${escapeHTML(g.name)}" class="shrink-0 w-16 h-10 sm:w-28 sm:h-16 object-cover border-2 border-black">` :
+            `<div class="shrink-0 w-16 h-10 sm:w-28 sm:h-16 bg-gray-200 border-2 border-black"></div>`;
 
         return `
     <a href="${gameUrl(g.appid)}"
-       class="relative flex items-center gap-4 bg-white border-4 border-black p-3
+       class="relative flex items-center gap-2 sm:gap-4 bg-white border-4 border-black p-2 sm:p-3
               shadow-[4px_4px_0_0_#0F3A52] hover:shadow-[6px_6px_0_0_#5DA9D6]
               hover:-translate-x-1 hover:-translate-y-1 transition-all group">
         <span class="shrink-0 w-8 h-8 flex items-center justify-center border-2 border-black font-black text-sm ${badgeCls}">#${rank}</span>
@@ -87,8 +87,8 @@ function renderTrending(games) {
 
     container.innerHTML = games.map(g => {
         const thumb = g.image ?
-            `<img src="${escapeHTML(g.image)}" alt="${escapeHTML(g.name)}" class="shrink-0 w-28 h-16 object-cover border-2 border-black">` :
-            `<div class="shrink-0 w-28 h-16 bg-gray-200 border-2 border-black"></div>`;
+            `<img src="${escapeHTML(g.image)}" alt="${escapeHTML(g.name)}" class="shrink-0 w-16 h-10 sm:w-28 sm:h-16 object-cover border-2 border-black">` :
+            `<div class="shrink-0 w-16 h-10 sm:w-28 sm:h-16 bg-gray-200 border-2 border-black"></div>`;
 
         const badge = g.discount > 0 ?
             `<span class="shrink-0 bg-[#16A34A] border-2 border-black text-white font-black text-xs px-2 py-0.5">-${g.discount}% · ${escapeHTML(g.price)}</span>` :
@@ -96,7 +96,7 @@ function renderTrending(games) {
 
         return `
     <a href="${gameUrl(g.appid)}"
-       class="relative flex items-center gap-4 bg-white border-4 border-black p-3
+       class="relative flex items-center gap-2 sm:gap-4 bg-white border-4 border-black p-2 sm:p-3
               shadow-[4px_4px_0_0_#16A34A] hover:shadow-[6px_6px_0_0_#5DA9D6]
               hover:-translate-x-1 hover:-translate-y-1 transition-all group">
         ${thumb}
@@ -127,7 +127,7 @@ function renderUpcoming(games) {
 
         return `
     <a href="${gameUrl(g.appid)}"
-       class="relative group block w-72 shrink-0 bg-white border-4 border-black
+       class="relative group block w-56 sm:w-72 shrink-0 bg-white border-4 border-black
               shadow-[4px_4px_0_0_#0F3A52] hover:shadow-[8px_8px_0_0_#5DA9D6]
               hover:-translate-y-2 hover:-translate-x-1 transition-all">
         ${img}
