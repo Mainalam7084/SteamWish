@@ -81,41 +81,30 @@
             </div>
 
             <!-- Form Side -->
-            <div class="w-full md:w-8/12 p-8 md:p-16 bg-white">
-                @if(session('success'))
-                    <div class="bg-[#1D9E75] text-white border-4 border-black p-6 mb-8 font-black uppercase text-center shadow-[8px_8px_0_0_#000] animate-bounce">
-                        ¡Mensaje Enviado con Éxito!
-                    </div>
-                @endif
+            <div class="w-full md:w-8/12 p-8 md:p-16 bg-white relative">
+                <!-- Mensaje de éxito oculto por defecto -->
+                <div id="success-message" class="hidden bg-[#1D9E75] text-white border-4 border-black p-6 mb-8 font-black uppercase text-center shadow-[8px_8px_0_0_#000] animate-bounce">
+                    ¡Mensaje Enviado con Éxito!
+                </div>
 
-                <form action="{{ route('contact.store') }}" method="POST" class="space-y-8">
-                    @csrf 
-
+                <form id="contact-form" class="space-y-8">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="flex flex-col">
                             <label for="nombre" class="font-black uppercase text-[#0F3A52] mb-2 flex items-center gap-2">
                                 <i data-lucide="user" class="w-4 h-4"></i> Nombre
                             </label>
-                            <input type="text" name="nombre" id="nombre" value="{{ old('nombre') }}" required 
-                                   class="border-4 border-black p-4 text-lg font-bold focus:bg-[#FACC15]/10 outline-none transition-colors
-                                   @error('nombre') bg-red-50 border-red-600 @else border-black @enderror"
+                            <input type="text" name="name" id="nombre" required 
+                                   class="border-4 border-black p-4 text-lg font-bold focus:bg-[#FACC15]/10 outline-none transition-colors border-black"
                                    placeholder="Tu nombre aquí...">
-                            @error('nombre')
-                                <span class="bg-red-600 text-white font-black text-xs uppercase px-2 py-1 mt-1 self-start border-2 border-black shadow-[2px_2px_0_0_#000]">{{ $message }}</span>
-                            @enderror
                         </div>
 
                         <div class="flex flex-col">
                             <label for="email" class="font-black uppercase text-[#0F3A52] mb-2 flex items-center gap-2">
                                 <i data-lucide="at-sign" class="w-4 h-4"></i> Email
                             </label>
-                            <input type="email" name="email" id="email" value="{{ old('email') }}" required 
-                                   class="border-4 border-black p-4 text-lg font-bold focus:bg-[#FACC15]/10 outline-none transition-colors
-                                   @error('email') bg-red-50 border-red-600 @else border-black @enderror"
+                            <input type="email" name="email" id="email" required 
+                                   class="border-4 border-black p-4 text-lg font-bold focus:bg-[#FACC15]/10 outline-none transition-colors border-black"
                                    placeholder="ejemplo@correo.com">
-                            @error('email')
-                                <span class="bg-red-600 text-white font-black text-xs uppercase px-2 py-1 mt-1 self-start border-2 border-black shadow-[2px_2px_0_0_#000]">{{ $message }}</span>
-                            @enderror
                         </div>
                     </div>
 
@@ -123,18 +112,14 @@
                         <label for="mensaje" class="font-black uppercase text-[#0F3A52] mb-2 flex items-center gap-2">
                             <i data-lucide="message-square" class="w-4 h-4"></i> Mensaje
                         </label>
-                        <textarea name="mensaje" id="mensaje" rows="5" required 
-                                  class="border-4 border-black p-4 text-lg font-bold focus:bg-[#FACC15]/10 outline-none transition-colors
-                                  @error('mensaje') bg-red-50 border-red-600 @else border-black @enderror"
-                                  placeholder="¿En qué podemos ayudarte?">{{ old('mensaje') }}</textarea>
-                        @error('mensaje')
-                            <span class="bg-red-600 text-white font-black text-xs uppercase px-2 py-1 mt-1 self-start border-2 border-black shadow-[2px_2px_0_0_#000]">{{ $message }}</span>
-                        @enderror
+                        <textarea name="message" id="mensaje" rows="5" required 
+                                  class="border-4 border-black p-4 text-lg font-bold focus:bg-[#FACC15]/10 outline-none transition-colors border-black"
+                                  placeholder="¿En qué podemos ayudarte?"></textarea>
                     </div>
 
-                    <button type="submit" 
+                    <button type="submit" id="submit-btn"
                             class="w-full bg-[#1D9E75] text-white font-black uppercase text-2xl border-4 border-black py-6 shadow-[8px_8px_0_0_#000] hover:translate-y-1 hover:shadow-[4px_4px_0_0_#000] active:translate-y-2 active:shadow-none transition-all cursor-pointer flex items-center justify-center gap-4">
-                        <i data-lucide="send" class="w-6 h-6"></i> Enviar Mensaje
+                        <span id="btn-icon-container"><i data-lucide="send" class="w-6 h-6"></i></span> <span id="btn-text">Enviar Mensaje</span>
                     </button>
                 </form>
             </div>
@@ -143,3 +128,72 @@
 
 </div>
 @endsection
+
+@push('scripts')
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script type="text/javascript">
+    (function() {
+        // Reemplaza esto con tu Public Key de EmailJS en tu archivo .env (EMAILJS_PUBLIC_KEY)
+        emailjs.init({
+            publicKey: "{{ env('EMAILJS_PUBLIC_KEY', 'TU_PUBLIC_KEY') }}",
+        });
+    })();
+
+    document.getElementById('contact-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        event.stopPropagation(); // Evitar que el global loader de interactions.js capture este submit
+        
+        const submitBtn = document.getElementById('submit-btn');
+        const btnText = document.getElementById('btn-text');
+        const iconContainer = document.getElementById('btn-icon-container');
+        const successMessage = document.getElementById('success-message');
+
+        // Estado de carga
+        const originalText = btnText.innerText;
+        btnText.innerText = 'Enviando...';
+        iconContainer.innerHTML = '<i data-lucide="loader" class="w-6 h-6 animate-spin"></i>';
+        lucide.createIcons();
+        submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+
+        // Reemplaza esto con tu Service ID y Template ID de EmailJS en tu archivo .env
+        const serviceID = "{{ env('EMAILJS_SERVICE_ID', 'TU_SERVICE_ID') }}";
+        const templateID = "{{ env('EMAILJS_TEMPLATE_ID', 'TU_TEMPLATE_ID') }}";
+
+        // Verifica que no estemos usando los placeholders por defecto antes de intentar enviar
+        if (serviceID === 'TU_SERVICE_ID' || templateID === 'TU_TEMPLATE_ID') {
+            alert('Atención: Faltan configurar las credenciales de EmailJS (EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY).');
+            // Restaurar botón
+            btnText.innerText = originalText;
+            iconContainer.innerHTML = '<i data-lucide="send" class="w-6 h-6"></i>';
+            lucide.createIcons();
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+            return;
+        }
+
+        emailjs.sendForm(serviceID, templateID, this)
+            .then(() => {
+                // Mostrar mensaje de éxito
+                successMessage.classList.remove('hidden');
+                this.reset();
+                
+                // Ocultar el mensaje después de 5 segundos
+                setTimeout(() => {
+                    successMessage.classList.add('hidden');
+                }, 5000);
+            }, (error) => {
+                alert('Hubo un error al enviar el mensaje. Revisa la consola para más detalles.');
+                console.error('EmailJS Error:', error);
+            })
+            .finally(() => {
+                // Restaurar botón
+                btnText.innerText = originalText;
+                iconContainer.innerHTML = '<i data-lucide="send" class="w-6 h-6"></i>';
+                lucide.createIcons();
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+            });
+    });
+</script>
+@endpush
