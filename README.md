@@ -84,12 +84,12 @@ Añade estas a tu archivo `.env`:
 ```
 APP_KEY=              # Generada automáticamente con key:generate
 
-DB_CONNECTION=pgsql
+DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
-DB_PORT=5432
+DB_PORT=3306
 DB_DATABASE=steamwish
-DB_USERNAME=          # Tu usuario de PostgreSQL
-DB_PASSWORD=          # Tu contraseña de PostgreSQL
+DB_USERNAME=          # Tu usuario de MySQL (usualmente root en XAMPP)
+DB_PASSWORD=          # Tu contraseña de MySQL (usualmente vacía en XAMPP)
 
 API_KEY=              # Steam Web API key — https://steamcommunity.com/dev/apikey
 ITAD_API_KEY=         # IsThereAnyDeal API key — https://isthereanydeal.com
